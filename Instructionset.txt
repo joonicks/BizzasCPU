@@ -1,52 +1,53 @@
 24-bit Instructions (OP+16), IMM16 is stored in IRA:IRB
 0000####	JMP...				ADDR=IRA:IRB, PC_LOAD
 	000X	JMP to IMM16 if CARRY=X		(JNC, JC)
-        001X	JMP to IMM16 if ZERO=X		(JNZ, JZ)
-        010X	JMP to IMM16 if EQUAL=X		(JNE, JE)
-        0110												 1 free opcode		1
-        0111	JMP to IMM16			Unconditional
-        1###												 8 free opcodes		9
+	001X	JMP to IMM16 if ZERO=X		(JNZ, JZ)
+	010X	JMP to IMM16 if EQUAL=X		(JNE, JE)
+	0110
+	0111	JMP to IMM16			Unconditional
+	1###
 0001####        ST/LD [IMM16]
 	00YY	ST [IMM16]			PC++, SRC=YY, DST=MEM[IRA:IRB]
 	01YY	LD [IMM16]			PC++, DST=YY, SRC=MEM[IRA:IRB]
-	1###												 8 free opcodes		17
+	1###
 
 16-bit instructions (OP+8) IMM8 is stored in IRA
-0010####												16 free opcodes		33
+0010####
 0011SSYY	ALU IMM8			PC++, ALUOP=SS, SRC=IRA, DST=YY
 0100SSYY	ALU IMM8			PC++, ALUOP=SS, SRC=IRA, DST=YY
 
 8-bit instructions (No extra arguments)
-0101####												16 free opcodes		49
-0110####												16 free opcodes		65
+0101####
+0110####
 0111XXYY	CMP R1, R2			PC++, SRC=XX, DST=YY, LOAD_EQUAL
-		SRC=DST is unproductive (always true)							 4 free opcodes		69
+		SRC=DST is unproductive (always true)
 1000####	JMP...				ADDR=R1:R2, PC_LOAD
 	000X	JMP to A:B if CARRY=X		(JNC, JC)
 	001X	JMP to A:B if ZERO=X		(JNZ, JZ)
 	010X	JMP to A:B if EQUAL=X		(JNE, JE)
-	0110												 1 free opcode		70
+	0110
 	0111	JMP to A:B			Unconditional
 	100X	JMP to C:D if CARRY=X		(JNC, JC)
 	101X	JMP to C:D if ZERO=X		(JNZ, JZ)
 	110X	JMP to C:D if EQUAL=X		(JNE, JE)
-	1110												 1 free opcode		71
+	1110
 	1111	JMP to C:D			Unconditional
-1001XXYY	ALU AND				PC++, ALUOP=00, SRC=XX, DST=YY
-		AND SRC=DST is unproductive								 4 free opcodes		75
+1001XXXX	ALU ADC				PC++, ALUOP=11, SUB=0, CARRY=C, SRC=XX, DST=YY
+		ADC SRC=DST is equivalent to ROL 1 (shift left 1 bit with carry)
 1010XXYY	ALU OR				PC++, ALUOP=01, SRC=XX, DST=YY
-		OR SRC=DST is unproductive								 4 free opcodes		79
+		OR SRC=DST is unproductive
 1011####	ST/LD [R1:R2]...
 	00RR	ST [R1:R2]			PC++, SRC+ADDR=RRR, DST=MEM[R1:R2]
 	01RR	LD [R1:R2]			PC++, DST+ADDR=RRR, SRC=MEM[R1:R2]
-	1###												 8 free opcodes		87
+	1###
 1100XXYY	ALU XOR				PC++, ALUOP=10, SRC=XX, DST=YY
 		XOR SRC=DST will set the register to 0
-1101XXYY	ALU ADD				PC++, ALUOP=11, SUB=0, SRC=XX, DST=YY
-		ADD SRC=DST is equivalent to ROL 1 (shift left 1 bit with carry)
-1110XXYY	ALU SUB				PC++, ALUOP=11, SUB=1, SRC=XX, DST=YY
-		SUB SRC=DST is unproductive since XOR already accomplishes that				 4 free opcodes		91
-1111XXXX												15 free opcodes		106
+1101XXYY	ALU ADD				PC++, ALUOP=11, SUB=0, CARRY=0, SRC=XX, DST=YY
+		ADD SRC=DST is equivalent to SHL 1 (shift left 1 bit, top bit saved in carry)
+1110XXYY	ALU SUB				PC++, ALUOP=11, SUB=1, CARRY=0, SRC=XX, DST=YY
+		SUB SRC=DST is unproductive since XOR already accomplishes that
+1111XXYY	ALU AND				PC++, ALUOP=00, SRC=XX, DST=YY
+		AND SRC=DST is unproductive
 	1111	NOP				PC++
 
 JMP instructions (0000 & 1000) will not increase PC unless condition is false.

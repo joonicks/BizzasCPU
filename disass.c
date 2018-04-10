@@ -51,6 +51,7 @@ int to_file(int sock, const char *format, ...)
 
 uint8_t		irop, ira, irb;		// executor registers
 int		regsloaded = 0;
+int		undefined = 0;
 
 int regs_needed(void)
 {
@@ -85,6 +86,7 @@ char *mkbin(uint8_t a)
 
 void printunknown(void)
 {
+	undefined++;
 	switch(regs_needed())
 	{
 	case 1:
@@ -104,29 +106,11 @@ char *xxsrc[] = { "A", "B", "C", "D" };
 char *aluop[] = { "AND", "OR", "XOR", "ADD" };
 char *rraddr[] = { "A:B", "C:D" };
 
-void disass(uint8_t data)
+void printopcode(void)
 {
 	char	*addr,*opcode;
 	int	xx,yy,ss;
 
-	switch(regsloaded++)
-	{
-	case 0:
-		irop = data;
-		break;
-	case 1:
-		ira = data;
-		break;
-	case 2:
-		irb = data;
-		break;
-	default:
-		to_file(2,"error! error Will Robinson!\n");
-	}
-	if (regsloaded < regs_needed())
-		return;
-
-	regsloaded = 0;
 	opcode = NULL;
 
 	switch(irop >> 4)
@@ -138,7 +122,6 @@ void disass(uint8_t data)
 			to_file(1,"\t%s\t#%02X%02X\t\t; %s (%02X) arg=%02X%02X\n",opcode,ira,irb,mkbin(irop),irop,ira,irb);
 			return;
 		}
-		break;
 		break;
 	case 1: // ST, LD [IMM16]
 		xx = ((irop >> 2) & 3);
@@ -154,14 +137,13 @@ void disass(uint8_t data)
 			to_file(1,"\tLD\t%s, [%02X%02X]\t; %s (%02X) arg=%02X%02X\n",xxsrc[yy],ira,irb,mkbin(irop),irop,ira,irb);
 			return;
 		}
-		break;
 	case 2:
 		break;
 	case 3: //0011SSYY ALU IMM8        PC++, ALUOP=SS, SRC=IRA, DST=YY
 		ss = ((irop >> 2) & 3);
-		yy = (irop & 3 );
+		yy = (irop & 3);
 		to_file(1,"\t%s\t%s, #%02X\t\t; %s (%02X)\n",aluop[ss],xxsrc[yy],ira,mkbin(irop),irop);
-		break;
+		return;
 	case 4:
 		break;
 	case 5:
@@ -176,6 +158,7 @@ void disass(uint8_t data)
 			to_file(1,"\tCMP\t%s, %s\t\t; %s (%02X)\n",xxsrc[yy],xxsrc[xx],mkbin(irop),irop);
 			return;
 		}
+		break;
 	case 8: // JMP
 		addr = ((irop & 8) == 0) ? "A:B" : "C:D";
 		opcode = jumps[(irop & 7)];
@@ -185,14 +168,11 @@ void disass(uint8_t data)
 			return;
 		}
 		break;
-	case 9: // ALU AND XXYY
+	case 9: // 1001XXXX        ALU ADC                         PC++, ALUOP=11, SUB=0, CARRY=C, SRC=XX, DST=YY
 		xx = ((irop >> 2) & 3);
 		yy = (irop & 3);
-		if (xx != yy) // AND with itself isnt productive
-		{
-			to_file(1,"\tAND\t%s, %s\t\t; %s (%02X)\n",xxsrc[yy],xxsrc[xx],mkbin(irop),irop);
-			return;
-		}
+		to_file(1,"\tADC\t%s, %s\t\t; %s (%02X)\n",xxsrc[yy],xxsrc[xx],mkbin(irop),irop);
+		return;
 	case 10: // ALU OR XXYY
 		xx = ((irop >> 2) & 3);
 		yy = (irop & 3);
@@ -201,6 +181,7 @@ void disass(uint8_t data)
 			to_file(1,"\tOR\t%s, %s\t\t; %s (%02X)\n",xxsrc[yy],xxsrc[xx],mkbin(irop),irop);
 			return;
 		}
+		break;
 	case 11: // ST/LD 0RRR, 1RRR
 		xx = (irop & 3);
 		yy = ((irop > 1) & 1);
@@ -222,9 +203,20 @@ void disass(uint8_t data)
 	case 14: // ALU SUB XXYY
 		xx = ((irop >> 2) & 3);
 		yy = (irop & 3);
-		to_file(1,"\tSUB\t%s, %s\t\t; %s (%02X)\n",xxsrc[yy],xxsrc[xx],mkbin(irop),irop);
-		return;
-	case 15: // NOP
+		if (xx != yy) // OR with itself isnt productive
+		{
+			to_file(1,"\tSUB\t%s, %s\t\t; %s (%02X)\n",xxsrc[yy],xxsrc[xx],mkbin(irop),irop);
+			return;
+		}
+		break;
+	case 15: // ALU AND XXYY, NOP
+		xx = ((irop >> 2) & 3);
+		yy = (irop & 3);
+		if (xx != yy) // AND with itself isnt productive
+		{
+			to_file(1,"\tAND\t%s, %s\t\t; %s (%02X)\n",xxsrc[yy],xxsrc[xx],mkbin(irop),irop);
+			return;
+		}
 		if (irop == 255)
 		{
 			to_file(1,"\tNOP\t\t\t; %s (%02X)\n",mkbin(irop),irop);
@@ -237,10 +229,47 @@ void disass(uint8_t data)
 	printunknown();
 }
 
+void disass(uint8_t data)
+{
+	switch(regsloaded++)
+	{
+	case 0:
+		irop = data;
+		break;
+	case 1:
+		ira = data;
+		break;
+	case 2:
+		irb = data;
+		break;
+	default:
+		to_file(2,"error! error Will Robinson!\n");
+	}
+	if (regsloaded < regs_needed())
+		return;
+
+	regsloaded = 0;
+	printopcode();
+}
+
 int main(int argc, char **argv)
 {
 	uint8_t	data[512];
 	int	fd,n,i;
+
+	if (argc == 2 && strcmp(argv[1],"--oplist") == 0)
+	{
+		ira = 0x12;
+		irb = 0x34;
+		undefined = 0;
+		for(i=0;i<256;i++)
+		{
+			irop = i;
+			printopcode();
+		}
+		to_file(1,"%i undefined opcodes\n",undefined);
+		exit(0);
+	}
 
 	if (argv[1])
 	{

@@ -1,0 +1,27 @@
+
+
+	Bizzas CPU
+
+		Main blocks:	16-bit Program counter
+				16-bit Address bus
+				Instruction Loader (for 8, 16 and 24 bit instructions)
+				Instruction Executor (runs the instruction once all of it is loaded)
+				8-bit Data bus
+				8-bit ALU capable of doing ADD, SUB, XOR, AND, OR
+				Two 8-bit ALU busses (for source A and source B)
+				8-bit Comparator (Also uses ALU busses)
+				Four general purpose registers: A, B, C, D
+				Non-user registers: IROP, IRA, IRB
+
+
+	Hobbyist CPU design
+
+		Primarily for Quartus (II)/Block diagrams & Schematics for the visual (and possibly more educational) style.
+
+		Initial goal is to get the CPU working on an FPGA.
+
+
+	License: None / Open source
+
+	Project initiated by:	Alan Londa (Not real name)
+				in April 2018

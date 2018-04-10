@@ -90,13 +90,13 @@ void printunknown(void)
 	switch(regs_needed())
 	{
 	case 1:
-		to_file(1,"\t0x%02X\t\t\t; %s Undefined opcode\n",irop,mkbin(irop));
+		to_file(1,"\t0x%02X\t\t\t; %s (%02X) Undefined opcode\n",irop,mkbin(irop),irop);
 		return;
 	case 2:
-		to_file(1,"\t0x%02X 0x%02X\t\t; %s Undefined opcode\n",irop,ira,mkbin(irop));
+		to_file(1,"\t0x%02X 0x%02X\t\t; %s (%02X) Undefined opcode\n",irop,ira,mkbin(irop),irop);
 		return;
 	case 3:
-		to_file(1,"\t0x%02X 0x%02X 0x%02X\t\t; %s Undefined opcode\n",irop,ira,irb,mkbin(irop));
+		to_file(1,"\t0x%02X 0x%02X 0x%02X\t\t; %s (%02X) Undefined opcode\n",irop,ira,irb,mkbin(irop),irop);
 		return;
 	}
 }
@@ -137,12 +137,19 @@ void printopcode(void)
 			to_file(1,"\tLD\t%s, [%02X%02X]\t; %s (%02X) arg=%02X%02X\n",xxsrc[yy],ira,irb,mkbin(irop),irop,ira,irb);
 			return;
 		}
-	case 2:
+		break;
+	case 2: // LD IMM8
+		yy = (irop & 3);
+		if (((irop >> 2) & 3) == 0)
+		{
+			to_file(1,"\tLD\t%s, #%02X\t\t; %s (%02X) arg=%02X\n",xxsrc[yy],ira,mkbin(irop),irop,ira);
+			return;
+		}
 		break;
 	case 3: //0011SSYY ALU IMM8        PC++, ALUOP=SS, SRC=IRA, DST=YY
 		ss = ((irop >> 2) & 3);
 		yy = (irop & 3);
-		to_file(1,"\t%s\t%s, #%02X\t\t; %s (%02X)\n",aluop[ss],xxsrc[yy],ira,mkbin(irop),irop);
+		to_file(1,"\t%s\t%s, #%02X\t\t; %s (%02X) arg=%02X\n",aluop[ss],xxsrc[yy],ira,mkbin(irop),irop,ira);
 		return;
 	case 4:
 		break;
@@ -184,7 +191,7 @@ void printopcode(void)
 		break;
 	case 11: // ST/LD 0RRR, 1RRR
 		xx = (irop & 3);
-		yy = ((irop > 1) & 1);
+		yy = ((~irop >> 1) & 1);
 		if ((irop & 8) == 0)
 			to_file(1,"\tST\t[%s], %s\t; %s (%02X)\n",rraddr[yy],xxsrc[xx],mkbin(irop),irop);
 		else

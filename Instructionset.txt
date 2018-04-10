@@ -12,7 +12,11 @@
 	1###
 
 16-bit instructions (OP+8) IMM8 is stored in IRA
-0010####
+0010####	LD...
+	00YY	LD R1, IMM8			PC++, DATA=IRA, DST=YY
+	01##
+	10##
+	11##
 0011SSYY	ALU IMM8			PC++, ALUOP=SS, SRC=IRA, DST=YY
 0100SSYY	ALU IMM8			PC++, ALUOP=SS, SRC=IRA, DST=YY
 

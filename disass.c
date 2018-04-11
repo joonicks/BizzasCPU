@@ -58,11 +58,9 @@ int regs_needed(void)
 	switch(irop >> 4)
 	{
 	case 0:
-	case 1:
 		return(3); // irop+ira+irb
+	case 1:
 	case 2:
-	case 3:
-	case 4:
 		return(2); // irop+ira
 	}
 	return(1); // irop only
@@ -103,70 +101,85 @@ void printunknown(void)
 
 char *jumps[] = { "JNC", "JC", "JNZ", "JZ", "JNE", "JE", NULL, "JMP" };
 char *xxsrc[] = { "A", "B", "C", "D" };
-char *aluop[] = { "AND", "OR", "XOR", "ADD" };
-char *rraddr[] = { "A:B", "C:D" };
+char *aluop[] = { "ADD", "XOR", "AND", "OR" };
+char *rraddr[] = { "C:D", "C:D", "A:B", "A:B" };
 
 void printopcode(void)
 {
 	char	*addr,*opcode;
-	int	xx,yy,ss;
+	int	xx,yy,ss,rr;
 
 	opcode = NULL;
 
 	switch(irop >> 4)
 	{
-	case 0:
+	case 0: // JMP IMM16
 		opcode = jumps[(irop & 7)];
 		if (irop < 8 && opcode)
 		{
 			to_file(1,"\t%s\t#%02X%02X\t\t; %s (%02X) arg=%02X%02X\n",opcode,ira,irb,mkbin(irop),irop,ira,irb);
 			return;
 		}
-		break;
-	case 1: // ST, LD [IMM16]
+		// ST, LD [IMM16]
 		xx = ((irop >> 2) & 3);
 		yy = (irop & 3);
-		if (xx == 0)
+		if (xx == 2)
 		{
 			to_file(1,"\tST\t[%02X%02X], %s\t; %s (%02X) arg=%02X%02X\n",ira,irb,xxsrc[yy],mkbin(irop),irop,ira,irb);
 			return;
 		}
 		else
-		if (xx == 1)
+		if (xx == 3)
 		{
 			to_file(1,"\tLD\t%s, [%02X%02X]\t; %s (%02X) arg=%02X%02X\n",xxsrc[yy],ira,irb,mkbin(irop),irop,ira,irb);
 			return;
 		}
 		break;
-	case 2: // LD IMM8
-		yy = (irop & 3);
-		if (((irop >> 2) & 3) == 0)
-		{
-			to_file(1,"\tLD\t%s, #%02X\t\t; %s (%02X) arg=%02X\n",xxsrc[yy],ira,mkbin(irop),irop,ira);
-			return;
-		}
-		break;
-	case 3: //0011SSYY ALU IMM8        PC++, ALUOP=SS, SRC=IRA, DST=YY
+	case 1: //0011SSYY ALU IMM8        PC++, ALUOP=SS, SRC=IRA, DST=YY
 		ss = ((irop >> 2) & 3);
 		yy = (irop & 3);
 		to_file(1,"\t%s\t%s, #%02X\t\t; %s (%02X) arg=%02X\n",aluop[ss],xxsrc[yy],ira,mkbin(irop),irop,ira);
 		return;
+	case 2: // LD IMM8
+		xx = ((irop >> 2) & 3);
+		if (xx == 1) // LD R1, IMM8
+		{
+			yy = (irop & 3);
+			to_file(1,"\tLD\t%s, #%02X\t\t; %s (%02X) arg=%02X\n",xxsrc[yy],ira,mkbin(irop),irop,ira);
+			return;
+		}
+		if ((irop & 0x0f) < 2)
+		{
+			yy = ((~irop) & 1)*2;
+			to_file(1,"\tST\t[%s], #%02X\t; %s (%02X) arg=%02X\n",rraddr[yy],ira,mkbin(irop),irop,ira);
+			return;
+		}
+		break;
+	case 3: // ST/LD [R1:R2]...
+		if ((irop & 8) == 0)
+		{
+			rr = (irop & 3);
+			if ((irop & 4) == 0)
+				to_file(1,"\tST\t[%s], %s\t; %s (%02X)\n",rraddr[rr],xxsrc[rr],mkbin(irop),irop);
+			else
+				to_file(1,"\tLD\t%s, [%s]\t; %s (%02X)\n",xxsrc[rr],rraddr[rr],mkbin(irop),irop);
+			return;
+		}
+		break;
 	case 4:
-		break;
 	case 5:
-		break;
 	case 6:
 		break;
-	case 7: // CMP
+	case 7: // 0111XXYY CMP R1, R2
 		xx = ((irop >> 2) & 3);
 		yy = (irop & 3);
-		if (xx != yy) // comparing registers to themselves always results in EQUAL=1
+		if (xx != yy) // comparing registers to themselves always results in EQUAL=TRUE
 		{
 			to_file(1,"\tCMP\t%s, %s\t\t; %s (%02X)\n",xxsrc[yy],xxsrc[xx],mkbin(irop),irop);
 			return;
 		}
 		break;
-	case 8: // JMP
+	case 8: // 1000#### JMP [R1:R2]
 		addr = ((irop & 8) == 0) ? "A:B" : "C:D";
 		opcode = jumps[(irop & 7)];
 		if (opcode)
@@ -175,61 +188,38 @@ void printopcode(void)
 			return;
 		}
 		break;
-	case 9: // 1001XXXX        ALU ADC                         PC++, ALUOP=11, SUB=0, CARRY=C, SRC=XX, DST=YY
+	case 9: // 1001XXYY ALU ADC
 		xx = ((irop >> 2) & 3);
 		yy = (irop & 3);
 		to_file(1,"\tADC\t%s, %s\t\t; %s (%02X)\n",xxsrc[yy],xxsrc[xx],mkbin(irop),irop);
 		return;
-	case 10: // ALU OR XXYY
+	case 10:
+	case 11: // ALU SUB/SBC XXYY
 		xx = ((irop >> 2) & 3);
 		yy = (irop & 3);
-		if (xx != yy) // OR with itself isnt productive
+		if (xx != yy) // SUB/SBC with itself is unproductive, use XOR
 		{
-			to_file(1,"\tOR\t%s, %s\t\t; %s (%02X)\n",xxsrc[yy],xxsrc[xx],mkbin(irop),irop);
+			opcode = ((irop & 16) == 0) ? "SUB" : "SBC";
+			to_file(1,"\t%s\t%s, %s\t\t; %s (%02X)\n",opcode,xxsrc[yy],xxsrc[xx],mkbin(irop),irop);
 			return;
 		}
 		break;
-	case 11: // ST/LD 0RRR, 1RRR
-		xx = (irop & 3);
-		yy = ((~irop >> 1) & 1);
-		if ((irop & 8) == 0)
-			to_file(1,"\tST\t[%s], %s\t; %s (%02X)\n",rraddr[yy],xxsrc[xx],mkbin(irop),irop);
-		else
-			to_file(1,"\tLD\t%s, [%s]\t; %s (%02X)\n",xxsrc[xx],rraddr[yy],mkbin(irop),irop);
-		return;
-	case 12: // ALU XOR XXYY
-		xx = ((irop >> 2) & 3);
-		yy = (irop & 3);
-		to_file(1,"\tXOR\t%s, %s\t\t; %s (%02X)\n",xxsrc[yy],xxsrc[xx],mkbin(irop),irop);
-		return;
-	case 13: // ALU ADD XXYY
-		xx = ((irop >> 2) & 3);
-		yy = (irop & 3);
-		to_file(1,"\tADD\t%s, %s\t\t; %s (%02X)\n",xxsrc[yy],xxsrc[xx],mkbin(irop),irop);
-		return;
-	case 14: // ALU SUB XXYY
-		xx = ((irop >> 2) & 3);
-		yy = (irop & 3);
-		if (xx != yy) // OR with itself isnt productive
-		{
-			to_file(1,"\tSUB\t%s, %s\t\t; %s (%02X)\n",xxsrc[yy],xxsrc[xx],mkbin(irop),irop);
-			return;
-		}
-		break;
-	case 15: // ALU AND XXYY, NOP
-		xx = ((irop >> 2) & 3);
-		yy = (irop & 3);
-		if (xx != yy) // AND with itself isnt productive
-		{
-			to_file(1,"\tAND\t%s, %s\t\t; %s (%02X)\n",xxsrc[yy],xxsrc[xx],mkbin(irop),irop);
-			return;
-		}
+	case 12:
+	case 13:
+	case 14:
+	case 15: // ALU OP 11SSXXYY, NOP
 		if (irop == 255)
 		{
 			to_file(1,"\tNOP\t\t\t; %s (%02X)\n",mkbin(irop),irop);
 			return;
 		}
-		break;
+		ss = ((irop >> 4) & 3);
+		xx = ((irop >> 2) & 3);
+		yy = (irop & 3);
+		if (ss >= 2 && xx == yy) // AND/OR with itself isnt productive
+			break;
+		to_file(1,"\t%s\t%s, %s\t\t; %s (%02X)\n",aluop[ss],xxsrc[yy],xxsrc[xx],mkbin(irop),irop);
+		return;
 	default:
 		exit(16);
 	}

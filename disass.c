@@ -53,16 +53,18 @@ uint8_t		irop, ira, irb;		// executor registers
 int		regsloaded = 0;
 int		undefined = 0;
 
+/*
+if (IROP[7] + IROP[6] + IROP[5] + IROP[3]) == 0 then 3 byte instruction
+if (IROP[7] + IROP[6]) == 0 then 2+ byte instruction
+else 1 byte instruction
+*/
+
 int regs_needed(void)
 {
-	switch(irop >> 4)
-	{
-	case 0:
-		return(3); // irop+ira+irb
-	case 1:
-	case 2:
-		return(2); // irop+ira
-	}
+	if ((irop & 0xE8) == 0) // b11101000
+		return(3);
+	if ((irop & 0xC0) == 0) // b11000000
+		return(2);
 	return(1); // irop only
 }
 
@@ -120,27 +122,45 @@ void printopcode(void)
 			to_file(1,"\t%s\t#%02X%02X\t\t; %s (%02X) arg=%02X%02X\n",opcode,ira,irb,mkbin(irop),irop,ira,irb);
 			return;
 		}
+		if (irop >= 8 && opcode)
+		{
+			to_file(1,"\t%s\t%c#%02X\t\t; %s (%02X) arg=%02X\n",
+				opcode,((ira & 128) == 0) ? '+' : '-',(ira & 0x7F),mkbin(irop),irop,ira);
+			return;
+		}
+		break;
+	case 1:
 		// ST, LD [IMM16]
 		xx = ((irop >> 2) & 3);
 		yy = (irop & 3);
-		if (xx == 2)
+		if (xx == 0)
 		{
 			to_file(1,"\tST\t[%02X%02X], %s\t; %s (%02X) arg=%02X%02X\n",ira,irb,xxsrc[yy],mkbin(irop),irop,ira,irb);
 			return;
 		}
 		else
-		if (xx == 3)
+		if (xx == 1)
 		{
 			to_file(1,"\tLD\t%s, [%02X%02X]\t; %s (%02X) arg=%02X%02X\n",xxsrc[yy],ira,irb,mkbin(irop),irop,ira,irb);
 			return;
 		}
+		// ST/LD [R1:R2]...
+		if ((irop & 8) == 8)
+		{
+			rr = (irop & 3);
+			if ((irop & 4) == 0)
+				to_file(1,"\tST\t[%s], %s\t; %s (%02X)\n",rraddr[rr],xxsrc[rr],mkbin(irop),irop);
+			else
+				to_file(1,"\tLD\t%s, [%s]\t; %s (%02X)\n",xxsrc[rr],rraddr[rr],mkbin(irop),irop);
+			return;
+		}
 		break;
-	case 1: //0011SSYY ALU IMM8        PC++, ALUOP=SS, SRC=IRA, DST=YY
+	case 2: //0011SSYY ALU IMM8        PC++, ALUOP=SS, SRC=IRA, DST=YY
 		ss = ((irop >> 2) & 3);
 		yy = (irop & 3);
 		to_file(1,"\t%s\t%s, #%02X\t\t; %s (%02X) arg=%02X\n",aluop[ss],xxsrc[yy],ira,mkbin(irop),irop,ira);
 		return;
-	case 2: // LD IMM8
+	case 3: // LD IMM8
 		xx = ((irop >> 2) & 3);
 		if (xx == 1) // LD R1, IMM8
 		{
@@ -155,18 +175,8 @@ void printopcode(void)
 			return;
 		}
 		break;
-	case 3: // ST/LD [R1:R2]...
-		if ((irop & 8) == 0)
-		{
-			rr = (irop & 3);
-			if ((irop & 4) == 0)
-				to_file(1,"\tST\t[%s], %s\t; %s (%02X)\n",rraddr[rr],xxsrc[rr],mkbin(irop),irop);
-			else
-				to_file(1,"\tLD\t%s, [%s]\t; %s (%02X)\n",xxsrc[rr],rraddr[rr],mkbin(irop),irop);
-			return;
-		}
-		break;
 	case 4:
+		break;
 	case 5:
 	case 6:
 		break;
@@ -183,11 +193,10 @@ void printopcode(void)
 		addr = ((irop & 8) == 0) ? "A:B" : "C:D";
 		opcode = jumps[(irop & 7)];
 		if (opcode)
-		{
 			to_file(1,"\t%s\t%s\t\t; %s (%02X)\n",opcode,addr,mkbin(irop),irop);
-			return;
-		}
-		break;
+		else
+			to_file(1,"\tHALT\t\t\t; %s (%02X)\n",mkbin(irop),irop);
+		return;
 	case 9: // 1001XXYY ALU ADC
 		xx = ((irop >> 2) & 3);
 		yy = (irop & 3);

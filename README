@@ -13,6 +13,12 @@
 				Four general purpose registers: A, B, C, D
 				Non-user registers: IROP, IRA, IRB
 
+		Future blocks:	IO, interrupts
+				Memory buffer
+				Instruction cache
+
+				Using idle memory-bus cycles for a second core (?)
+
 
 	Hobbyist CPU design
 

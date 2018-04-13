@@ -6,62 +6,62 @@
 	JE	#1234		; 00000101 (05) arg=1234
 	0x06 0x12 0x34		; 00000110 (06) Undefined opcode
 	JMP	#1234		; 00000111 (07) arg=1234
-	ST	[1234], A	; 00001000 (08) arg=1234
-	ST	[1234], B	; 00001001 (09) arg=1234
-	ST	[1234], C	; 00001010 (0A) arg=1234
-	ST	[1234], D	; 00001011 (0B) arg=1234
-	LD	A, [1234]	; 00001100 (0C) arg=1234
-	LD	B, [1234]	; 00001101 (0D) arg=1234
-	LD	C, [1234]	; 00001110 (0E) arg=1234
-	LD	D, [1234]	; 00001111 (0F) arg=1234
-	ADD	A, #12		; 00010000 (10) arg=12
-	ADD	B, #12		; 00010001 (11) arg=12
-	ADD	C, #12		; 00010010 (12) arg=12
-	ADD	D, #12		; 00010011 (13) arg=12
-	XOR	A, #12		; 00010100 (14) arg=12
-	XOR	B, #12		; 00010101 (15) arg=12
-	XOR	C, #12		; 00010110 (16) arg=12
-	XOR	D, #12		; 00010111 (17) arg=12
-	AND	A, #12		; 00011000 (18) arg=12
-	AND	B, #12		; 00011001 (19) arg=12
-	AND	C, #12		; 00011010 (1A) arg=12
-	AND	D, #12		; 00011011 (1B) arg=12
-	OR	A, #12		; 00011100 (1C) arg=12
-	OR	B, #12		; 00011101 (1D) arg=12
-	OR	C, #12		; 00011110 (1E) arg=12
-	OR	D, #12		; 00011111 (1F) arg=12
-	ST	[A:B], #12	; 00100000 (20) arg=12
-	ST	[C:D], #12	; 00100001 (21) arg=12
-	0x22 0x12		; 00100010 (22) Undefined opcode
-	0x23 0x12		; 00100011 (23) Undefined opcode
-	LD	A, #12		; 00100100 (24) arg=12
-	LD	B, #12		; 00100101 (25) arg=12
-	LD	C, #12		; 00100110 (26) arg=12
-	LD	D, #12		; 00100111 (27) arg=12
-	0x28 0x12		; 00101000 (28) Undefined opcode
-	0x29 0x12		; 00101001 (29) Undefined opcode
-	0x2A 0x12		; 00101010 (2A) Undefined opcode
-	0x2B 0x12		; 00101011 (2B) Undefined opcode
-	0x2C 0x12		; 00101100 (2C) Undefined opcode
-	0x2D 0x12		; 00101101 (2D) Undefined opcode
-	0x2E 0x12		; 00101110 (2E) Undefined opcode
-	0x2F 0x12		; 00101111 (2F) Undefined opcode
-	ST	[C:D], A	; 00110000 (30)
-	ST	[C:D], B	; 00110001 (31)
-	ST	[A:B], C	; 00110010 (32)
-	ST	[A:B], D	; 00110011 (33)
-	LD	A, [C:D]	; 00110100 (34)
-	LD	B, [C:D]	; 00110101 (35)
-	LD	C, [A:B]	; 00110110 (36)
-	LD	D, [A:B]	; 00110111 (37)
-	0x38			; 00111000 (38) Undefined opcode
-	0x39			; 00111001 (39) Undefined opcode
-	0x3A			; 00111010 (3A) Undefined opcode
-	0x3B			; 00111011 (3B) Undefined opcode
-	0x3C			; 00111100 (3C) Undefined opcode
-	0x3D			; 00111101 (3D) Undefined opcode
-	0x3E			; 00111110 (3E) Undefined opcode
-	0x3F			; 00111111 (3F) Undefined opcode
+	JNC	+#12		; 00001000 (08) arg=12
+	JC	+#12		; 00001001 (09) arg=12
+	JNZ	+#12		; 00001010 (0A) arg=12
+	JZ	+#12		; 00001011 (0B) arg=12
+	JNE	+#12		; 00001100 (0C) arg=12
+	JE	+#12		; 00001101 (0D) arg=12
+	0x0E 0x12		; 00001110 (0E) Undefined opcode
+	JMP	+#12		; 00001111 (0F) arg=12
+	ST	[1234], A	; 00010000 (10) arg=1234
+	ST	[1234], B	; 00010001 (11) arg=1234
+	ST	[1234], C	; 00010010 (12) arg=1234
+	ST	[1234], D	; 00010011 (13) arg=1234
+	LD	A, [1234]	; 00010100 (14) arg=1234
+	LD	B, [1234]	; 00010101 (15) arg=1234
+	LD	C, [1234]	; 00010110 (16) arg=1234
+	LD	D, [1234]	; 00010111 (17) arg=1234
+	ST	[C:D], A	; 00011000 (18)
+	ST	[C:D], B	; 00011001 (19)
+	ST	[A:B], C	; 00011010 (1A)
+	ST	[A:B], D	; 00011011 (1B)
+	LD	A, [C:D]	; 00011100 (1C)
+	LD	B, [C:D]	; 00011101 (1D)
+	LD	C, [A:B]	; 00011110 (1E)
+	LD	D, [A:B]	; 00011111 (1F)
+	ADD	A, #12		; 00100000 (20) arg=12
+	ADD	B, #12		; 00100001 (21) arg=12
+	ADD	C, #12		; 00100010 (22) arg=12
+	ADD	D, #12		; 00100011 (23) arg=12
+	XOR	A, #12		; 00100100 (24) arg=12
+	XOR	B, #12		; 00100101 (25) arg=12
+	XOR	C, #12		; 00100110 (26) arg=12
+	XOR	D, #12		; 00100111 (27) arg=12
+	AND	A, #12		; 00101000 (28) arg=12
+	AND	B, #12		; 00101001 (29) arg=12
+	AND	C, #12		; 00101010 (2A) arg=12
+	AND	D, #12		; 00101011 (2B) arg=12
+	OR	A, #12		; 00101100 (2C) arg=12
+	OR	B, #12		; 00101101 (2D) arg=12
+	OR	C, #12		; 00101110 (2E) arg=12
+	OR	D, #12		; 00101111 (2F) arg=12
+	ST	[A:B], #12	; 00110000 (30) arg=12
+	ST	[C:D], #12	; 00110001 (31) arg=12
+	0x32 0x12		; 00110010 (32) Undefined opcode
+	0x33 0x12		; 00110011 (33) Undefined opcode
+	LD	A, #12		; 00110100 (34) arg=12
+	LD	B, #12		; 00110101 (35) arg=12
+	LD	C, #12		; 00110110 (36) arg=12
+	LD	D, #12		; 00110111 (37) arg=12
+	0x38 0x12		; 00111000 (38) Undefined opcode
+	0x39 0x12		; 00111001 (39) Undefined opcode
+	0x3A 0x12		; 00111010 (3A) Undefined opcode
+	0x3B 0x12		; 00111011 (3B) Undefined opcode
+	0x3C 0x12		; 00111100 (3C) Undefined opcode
+	0x3D 0x12		; 00111101 (3D) Undefined opcode
+	0x3E 0x12		; 00111110 (3E) Undefined opcode
+	0x3F 0x12		; 00111111 (3F) Undefined opcode
 	0x40			; 01000000 (40) Undefined opcode
 	0x41			; 01000001 (41) Undefined opcode
 	0x42			; 01000010 (42) Undefined opcode
@@ -132,7 +132,7 @@
 	JZ	A:B		; 10000011 (83)
 	JNE	A:B		; 10000100 (84)
 	JE	A:B		; 10000101 (85)
-	0x86			; 10000110 (86) Undefined opcode
+	HALT			; 10000110 (86)
 	JMP	A:B		; 10000111 (87)
 	JNC	C:D		; 10001000 (88)
 	JC	C:D		; 10001001 (89)
@@ -140,7 +140,7 @@
 	JZ	C:D		; 10001011 (8B)
 	JNE	C:D		; 10001100 (8C)
 	JE	C:D		; 10001101 (8D)
-	0x8E			; 10001110 (8E) Undefined opcode
+	HALT			; 10001110 (8E)
 	JMP	C:D		; 10001111 (8F)
 	ADC	A, A		; 10010000 (90)
 	ADC	B, A		; 10010001 (91)
@@ -254,4 +254,4 @@
 	OR	B, D		; 11111101 (FD)
 	OR	C, D		; 11111110 (FE)
 	NOP			; 11111111 (FF)
-88 undefined opcodes
+79 undefined opcodes

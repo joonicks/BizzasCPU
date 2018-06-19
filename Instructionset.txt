@@ -1,70 +1,77 @@
-if (IROP[7] + IROP[6] + IROP[5] + IROP[3]) == 0 then 3 byte instruction
-if (IROP[7] + IROP[6]) == 0 then 2+ byte instruction
-else 1 byte instruction
-
-00000###	3 byte instructions (IROP, IRA, IRB)
-00001###	2 byte instructions (IROP, IRA)
-00010###	3 byte
-00011###	2 byte
-0010####	2 byte
-0011####	2 byte
-0100####+	1 byte instructions (IROP)
-
-( 0)0000####					ADDR=IRA:IRB, PC_LOAD
+( 0)0000####	JMP ADDR=IRA:IRB, PC_LOAD
 	000X	JMP to IMM16 if CARRY=X		(JNC, JC)
 	001X	JMP to IMM16 if ZERO=X		(JNZ, JZ)
 	010X	JMP to IMM16 if EQUAL=X		(JNE, JE)
-	0110	?
-	0111	JMP to IMM16			Unconditional
+	011#	JMP to IMM16			Unconditional
+	1###	JMP ADDR=PC+IRA, PC_LOAD
 	100X	JMP to REL8 if CARRY=X		(JNC, JC)
 	101X	JMP to REL8 if ZERO=X		(JNZ, JZ)
 	110X	JMP to REL8 if EQUAL=X		(JNE, JE)
-	1110	?
-	1111	JMP to REL8			Unconditional
-( 1)0001####
-	00YY	ST [IMM16], R1			PC++, SRC=YY, DST=MEM[IRA:IRB]
-	01YY	LD R1, [IMM16]			PC++, DST=YY, SRC=MEM[IRA:IRB]
-	100Y	ST [R1:R2], IMM8		PC++, SRC=IRA, DST=Y (0=[A:B], 1=[C:D])
-	1010	?
-	1011	?
-	11YY	LD R1, IMM8			PC++, DATA=IRA, DST=YY
-
-( 2)0010SSYY	ALU IMM8			PC++, ALUOP=SS, SRC=IRA, DST=YY, BXOR=0, Cin=0, LOAD_CZEFLAGS
-( 3)0011####
-
-( 4)0100####
-	00RR	ST [R1:R2]			PC++, SRC+ADDR=RR, DST=MEM[R1:R2]
-	01RR	LD [R1:R2]			PC++, DST+ADDR=RR, SRC=MEM[R1:R2]
-	1###	?
-( 5)0101####	?
-( 6)0110####	?
-( 7)0111XXYY	CMP R1, R2			PC++, SRC=XX, DST=YY, LOAD_CZEFLAG
-		CMP SRC=DST is unproductive (always true)
-( 8)1000####					ADDR=R1:R2, PC_LOAD
+	111#	JMP to REL8			Unconditional
+( 1)0001####	JMP ADDR=R1:R2, PC_LOAD
 	000X	JMP to A:B if CARRY=X		(JNC, JC)
 	001X	JMP to A:B if ZERO=X		(JNZ, JZ)
 	010X	JMP to A:B if EQUAL=X		(JNE, JE)
-	0110	HALT
-	0111	JMP to A:B			Unconditional
+	011#	JMP to A:B			Unconditional
 	100X	JMP to C:D if CARRY=X		(JNC, JC)
 	101X	JMP to C:D if ZERO=X		(JNZ, JZ)
 	110X	JMP to C:D if EQUAL=X		(JNE, JE)
-	1110	HALT
-	1111	JMP to C:D			Unconditional
-( 9)1001XXYY	ALU ADC				PC++, ALUOP=00, SRC=XX, DST=YY, BXOR=0, Cin=CFLAG, LOAD_CZEFLAGS
+	111#	JMP to C:D			Unconditional
+
+( 2)0010####
+( 3)0011XXYY	MOV R1, R2
+( 4)0100##YY	MOV R1, ...
+	00YY	MOV R1, IMM8
+	01YY	MOV R1, [A:IMM8]
+	10YY	MOV R1, [C:IMM8]
+	11YY	MOV R1, [IMM16]
+( 5)0101XX##	MOV ..., R1
+	XX00	MOV [0:IMM8], R1
+	XX01	MOV [A:IMM8], R1
+	XX10	MOV [C:IMM8], R1
+	XX11	MOV [IMM16], R1
+
+( 6)0110XXYY	CMP R1, R2			BXOR=0, Cin=0, LOAD_CZEFLAG
+		CMP SRC=DST is unproductive (always true)
+( 7)0111##YY	CMP R1, IMM8
+
+    1*******					PC++
+						LOAD_CZEFLAG=1
+						R1=XX
+						R2=YY
+						LOAD_ENABLE to R2
+						if OP=1000, ALUOP=SS [bit3,bit2]
+						if OP>=1100, ALUOP=SS [bit5,bit4]
+
+( 8)1000SSYY	ALU R1, IMM8			ALUOP=SS, SRC=IRA, DST=YY, BXOR=0, Cin=0, LOAD_CZEFLAGS
+( 9)1001XXYY	ADC R1, R2			ALUOP=00, BXOR=0, Cin=CFLAG, LOAD_CZEFLAGS
 		ADC SRC=DST is equivalent to ROL R1, 1
-(10)1010XXYY	ALU SUB				PC++, ALUOP=00, SRC=XX, DST=YY, BXOR=1, Cin=0, LOAD_CZEFLAGS
-(11)1011XXYY	ALU SBC				PC++, ALUOP=00, SRC=XX, DST=YY, BXOR=1, Cin=CFLAG, LOAD_CZEFLAGS
+(10)1010XXYY	SUB R1, R2			ALUOP=00, BXOR=1, Cin=0, LOAD_CZEFLAGS
+(11)1011XXYY	SBC R1, R2			ALUOP=00, BXOR=1, Cin=CFLAG, LOAD_CZEFLAGS
 		SUB/SBC SRC=DST is unproductive (use XOR)
-(12)11SSXXYY	ALU OP				PC++, ALUOP=SS, SRC=XX, DST=YY, BXOR=0, Cin=0, LOAD_CZEFLAGS
+(12)11SSXXYY	ALU R1, R2			ALUOP=SS, BXOR=0, Cin=0, LOAD_CZEFLAGS
 		SS --> 00=ADD, 01=XOR, 10=AND, 11=OR
 		ADD SRC=DST is equivalent to SHL R1, 1
 (13)		XOR SRC=DST will set the register to zero
 (14)		AND SRC=DST is unproductive
 (15)		OR  SRC=DST is unproductive
-	1111	NOP				PC++
+	1111	NOP
+
+YY=destination,alubus A
+XX=modifier,alubus B
+
+ALUOP affected by BXOR
+ADD	yes	ADD A + NOT B
+XOR	yes	A XOR NOT B
+AND	yes	A AND NOT B
+OR	no
+Cin	yes	NOT Cin
 
 JMP instructions (0000 & 1000) will not increase PC unless condition is false.
+
+Later development for CALL/RET, conditional RET to return to X+1 if (true), or return to X+Y if (false)
+? RETC IMM8: conditional ret to pointer+imm8 ?
+? RETC R1: ... to pointer+register ?
 
 Registers:
 General purpose (8 bit): A, B, C, D
@@ -111,3 +118,21 @@ RR		LD(Load)/ST(Store) SRC/DST and ADDR
 11		D		[A:B]
 
 A:B or C:D can be inferred (if reg=A/B then you probably store the address in C:D, ...)
+
+0000xx
+0001xx
+0011xx
+0100xx
+0101xx
+0110xx
+1000xx
+
+0010ss
+0111ss=cmp
+1001ss=adc
+1010ss=sub
+1011ss=sbc
+11ss
+11ss
+11ss
+11ss

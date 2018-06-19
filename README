@@ -4,21 +4,29 @@
 
 		Main blocks:	16-bit Program counter
 				16-bit Address bus
+				8-bit Data bus
+				Two 8-bit ALU busses (for source A and source B)
 				Instruction Loader (for 8, 16 and 24 bit instructions)
 				Instruction Executor (runs the instruction once it is loaded)
-				8-bit Data bus
-				8-bit ALU capable of doing ADD, SUB, XOR, AND, OR
-				Two 8-bit ALU busses (for source A and source B)
-				8-bit Comparator (Also uses ALU busses)
+				8-bit ALU capable of doing ADD, SUB, XOR, AND, OR, CMP
 				Four general purpose registers: A, B, C, D
 				Non-user registers: IROP, IRA, IRB
 
 		Future blocks:	IO, interrupts
 				Memory buffer
 				Instruction cache
+				Register renaming
 
 				Using idle memory-bus cycles for a second core (?)
 
+
+	Design process for (Instruction executor)
+
+		* Determine control signals required
+		* For each control signal, describe in text the logic for determining
+		  wether the signal should be high (active) or low (default/inactive),
+		  based on the contents of IROP
+		* Build that logic in Quartus
 
 	Hobbyist CPU design
 

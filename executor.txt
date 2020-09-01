@@ -1,6 +1,0 @@
-destination & bus A
-
-OE_ATOA
-OE_BTOA
-OE_CTOA
-OE_DTOA

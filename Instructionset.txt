@@ -1,138 +1,36 @@
-( 0)0000####	JMP ADDR=IRA:IRB, PC_LOAD
-	000X	JMP to IMM16 if CARRY=X		(JNC, JC)
-	001X	JMP to IMM16 if ZERO=X		(JNZ, JZ)
-	010X	JMP to IMM16 if EQUAL=X		(JNE, JE)
-	011#	JMP to IMM16			Unconditional
-	1###	JMP ADDR=PC+IRA, PC_LOAD
-	100X	JMP to REL8 if CARRY=X		(JNC, JC)
-	101X	JMP to REL8 if ZERO=X		(JNZ, JZ)
-	110X	JMP to REL8 if EQUAL=X		(JNE, JE)
-	111#	JMP to REL8			Unconditional
-( 1)0001####	JMP ADDR=R1:R2, PC_LOAD
-	000X	JMP to A:B if CARRY=X		(JNC, JC)
-	001X	JMP to A:B if ZERO=X		(JNZ, JZ)
-	010X	JMP to A:B if EQUAL=X		(JNE, JE)
-	011#	JMP to A:B			Unconditional
-	100X	JMP to C:D if CARRY=X		(JNC, JC)
-	101X	JMP to C:D if ZERO=X		(JNZ, JZ)
-	110X	JMP to C:D if EQUAL=X		(JNE, JE)
-	111#	JMP to C:D			Unconditional
-
-( 2)0010####
-( 3)0011XXYY	MOV R1, R2
-( 4)0100##YY	MOV R1, ...
-	00YY	MOV R1, IMM8
-	01YY	MOV R1, [A:IMM8]
-	10YY	MOV R1, [C:IMM8]
-	11YY	MOV R1, [IMM16]
-( 5)0101XX##	MOV ..., R1
-	XX00	MOV [0:IMM8], R1
-	XX01	MOV [A:IMM8], R1
-	XX10	MOV [C:IMM8], R1
-	XX11	MOV [IMM16], R1
-
-( 6)0110XXYY	CMP R1, R2			BXOR=0, Cin=0, LOAD_CZEFLAG
-		CMP SRC=DST is unproductive (always true)
-( 7)0111##YY	CMP R1, IMM8
-
-    1*******					PC++
-						LOAD_CZEFLAG=1
-						R1=XX
-						R2=YY
-						LOAD_ENABLE to R2
-						if OP=1000, ALUOP=SS [bit3,bit2]
-						if OP>=1100, ALUOP=SS [bit5,bit4]
-
-( 8)1000SSYY	ALU R1, IMM8			ALUOP=SS, SRC=IRA, DST=YY, BXOR=0, Cin=0, LOAD_CZEFLAGS
-( 9)1001XXYY	ADC R1, R2			ALUOP=00, BXOR=0, Cin=CFLAG, LOAD_CZEFLAGS
-		ADC SRC=DST is equivalent to ROL R1, 1
-(10)1010XXYY	SUB R1, R2			ALUOP=00, BXOR=1, Cin=0, LOAD_CZEFLAGS
-(11)1011XXYY	SBC R1, R2			ALUOP=00, BXOR=1, Cin=CFLAG, LOAD_CZEFLAGS
-		SUB/SBC SRC=DST is unproductive (use XOR)
-(12)11SSXXYY	ALU R1, R2			ALUOP=SS, BXOR=0, Cin=0, LOAD_CZEFLAGS
-		SS --> 00=ADD, 01=XOR, 10=AND, 11=OR
-		ADD SRC=DST is equivalent to SHL R1, 1
-(13)		XOR SRC=DST will set the register to zero
-(14)		AND SRC=DST is unproductive
-(15)		OR  SRC=DST is unproductive
-	1111	NOP
-
-YY=destination,alubus A
-XX=modifier,alubus B
-
-ALUOP affected by BXOR
-ADD	yes	ADD A + NOT B
-XOR	yes	A XOR NOT B
-AND	yes	A AND NOT B
-OR	no
-Cin	yes	NOT Cin
-
-JMP instructions (0000 & 1000) will not increase PC unless condition is false.
-
-Later development for CALL/RET, conditional RET to return to X+1 if (true), or return to X+Y if (false)
-? RETC IMM8: conditional ret to pointer+imm8 ?
-? RETC R1: ... to pointer+register ?
-
 Registers:
 General purpose (8 bit): A, B, C, D
 Instruction registers (8 bit): IROP, IRA, IRB
 
-Missing instructions: CLRC (clear carry), SETC (set carry), INC, DEC, SWAP?
+( 0)0000####	JMP to IRA:IRB						PCjump=1, PCjrel=0, xxbus=IRA, yybus=IRB
+	000X	JMP to IMM16 if CARRY=X		(JNC, JC)
+	001X	JMP to IMM16 if ZERO=X		(JNZ, JZ)
+	010X	JMP to IMM16 if EQUAL=X		(JNE, JE)
+	0110	...
+	0111	JMP to IMM16			Unconditional
+	1###	JMP to PC+IRA(signed)					PCjump=1, PCjrel=1, xxbus=IRA
+	100X	JMP to REL8 if CARRY=X		(JNC, JC)
+	101X	JMP to REL8 if ZERO=X		(JNZ, JZ)
+	110X	JMP to REL8 if EQUAL=X		(JNE, JE)
+	1110	...
+	1111	JMP to REL8			Unconditional
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+( 1)0001####
+( 2)0010####
+( 3)0011####
+( 4)0100####
+( 5)0101####
+( 6)0110####
+( 7)0111####
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ALU2dst=1, XS=R2, YS=R1, XS2xxbus=1, YS2yybus=1, Store_Flags=1
+( 8)1000XXYY	CMP R1, R2						ALU_OP=SUB, ALU_Carry=0
+( 9)1001XXYY	SUB R1, R2						ALU_OP=SUB, ALU_Carry=0
+(10)1010XXYY	SBC R1, R2						ALU_OP=SUB, ALU_Carry=C {ALU_Carry=IROP[7]&IROP[5]}
+(11)1011XXYY	ADC R1, R2						ALU_OP=ADD, ALU_Carry=C
+(12)1100XXYY	ADD R1, R2						ALU_OP=ADD, ALU_Carry=0
+(13)1101XXYY	XOR R1, R2						ALU_OP=XOR, ALU_Carry=*
+(14)1110XXYY	AND R1, R2						ALU_OP=AND, ALU_Carry=*
+(15)1111XXYY	OR  R1, R2						ALU_OP=OR,  ALU_Carry=*
 
-for ops like SWAP, it may be possible to have registers storing which register is A, which is B, etc
-and things like SWAP simply loads new values into those meta-registers
-                 ______        ______
-                |      |      |      |
-Clock:          |      |______|      |______
-                ^      ^\___
-                 \__        Trigger register/memory LOAD
-                    Set up busses
+ALU_Carry=* --> Carry doesnt affect result
 
-
-SRC XX / DST YY: 00 = A, 01 = B, 10 = C, 11 = D
-
-Possible legal moves...
-XXYY	SRC	DST
-0000	A	-		maybe A:B -> C:D ?
-0001	A	B
-0010	A	C
-0011	A	D
-0100	B	A
-0101	B	-		maybe SWAP A<-->B ?
-0110	B	C
-0111	B	D
-1000	C	A
-1001	C	B
-1010	C	-		maybe C:D -> A:B ?
-1011	C	D
-1100	D	A
-1101	D	B
-1110	D	C
-1111	D	-		maybe SWAP C<-->D ?
-
-RR		LD(Load)/ST(Store) SRC/DST and ADDR
-		SRC/DST		ADDR
-00		A		[C:D]
-01		B		[C:D]
-10		C		[A:B]
-11		D		[A:B]
-
-A:B or C:D can be inferred (if reg=A/B then you probably store the address in C:D, ...)
-
-0000xx
-0001xx
-0011xx
-0100xx
-0101xx
-0110xx
-1000xx
-
-0010ss
-0111ss=cmp
-1001ss=adc
-1010ss=sub
-1011ss=sbc
-11ss
-11ss
-11ss
-11ss

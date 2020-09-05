@@ -1,36 +1,90 @@
 Registers:
 General purpose (8 bit): A, B, C, D
-Instruction registers (8 bit): IROP, IRA, IRB
+Instruction registers (8 bit): IROP, IRLO, IRHI
+Constant registers: ZERO
 
-( 0)0000####	JMP to IRA:IRB						PCjump=1, PCjrel=0, xxbus=IRA, yybus=IRB
-	000X	JMP to IMM16 if CARRY=X		(JNC, JC)
-	001X	JMP to IMM16 if ZERO=X		(JNZ, JZ)
-	010X	JMP to IMM16 if EQUAL=X		(JNE, JE)
-	0110	...
-	0111	JMP to IMM16			Unconditional
-	1###	JMP to PC+IRA(signed)					PCjump=1, PCjrel=1, xxbus=IRA
-	100X	JMP to REL8 if CARRY=X		(JNC, JC)
-	101X	JMP to REL8 if ZERO=X		(JNZ, JZ)
-	110X	JMP to REL8 if EQUAL=X		(JNE, JE)
-	1110	...
-	1111	JMP to REL8			Unconditional
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-( 1)0001####
-( 2)0010####
-( 3)0011####
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~( only 0)~~~~~~~~~~~PC2addr={0 if condition true}, PCjump=1, PCjrel={IROP[3]}, addrLo=IRA
+( 0)0000####	JMP ...							addrHi=IRB
+	000X	JMP IMM16			Jump if IROP[0]=0 (NOP/Unconditional)
+	001X	JMP IMM16 if CARRY=X		(JNC, JC)
+	010X	JMP IMM16 if ZERO=X		(JNZ, JZ)
+	011X	JMP IMM16 if SIGN=X		(JNS, JS)
+	100X	JMP REL8			Jump if IROP[0]=0 (NOP/Unconditional)
+	101X	JMP REL8 if CARRY=X		(JNC, JC)
+	110X	JMP REL8 if ZERO=X		(JNZ, JZ)
+	111X	JMP REL8 if SIGN=X		(JNS, JS)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+( 1)000100YY	MOV [IMM16], DST
+	01YY	MOV SRC, [IMM16]
+	10YY	MOV [IMM8], DST			Zeropage
+	11YY	MOV SRC, [IMM8]			Zeropage
+( 2)0010SSYY
+	00YY	CMP IMM8, DST
+	01YY	SUB IMM8, DST
+	10YY	SBC IMM8, DST
+	11YY	ADC IMM8, DST
+( 3)0011SSYY
+	00YY	ADD IMM8, DST
+	01YY	XOR IMM8, DST
+	10YY	AND IMM8, DST
+	11YY	OR  IMM8, DST
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Unmapped possible extra instructions
+
+	DCNN	D = direction R/L, C = Through Carry, NN = 1, 2, 3 or 4 bits
+	00NN	SHR A, NN			Shift Right with Zero
+	01NN	ROR A, NN			Shift Right through Carry
+	10NN	SHL A, NN			Shift Left  with Zero
+	11NN	ROL A, NN			Shift Left  through Carry
+
+	00YY	INC DST				ADC constant ZERO + Carry=1
+	01YY	DEC DST				SBC constant ZERO - Carry=1
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ( 4)0100####
 ( 5)0101####
 ( 6)0110####
 ( 7)0111####
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ALU2dst=1, XS=R2, YS=R1, XS2xxbus=1, YS2yybus=1, Store_Flags=1
-( 8)1000XXYY	CMP R1, R2						ALU_OP=SUB, ALU_Carry=0
-( 9)1001XXYY	SUB R1, R2						ALU_OP=SUB, ALU_Carry=0
-(10)1010XXYY	SBC R1, R2						ALU_OP=SUB, ALU_Carry=C {ALU_Carry=IROP[7]&IROP[5]}
-(11)1011XXYY	ADC R1, R2						ALU_OP=ADD, ALU_Carry=C
-(12)1100XXYY	ADD R1, R2						ALU_OP=ADD, ALU_Carry=0
-(13)1101XXYY	XOR R1, R2						ALU_OP=XOR, ALU_Carry=*
-(14)1110XXYY	AND R1, R2						ALU_OP=AND, ALU_Carry=*
-(15)1111XXYY	OR  R1, R2						ALU_OP=OR,  ALU_Carry=*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~(8 to 15)~~~~~~~~~~~ALU2dst=1{IROP[7]}, XS=DST, YS=SRC, XS2xxbus=1, YS2yybus=1, Store_Flags=1
+( 8)1000XXYY	CMP SRC, DST						ALU_OP=SUB, ALU_Carry=0
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~(9 to 15)~~~~~~~~~~~dstbus2YS=1
+( 9)1001XXYY	SUB SRC, DST						ALU_OP=SUB, ALU_Carry=0
+(10)1010XXYY	SBC SRC, DST						ALU_OP=SUB, ALU_Carry=Carry
+(11)1011XXYY	ADC SRC, DST						ALU_OP=ADD, ALU_Carry=Carry
+(12)1100XXYY	ADD SRC, DST						ALU_OP=ADD, ALU_Carry=0
+(13)1101XXYY	XOR SRC, DST						ALU_OP=XOR, ALU_Carry=0 (*)
+(14)1110XXYY	AND SRC, DST						ALU_OP=AND, ALU_Carry=Carry (*)
+(15)1111XXYY	OR  SRC, DST						ALU_OP=OR,  ALU_Carry=Carry (*)
 
-ALU_Carry=* --> Carry doesnt affect result
+* --> Value doesnt affect result
 
+OP/Cycle		  0	  1	  2	  3
+			[IROP]	[IRLO]	[IRHI]	[Memory]
+JMP IMM16		  X	  X	  X	  -
+JMP REL8		  X	  X	  -	  -
+MOV [IMM16], DST	  X	  X	  X	  X
+MOV SRC, [IMM16]	  X	  X	  X	  X
+MOV [IMM8], DST		  X	  X	  -	  X
+MOV SRC, [IMM8]		  X	  X	  -	  X
+ALU IMM8, DST		  X	  X	  -	  -
+MOV SRC, DST		  X	  -	  -	  -
+ALU SRC, DST		  X	  -	  -	  -
+
+jumpcond	= flag xnor irop0
+PC2addr		= irop7654 = 0, jumpcond = 0, (jump condition met & ira/irb not yet loaded)
+PCjump		= irop5 = 0, irop4 = 0, hasira = 1, hasirb = 1, jumpcond = 1
+
+Flags_Store	= irop7
+ALU2dstbus	= irop7
+ALU_Carry	= irop7 & irop5 & Carry
+ALU_Sub		= irop7 & (not irop6) & (irop5 nand irop4)
+ALU_OP[1]	= irop6 & irop5
+ALU_OP[0]	= irop6 & irop4
+
+XS2DstBus	=
+XS2XXBus	=
+YS2YYBus	=
+DstBus2YY	=
+YS[0]		=
+YS[1]		=
+XS[0]		=
+XS[1]		=

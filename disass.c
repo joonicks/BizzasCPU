@@ -1,6 +1,6 @@
 /*
 
-    Copyright (c) 2018 proton
+    Copyright (c) 2018-2020 proton
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -49,24 +49,7 @@ int to_file(int sock, const char *format, ...)
 	return(write(sock,gsockdata,strlen(gsockdata)));
 }
 
-uint8_t		irop, ira, irb;		// executor registers
-int		regsloaded = 0;
-int		undefined = 0;
-
-/*
-if (IROP[7] + IROP[6] + IROP[5] + IROP[3]) == 0 then 3 byte instruction
-if (IROP[7] + IROP[6]) == 0 then 2+ byte instruction
-else 1 byte instruction
-*/
-
-int regs_needed(void)
-{
-	if ((irop & 0xE8) == 0) // b11101000
-		return(3);
-	if ((irop & 0xC0) == 0) // b11000000
-		return(2);
-	return(1); // irop only
-}
+uint8_t	irop, ira, irb;
 
 char *mkbin(uint8_t a)
 {
@@ -84,178 +67,143 @@ char *mkbin(uint8_t a)
 	return(tmp);
 }
 
-void printunknown(void)
+char *mnemo[] = {
+	"JMP",	"NOP",	"JNC",	"JC ",	"JNZ",	"JZ ",	"JNS",	"JS ",	//00
+	"JMP",	"NOP",	"JNC",	"JC ",	"JNZ",	"JZ ",	"JNS",	"JS ",
+	"MOV",	"MOV",	"MOV",	"MOV",	"MOV",	"MOV",	"MOV",	"MOV",	//10
+	"MOV",	"MOV",	"MOV",	"MOV",	"MOV",	"MOV",	"MOV",	"MOV",
+	"CMP",	"CMP",	"CMP",	"CMP",	"SUB",	"SUB",	"SUB",	"SUB",	//20
+	"SBC",	"SBC",	"SBC",	"SBC",	"ADC",	"ADC",	"ADC",	"ADC",
+	"ADD",	"ADD",	"ADD",	"ADD",	"XOR",	"XOR",	"XOR",	"XOR",	//30
+	"AND",	"AND",	"AND",	"AND",	"OR ",	"OR ",	"OR ",	"OR ",
+	"MOV",	"MOV",	"MOV",	"MOV",	"...",	"...",	"...",	"...",	//40
+	"...",	"...",	"...",	"...",	"...",	"...",	"...",	"...",
+	"...",	"...",	"...",	"...",	"...",	"...",	"...",	"...",	//50
+	"...",	"...",	"...",	"...",	"...",	"...",	"...",	"...",
+	"...",	"...",	"...",	"...",	"...",	"...",	"...",	"...",	//60
+	"...",	"...",	"...",	"...",	"...",	"...",	"...",	"...",
+	"MOV",	"MOV",	"MOV",	"MOV",	"MOV",	"MOV",	"MOV",	"MOV",	//70
+	"MOV",	"MOV",	"MOV",	"MOV",	"MOV",	"MOV",	"MOV",	"MOV",
+	"CMP",	"CMP",	"CMP",	"CMP",	"CMP",	"CMP",	"CMP",	"CMP",	//80
+	"CMP",	"CMP",	"CMP",	"CMP",	"CMP",	"CMP",	"CMP",	"CMP",
+	"SUB",	"SUB",	"SUB",	"SUB",	"SUB",	"SUB",	"SUB",	"SUB",	//90
+	"SUB",	"SUB",	"SUB",	"SUB",	"SUB",	"SUB",	"SUB",	"SUB",
+	"SBC",	"SBC",	"SBC",	"SBC",	"SBC",	"SBC",	"SBC",	"SBC",	//A0
+	"SBC",	"SBC",	"SBC",	"SBC",	"SBC",	"SBC",	"SBC",	"SBC",
+	"ADC",	"ADC",	"ADC",	"ADC",	"ADC",	"ADC",	"ADC",	"ADC",	//B0
+	"ADC",	"ADC",	"ADC",	"ADC",	"ADC",	"ADC",	"ADC",	"ADC",
+	"ADD",	"ADD",	"ADD",	"ADD",	"ADD",	"ADD",	"ADD",	"ADD",	//C0
+	"ADD",	"ADD",	"ADD",	"ADD",	"ADD",	"ADD",	"ADD",	"ADD",
+	"XOR",	"XOR",	"XOR",	"XOR",	"XOR",	"XOR",	"XOR",	"XOR",	//D0
+	"XOR",	"XOR",	"XOR",	"XOR",	"XOR",	"XOR",	"XOR",	"XOR",
+	"AND",	"AND",	"AND",	"AND",	"AND",	"AND",	"AND",	"AND",	//E0
+	"AND",	"AND",	"AND",	"AND",	"AND",	"AND",	"AND",	"AND",
+	"OR ",	"OR ",	"OR ",	"OR ",	"OR ",	"OR ",	"OR ",	"OR ",	//F0
+	"OR ",	"OR ",	"OR ",	"OR ",	"OR ",	"OR ",	"OR ",	"OR "
+	};
+
+char *regs[] = { "A", "B", "C", "D" };
+
+char *DST = "DST";
+char *SRC = "SRC";
+char *IMM16ADR = "[IMM16]";
+char *IMM16 = "IMM16";
+char *IMM8ADR = "[IMM8]";
+char *IMM8 = "IMM8";
+char *REL8 = "REL8";
+
+int disass(uint8_t *data)
 {
-	undefined++;
-	switch(regs_needed())
-	{
-	case 1:
-		to_file(1,"\t0x%02X\t\t\t; %s (%02X) Undefined opcode\n",irop,mkbin(irop),irop);
-		return;
-	case 2:
-		to_file(1,"\t0x%02X 0x%02X\t\t; %s (%02X) Undefined opcode\n",irop,ira,mkbin(irop),irop);
-		return;
-	case 3:
-		to_file(1,"\t0x%02X 0x%02X 0x%02X\t\t; %s (%02X) Undefined opcode\n",irop,ira,irb,mkbin(irop),irop);
-		return;
-	}
-}
+	char	*opcode,*mod,*dst;
+	char	immer[20];
+	int	imm16,imm8;
+	int	im,id;
 
-char *jumps[] = { "JNC", "JC", "JNZ", "JZ", "JNE", "JE", NULL, "JMP" };
-char *xxsrc[] = { "A", "B", "C", "D" };
-char *aluop[] = { "ADD", "XOR", "AND", "OR" };
-char *rraddr[] = { "C:D", "C:D", "A:B", "A:B" };
+	opcode = mnemo[data[0]];
 
-void printopcode(void)
-{
-	char	*addr,*opcode;
-	int	xx,yy,ss,rr;
-
-	opcode = NULL;
-
+	irop = data[0];
+	im = ((irop >> 2) & 3);
+	id = (irop & 3);
+	mod = "";
+	dst = "";
+	imm16 = 0;
+	imm8 = 0;
 	switch(irop >> 4)
 	{
-	case 0: // JMP IMM16
-		opcode = jumps[(irop & 7)];
-		if (irop < 8 && opcode)
-		{
-			to_file(1,"\t%s\t#%02X%02X\t\t; %s (%02X) arg=%02X%02X\n",opcode,ira,irb,mkbin(irop),irop,ira,irb);
-			return;
-		}
-		if (irop >= 8 && opcode)
-		{
-			to_file(1,"\t%s\t%c#%02X\t\t; %s (%02X) arg=%02X\n",
-				opcode,((ira & 128) == 0) ? '+' : '-',(ira & 0x7F),mkbin(irop),irop,ira);
-			return;
-		}
+	case 0:
+		mod = (irop & 0x08) ? REL8 : IMM16;
+		imm16 = (irop & 0x08) ? 1 : 0;
+		imm8 = 1;
+		if ((irop & 0x07) == 1)
+			mod = (irop & 0x08) ? IMM8 : IMM16;
 		break;
 	case 1:
-		// ST, LD [IMM16]
-		xx = ((irop >> 2) & 3);
-		yy = (irop & 3);
-		if (xx == 0)
+		if (irop & 0x08)
 		{
-			to_file(1,"\tST\t[%02X%02X], %s\t; %s (%02X) arg=%02X%02X\n",ira,irb,xxsrc[yy],mkbin(irop),irop,ira,irb);
-			return;
+			mod = (irop & 0x04) ? SRC : IMM8ADR;
+			dst = (irop & 0x04) ? IMM8ADR : DST;
+			if (irop & 0x04)
+				im = ((irop >> 2) & 3);
+			imm16 = 0;
 		}
 		else
-		if (xx == 1)
 		{
-			to_file(1,"\tLD\t%s, [%02X%02X]\t; %s (%02X) arg=%02X%02X\n",xxsrc[yy],ira,irb,mkbin(irop),irop,ira,irb);
-			return;
+			mod = (irop & 0x04) ? SRC : IMM16ADR;
+			dst = (irop & 0x04) ? IMM16ADR : DST;
+			imm16 = 1;
 		}
-		// ST/LD [R1:R2]...
-		if ((irop & 8) == 8)
-		{
-			rr = (irop & 3);
-			if ((irop & 4) == 0)
-				to_file(1,"\tST\t[%s], %s\t; %s (%02X)\n",rraddr[rr],xxsrc[rr],mkbin(irop),irop);
-			else
-				to_file(1,"\tLD\t%s, [%s]\t; %s (%02X)\n",xxsrc[rr],rraddr[rr],mkbin(irop),irop);
-			return;
-		}
+		if (irop & 0x04)
+			im = (irop & 3);
+		imm8 = 1;
 		break;
-	case 2: //0011SSYY ALU IMM8        PC++, ALUOP=SS, SRC=IRA, DST=YY
-		ss = ((irop >> 2) & 3);
-		yy = (irop & 3);
-		to_file(1,"\t%s\t%s, #%02X\t\t; %s (%02X) arg=%02X\n",aluop[ss],xxsrc[yy],ira,mkbin(irop),irop,ira);
-		return;
-	case 3: // LD IMM8
-		xx = ((irop >> 2) & 3);
-		if (xx == 1) // LD R1, IMM8
-		{
-			yy = (irop & 3);
-			to_file(1,"\tLD\t%s, #%02X\t\t; %s (%02X) arg=%02X\n",xxsrc[yy],ira,mkbin(irop),irop,ira);
-			return;
-		}
-		if ((irop & 0x0f) < 2)
-		{
-			yy = ((~irop) & 1)*2;
-			to_file(1,"\tST\t[%s], #%02X\t; %s (%02X) arg=%02X\n",rraddr[yy],ira,mkbin(irop),irop,ira);
-			return;
-		}
+	case 2:
+	case 3:
+		mod = IMM8;
+		dst = DST;
+		imm8 = 1;
 		break;
 	case 4:
+		if ((irop & 0x0c) == 0)
+		{
+			mod = IMM8;
+			dst = DST;
+		}
 		break;
 	case 5:
 	case 6:
 		break;
-	case 7: // 0111XXYY CMP R1, R2
-		xx = ((irop >> 2) & 3);
-		yy = (irop & 3);
-		if (xx != yy) // comparing registers to themselves always results in EQUAL=TRUE
-		{
-			to_file(1,"\tCMP\t%s, %s\t\t; %s (%02X)\n",xxsrc[yy],xxsrc[xx],mkbin(irop),irop);
-			return;
-		}
-		break;
-	case 8: // 1000#### JMP [R1:R2]
-		addr = ((irop & 8) == 0) ? "A:B" : "C:D";
-		opcode = jumps[(irop & 7)];
-		if (opcode)
-			to_file(1,"\t%s\t%s\t\t; %s (%02X)\n",opcode,addr,mkbin(irop),irop);
-		else
-			to_file(1,"\tHALT\t\t\t; %s (%02X)\n",mkbin(irop),irop);
-		return;
-	case 9: // 1001XXYY ALU ADC
-		xx = ((irop >> 2) & 3);
-		yy = (irop & 3);
-		to_file(1,"\tADC\t%s, %s\t\t; %s (%02X)\n",xxsrc[yy],xxsrc[xx],mkbin(irop),irop);
-		return;
-	case 10:
-	case 11: // ALU SUB/SBC XXYY
-		xx = ((irop >> 2) & 3);
-		yy = (irop & 3);
-		if (xx != yy) // SUB/SBC with itself is unproductive, use XOR
-		{
-			opcode = ((irop & 16) == 0) ? "SUB" : "SBC";
-			to_file(1,"\t%s\t%s, %s\t\t; %s (%02X)\n",opcode,xxsrc[yy],xxsrc[xx],mkbin(irop),irop);
-			return;
-		}
-		break;
-	case 12:
-	case 13:
-	case 14:
-	case 15: // ALU OP 11SSXXYY, NOP
-		if (irop == 255)
-		{
-			to_file(1,"\tNOP\t\t\t; %s (%02X)\n",mkbin(irop),irop);
-			return;
-		}
-		ss = ((irop >> 4) & 3);
-		xx = ((irop >> 2) & 3);
-		yy = (irop & 3);
-		if (ss >= 2 && xx == yy) // AND/OR with itself isnt productive
-			break;
-		to_file(1,"\t%s\t%s, %s\t\t; %s (%02X)\n",aluop[ss],xxsrc[yy],xxsrc[xx],mkbin(irop),irop);
-		return;
 	default:
-		exit(16);
+		mod = SRC;
+		dst = DST;
 	}
-	printunknown();
-}
 
-void disass(uint8_t data)
-{
-	switch(regsloaded++)
-	{
-	case 0:
-		irop = data;
-		break;
-	case 1:
-		ira = data;
-		break;
-	case 2:
-		irb = data;
-		break;
-	default:
-		to_file(2,"error! error Will Robinson!\n");
-	}
-	if (regsloaded < regs_needed())
-		return;
+	if (mod == SRC)
+		mod = regs[im];
+	if (dst == DST)
+		dst = regs[id];
 
-	regsloaded = 0;
-	printopcode();
+	if (mod == IMM8)
+		sprintf((mod = immer),"$0x%02X",data[1]);
+	if (mod == IMM8ADR)
+		sprintf((mod = immer),"[0x%02X]",data[1]);
+	if (mod == IMM16ADR)
+		sprintf((mod = immer),"[0x%04X]",data[1] | ((int)data[2] << 8));
+
+	if (dst == IMM8)
+		sprintf((dst = immer),"$0x%02X",data[1]);
+	if (dst == IMM8ADR)
+		sprintf((dst = immer),"[0x%02X]",data[1]);
+	if (dst == IMM16ADR)
+		sprintf((dst = immer),"[0x%04X]",data[1] | ((int)data[2] << 8));
+
+	if (mod == IMM16)
+		sprintf((mod = immer),"0x%04X",data[1] | ((int)data[2] << 8));
+
+	if (mod == REL8)
+		sprintf((mod = immer),"%c0x%02X",(data[1] & 0x80) ? '-' : '+',data[1] & 0x7F);
+
+	to_file(1,"\t%s   %s%s %s\n",opcode,mod,(*dst) ? "," : "",dst);
+	return(1 + imm8 + imm16);
 }
 
 int main(int argc, char **argv)
@@ -265,15 +213,13 @@ int main(int argc, char **argv)
 
 	if (argc == 2 && strcmp(argv[1],"--oplist") == 0)
 	{
-		ira = 0x12;
-		irb = 0x34;
-		undefined = 0;
+		data[2] = 0x12;
+		data[1] = 0x34;
 		for(i=0;i<256;i++)
 		{
-			irop = i;
-			printopcode();
+			data[0] = i;
+			disass(data);
 		}
-		to_file(1,"%i undefined opcodes\n",undefined);
 		exit(0);
 	}
 
@@ -284,8 +230,9 @@ int main(int argc, char **argv)
 			exit(1);
 		while((n = read(fd,data,sizeof(data))) > 0)
 		{
-			for(i=0;i<n;i++)
-				disass(data[i]);
+			i = 0;
+			while(i < n)
+				i += disass(&data[i]);
 		}
 		close(fd);
 	}

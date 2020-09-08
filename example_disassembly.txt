@@ -1,1550 +1,1565 @@
-	ST	[C:D], #00	; 00110001 (31) arg=00
-	SUB	B, D		; 10101101 (AD)
-	JC	#089F		; 00000001 (01) arg=089F
-	ADC	B, A		; 10010001 (91)
-	OR	D, A		; 11110011 (F3)
-	CMP	B, C		; 01111001 (79)
-	SBC	B, C		; 10111001 (B9)
-	0x3F 0x3F		; 00111111 (3F) Undefined opcode
-	ADD	D, B		; 11000111 (C7)
-	AND	A, #5B		; 00101000 (28) arg=5B
-	CMP	D, A		; 01110011 (73)
-	OR	C, D		; 11111110 (FE)
-	ST	[A:B], D	; 00011011 (1B)
-	0x47			; 01000111 (47) Undefined opcode
-	OR	D, B		; 11110111 (F7)
-	CMP	B, A		; 01110001 (71)
-	SUB	A, C		; 10101000 (A8)
-	AND	C, A		; 11100010 (E2)
-	XOR	A, C		; 11011000 (D8)
-	JNE	C:D		; 10001100 (8C)
-	JMP	+#62		; 00001111 (0F) arg=62
-	SUB	C, D		; 10101110 (AE)
-	ADC	D, C		; 10011011 (9B)
-	ADC	B, C		; 10011001 (99)
-	ADD	B, D		; 11001101 (CD)
-	XOR	D, A		; 11010011 (D3)
-	0x59			; 01011001 (59) Undefined opcode
-	0xBA			; 10111010 (BA) Undefined opcode
-	ADC	A, B		; 10010100 (94)
-	ADD	B, C		; 11001001 (C9)
-	XOR	B, A		; 11010001 (D1)
-	0x5B			; 01011011 (5B) Undefined opcode
-	ADD	B, D		; 11001101 (CD)
-	ADD	A, A		; 11000000 (C0)
-	ADC	D, B		; 10010111 (97)
-	AND	D, C		; 11101011 (EB)
-	SBC	A, B		; 10110100 (B4)
-	JNZ	+#6C		; 00001010 (0A) arg=6C
-	JNC	C:D		; 10001000 (88)
-	0xEA			; 11101010 (EA) Undefined opcode
-	OR	B, C		; 11111001 (F9)
-	SBC	D, A		; 10110011 (B3)
-	0x6A			; 01101010 (6A) Undefined opcode
-	0x5B			; 01011011 (5B) Undefined opcode
-	AND	A, D		; 11101100 (EC)
-	AND	A, B		; 11100100 (E4)
-	JE	+#2A		; 00001101 (0D) arg=2A
-	0x63			; 01100011 (63) Undefined opcode
-	AND	B, #6C		; 00101001 (29) arg=6C
-	0xF5			; 11110101 (F5) Undefined opcode
-	LD	A, #F7		; 00110100 (34) arg=F7
-	SBC	B, A		; 10110001 (B1)
-	0x6E			; 01101110 (6E) Undefined opcode
-	AND	D, A		; 11100011 (E3)
-	ADC	C, D		; 10011110 (9E)
-	XOR	A, A		; 11010000 (D0)
-	0x65			; 01100101 (65) Undefined opcode
-	SBC	C, D		; 10111110 (BE)
-	0x45			; 01000101 (45) Undefined opcode
-	SUB	B, D		; 10101101 (AD)
-	ADC	C, A		; 10010010 (92)
-	ADC	B, A		; 10010001 (91)
-	JNZ	#33E5		; 00000010 (02) arg=33E5
-	ST	[C:D], #65	; 00110001 (31) arg=65
-	0x0E 0xB7		; 00001110 (0E) Undefined opcode
-	JNE	+#65		; 00001100 (0C) arg=65
-	ST	[954D], C	; 00010010 (12) arg=954D
-	NOP			; 11111111 (FF)
-	0x44			; 01000100 (44) Undefined opcode
-	0x69			; 01101001 (69) Undefined opcode
-	ADD	D, B		; 11000111 (C7)
-	0x0E 0xCA		; 00001110 (0E) Undefined opcode
-	LD	D, #2C		; 00110111 (37) arg=2C
-	0x33 0x68		; 00110011 (33) Undefined opcode
-	ADD	C, D		; 11001110 (CE)
-	AND	A, B		; 11100100 (E4)
-	AND	B, C		; 11101001 (E9)
-	0x7A			; 01111010 (7A) Undefined opcode
-	CMP	B, A		; 01110001 (71)
-	ADD	C, B		; 11000110 (C6)
-	0x5F			; 01011111 (5F) Undefined opcode
-	SUB	B, D		; 10101101 (AD)
-	XOR	C, C		; 11011010 (DA)
-	JC	A:B		; 10000001 (81)
-	XOR	C, A		; 11010010 (D2)
-	ADD	C, A		; 11000010 (C2)
-	XOR	C, C		; 11011010 (DA)
-	ST	[C:D], #7A	; 00110001 (31) arg=7A
-	CMP	A, D		; 01111100 (7C)
-	AND	D, A		; 11100011 (E3)
-	ADD	C, B		; 11000110 (C6)
-	SUB	B, D		; 10101101 (AD)
-	OR	D, #3D		; 00101111 (2F) arg=3D
-	0x51			; 01010001 (51) Undefined opcode
-	CMP	B, C		; 01111001 (79)
-	SBC	B, C		; 10111001 (B9)
-	ADD	C, C		; 11001010 (CA)
-	0x6D			; 01101101 (6D) Undefined opcode
-	OR	D, A		; 11110011 (F3)
-	AND	A, D		; 11101100 (EC)
-	CMP	D, B		; 01110111 (77)
-	0x4E			; 01001110 (4E) Undefined opcode
-	JE	#17CB		; 00000101 (05) arg=17CB
-	0x3E 0x81		; 00111110 (3E) Undefined opcode
-	ST	[C:D], B	; 00011001 (19)
-	LD	C, #20		; 00110110 (36) arg=20
-	JC	A:B		; 10000001 (81)
-	ADC	A, D		; 10011100 (9C)
-	OR	C, #1E		; 00101110 (2E) arg=1E
-	ADD	C, C		; 11001010 (CA)
-	0x62			; 01100010 (62) Undefined opcode
-	ADD	A, B		; 11000100 (C4)
-	OR	A, #D9		; 00101100 (2C) arg=D9
-	ADD	B, D		; 11001101 (CD)
-	0xA0			; 10100000 (A0) Undefined opcode
-	SUB	A, D		; 10101100 (AC)
-	CMP	C, A		; 01110010 (72)
-	SUB	A, D		; 10101100 (AC)
-	0x40			; 01000000 (40) Undefined opcode
-	CMP	D, B		; 01110111 (77)
-	XOR	C, #B3		; 00100110 (26) arg=B3
-	OR	D, A		; 11110011 (F3)
-	0x41			; 01000001 (41) Undefined opcode
-	0x3C 0x62		; 00111100 (3C) Undefined opcode
-	ADC	C, A		; 10010010 (92)
-	JNE	A:B		; 10000100 (84)
-	CMP	D, B		; 01110111 (77)
-	ST	[C:D], A	; 00011000 (18)
-	LD	C, #F3		; 00110110 (36) arg=F3
-	0x75			; 01110101 (75) Undefined opcode
-	0x64			; 01100100 (64) Undefined opcode
-	CMP	B, C		; 01111001 (79)
-	ADD	B, B		; 11000101 (C5)
-	0x66			; 01100110 (66) Undefined opcode
-	XOR	C, #6C		; 00100110 (26) arg=6C
-	0x06 0x41 0xE1		; 00000110 (06) Undefined opcode
-	AND	C, D		; 11101110 (EE)
-	ADD	D, C		; 11001011 (CB)
-	AND	D, A		; 11100011 (E3)
-	JZ	#B199		; 00000011 (03) arg=B199
-	AND	B, C		; 11101001 (E9)
-	0x45			; 01000101 (45) Undefined opcode
-	0x3C 0x3A		; 00111100 (3C) Undefined opcode
-	SBC	B, A		; 10110001 (B1)
-	0x57			; 01010111 (57) Undefined opcode
-	ADD	A, #F8		; 00100000 (20) arg=F8
-	OR	D, B		; 11110111 (F7)
-	0x48			; 01001000 (48) Undefined opcode
-	ADD	A, D		; 11001100 (CC)
-	XOR	A, C		; 11011000 (D8)
-	OR	A, B		; 11110100 (F4)
-	0x68			; 01101000 (68) Undefined opcode
-	0x68			; 01101000 (68) Undefined opcode
-	ADD	A, B		; 11000100 (C4)
-	AND	B, #5F		; 00101001 (29) arg=5F
-	0xE5			; 11100101 (E5) Undefined opcode
-	0x5C			; 01011100 (5C) Undefined opcode
-	0x4C			; 01001100 (4C) Undefined opcode
-	ADC	D, D		; 10011111 (9F)
-	0x67			; 01100111 (67) Undefined opcode
-	SUB	A, C		; 10101000 (A8)
-	JNC	#843C		; 00000000 (00) arg=843C
-	ADC	D, A		; 10010011 (93)
-	XOR	D, D		; 11011111 (DF)
-	ADC	B, B		; 10010101 (95)
-	OR	D, #31		; 00101111 (2F) arg=31
-	0xA0			; 10100000 (A0) Undefined opcode
-	0x63			; 01100011 (63) Undefined opcode
-	0x59			; 01011001 (59) Undefined opcode
-	NOP			; 11111111 (FF)
-	ST	[9B40], A	; 00010000 (10) arg=9B40
-	ST	[802E], B	; 00010001 (11) arg=802E
-	ST	[A:B], D	; 00011011 (1B)
-	0x3F 0x39		; 00111111 (3F) Undefined opcode
-	0x62			; 01100010 (62) Undefined opcode
-	ADC	A, B		; 10010100 (94)
-	0x4B			; 01001011 (4B) Undefined opcode
-	OR	C, B		; 11110110 (F6)
-	0x7F			; 01111111 (7F) Undefined opcode
-	0xEF			; 11101111 (EF) Undefined opcode
-	0x5D			; 01011101 (5D) Undefined opcode
-	OR	B, #DD		; 00101101 (2D) arg=DD
-	0xB0			; 10110000 (B0) Undefined opcode
-	JMP	#5553		; 00000111 (07) arg=5553
-	JZ	#E69F		; 00000011 (03) arg=E69F
-	0x70			; 01110000 (70) Undefined opcode
-	ADD	A, D		; 11001100 (CC)
-	AND	B, C		; 11101001 (E9)
-	ADC	C, D		; 10011110 (9E)
-	0x3D 0x56		; 00111101 (3D) Undefined opcode
-	SUB	A, D		; 10101100 (AC)
-	0x5D			; 01011101 (5D) Undefined opcode
-	LD	B, [2E58]	; 00010101 (15) arg=2E58
-	0x6B			; 01101011 (6B) Undefined opcode
-	XOR	A, A		; 11010000 (D0)
-	0xEF			; 11101111 (EF) Undefined opcode
-	0x75			; 01110101 (75) Undefined opcode
-	SBC	A, D		; 10111100 (BC)
-	0x6E			; 01101110 (6E) Undefined opcode
-	XOR	D, C		; 11011011 (DB)
-	0x70			; 01110000 (70) Undefined opcode
-	0x3F 0x9F		; 00111111 (3F) Undefined opcode
-	SUB	D, C		; 10101011 (AB)
-	0x5E			; 01011110 (5E) Undefined opcode
-	SBC	A, D		; 10111100 (BC)
-	0x62			; 01100010 (62) Undefined opcode
-	LD	D, [A42A]	; 00010111 (17) arg=A42A
-	LD	C, #4A		; 00110110 (36) arg=4A
-	OR	B, D		; 11111101 (FD)
-	0x3C 0xBE		; 00111100 (3C) Undefined opcode
-	ADC	A, B		; 10010100 (94)
-	JNC	C:D		; 10001000 (88)
-	0x5F			; 01011111 (5F) Undefined opcode
-	0x3B 0xD7		; 00111011 (3B) Undefined opcode
-	OR	D, C		; 11111011 (FB)
-	0x5B			; 01011011 (5B) Undefined opcode
-	0xBA			; 10111010 (BA) Undefined opcode
-	CMP	C, B		; 01110110 (76)
-	0x56			; 01010110 (56) Undefined opcode
-	0x40			; 01000000 (40) Undefined opcode
-	ST	[3BFD], B	; 00010001 (11) arg=3BFD
-	ST	[A:B], #DF	; 00110000 (30) arg=DF
-	0x6B			; 01101011 (6B) Undefined opcode
-	0x62			; 01100010 (62) Undefined opcode
-	SUB	A, D		; 10101100 (AC)
-	CMP	C, B		; 01110110 (76)
-	JNC	#BA41		; 00000000 (00) arg=BA41
-	XOR	C, D		; 11011110 (DE)
-	0x4B			; 01001011 (4B) Undefined opcode
-	ADC	D, A		; 10010011 (93)
-	XOR	C, B		; 11010110 (D6)
-	HALT			; 10000110 (86)
-	ADD	D, C		; 11001011 (CB)
-	LD	A, [173E]	; 00010100 (14) arg=173E
-	JC	+#51		; 00001001 (09) arg=51
-	AND	B, D		; 11101101 (ED)
-	AND	C, #F3		; 00101010 (2A) arg=F3
-	0xAA			; 10101010 (AA) Undefined opcode
-	LD	A, #20		; 00110100 (34) arg=20
-	0xEA			; 11101010 (EA) Undefined opcode
-	JZ	A:B		; 10000011 (83)
-	XOR	C, C		; 11011010 (DA)
-	AND	D, #72		; 00101011 (2B) arg=72
-	CMP	C, D		; 01111110 (7E)
-	JC	-#33		; 00001001 (09) arg=B3
-	CMP	D, B		; 01110111 (77)
-	0x54			; 01010100 (54) Undefined opcode
-	ADC	C, A		; 10010010 (92)
-	0x3B 0x4E		; 00111011 (3B) Undefined opcode
-	0x44			; 01000100 (44) Undefined opcode
-	XOR	B, C		; 11011001 (D9)
-	SUB	D, B		; 10100111 (A7)
-	OR	A, #50		; 00101100 (2C) arg=50
-	XOR	C, D		; 11011110 (DE)
-	LD	B, [1A83]	; 00010101 (15) arg=1A83
-	JNE	A:B		; 10000100 (84)
-	JE	A:B		; 10000101 (85)
-	0x53			; 01010011 (53) Undefined opcode
-	JNC	-#1C		; 00001000 (08) arg=9C
-	ST	[A:B], C	; 00011010 (1A)
-	AND	C, #35		; 00101010 (2A) arg=35
-	0x3A 0xAB		; 00111010 (3A) Undefined opcode
-	XOR	C, D		; 11011110 (DE)
-	JNC	-#27		; 00001000 (08) arg=A7
-	JZ	-#6A		; 00001011 (0B) arg=EA
-	0x32 0x0C		; 00110010 (32) Undefined opcode
-	0x58			; 01011000 (58) Undefined opcode
-	ADC	C, C		; 10011010 (9A)
-	JNZ	C:D		; 10001010 (8A)
-	OR	D, C		; 11111011 (FB)
-	0xBF			; 10111111 (BF) Undefined opcode
-	LD	C, [A:B]	; 00011110 (1E)
-	ADC	D, B		; 10010111 (97)
-	OR	B, A		; 11110001 (F1)
-	ADD	C, D		; 11001110 (CE)
-	SUB	D, A		; 10100011 (A3)
-	ADD	C, #E4		; 00100010 (22) arg=E4
-	XOR	B, #F9		; 00100101 (25) arg=F9
-	0x58			; 01011000 (58) Undefined opcode
-	0x52			; 01010010 (52) Undefined opcode
-	XOR	A, D		; 11011100 (DC)
-	XOR	D, C		; 11011011 (DB)
-	ADC	A, D		; 10011100 (9C)
-	SUB	C, D		; 10101110 (AE)
-	LD	A, [62FC]	; 00010100 (14) arg=62FC
-	0xA0			; 10100000 (A0) Undefined opcode
-	ST	[C:D], A	; 00011000 (18)
-	ADD	C, B		; 11000110 (C6)
-	SUB	A, B		; 10100100 (A4)
-	0x57			; 01010111 (57) Undefined opcode
-	0xA5			; 10100101 (A5) Undefined opcode
-	ADC	C, A		; 10010010 (92)
-	SUB	D, C		; 10101011 (AB)
-	SBC	A, B		; 10110100 (B4)
-	ST	[C:D], A	; 00011000 (18)
-	XOR	B, B		; 11010101 (D5)
-	0x3E 0xF6		; 00111110 (3E) Undefined opcode
-	SBC	C, D		; 10111110 (BE)
-	OR	B, D		; 11111101 (FD)
-	JNE	#5DF3		; 00000100 (04) arg=5DF3
-	JNE	A:B		; 10000100 (84)
-	0xFA			; 11111010 (FA) Undefined opcode
-	AND	A, #12		; 00101000 (28) arg=12
-	JMP	#2E7D		; 00000111 (07) arg=2E7D
-	XOR	D, A		; 11010011 (D3)
-	0x5E			; 01011110 (5E) Undefined opcode
-	0x54			; 01010100 (54) Undefined opcode
-	OR	A, #D5		; 00101100 (2C) arg=D5
-	JZ	A:B		; 10000011 (83)
-	ADC	C, D		; 10011110 (9E)
-	XOR	A, A		; 11010000 (D0)
-	CMP	D, B		; 01110111 (77)
-	XOR	A, #E7		; 00100100 (24) arg=E7
-	XOR	B, C		; 11011001 (D9)
-	ADD	B, A		; 11000001 (C1)
-	SBC	C, D		; 10111110 (BE)
-	LD	B, [C:D]	; 00011101 (1D)
-	ADD	D, D		; 11001111 (CF)
-	JNZ	C:D		; 10001010 (8A)
-	0x3A 0x99		; 00111010 (3A) Undefined opcode
-	OR	A, C		; 11111000 (F8)
-	XOR	B, A		; 11010001 (D1)
-	CMP	C, B		; 01110110 (76)
-	SUB	B, D		; 10101101 (AD)
-	0x52			; 01010010 (52) Undefined opcode
-	0x49			; 01001001 (49) Undefined opcode
-	0xAA			; 10101010 (AA) Undefined opcode
-	XOR	A, B		; 11010100 (D4)
-	ST	[A:B], C	; 00011010 (1A)
-	0x70			; 01110000 (70) Undefined opcode
-	XOR	B, C		; 11011001 (D9)
-	0x64			; 01100100 (64) Undefined opcode
-	JC	#6854		; 00000001 (01) arg=6854
-	0x47			; 01000111 (47) Undefined opcode
-	AND	D, B		; 11100111 (E7)
-	0x38 0xEC		; 00111000 (38) Undefined opcode
-	0x39 0x4B		; 00111001 (39) Undefined opcode
-	0x46			; 01000110 (46) Undefined opcode
-	XOR	B, D		; 11011101 (DD)
-	JZ	A:B		; 10000011 (83)
-	OR	B, A		; 11110001 (F1)
-	0x33 0x3E		; 00110011 (33) Undefined opcode
-	0xA0			; 10100000 (A0) Undefined opcode
-	JNC	+#34		; 00001000 (08) arg=34
-	ADD	C, C		; 11001010 (CA)
-	XOR	B, #91		; 00100101 (25) arg=91
-	LD	A, [C:D]	; 00011100 (1C)
-	ST	[C:D], A	; 00011000 (18)
-	ST	[C:D], #03	; 00110001 (31) arg=03
-	CMP	D, C		; 01111011 (7B)
-	0x3C 0x8B		; 00111100 (3C) Undefined opcode
-	0x6B			; 01101011 (6B) Undefined opcode
-	SUB	D, C		; 10101011 (AB)
-	0x68			; 01101000 (68) Undefined opcode
-	JNC	-#31		; 00001000 (08) arg=B1
-	AND	B, C		; 11101001 (E9)
-	XOR	A, C		; 11011000 (D8)
-	ADD	A, B		; 11000100 (C4)
-	0xEF			; 11101111 (EF) Undefined opcode
-	XOR	D, #FF		; 00100111 (27) arg=FF
-	JMP	+#03		; 00001111 (0F) arg=03
-	0x44			; 01000100 (44) Undefined opcode
-	CMP	A, D		; 01111100 (7C)
-	0x6E			; 01101110 (6E) Undefined opcode
-	0xFA			; 11111010 (FA) Undefined opcode
-	0x3E 0xE7		; 00111110 (3E) Undefined opcode
-	SBC	B, A		; 10110001 (B1)
-	0x69			; 01101001 (69) Undefined opcode
-	XOR	B, A		; 11010001 (D1)
-	ADD	D, #8A		; 00100011 (23) arg=8A
-	ADD	B, #84		; 00100001 (21) arg=84
-	ADC	C, A		; 10010010 (92)
-	0xE0			; 11100000 (E0) Undefined opcode
-	ADD	B, D		; 11001101 (CD)
-	0xF5			; 11110101 (F5) Undefined opcode
-	SUB	D, A		; 10100011 (A3)
-	0x5F			; 01011111 (5F) Undefined opcode
-	0x39 0x44		; 00111001 (39) Undefined opcode
-	ADD	A, C		; 11001000 (C8)
-	ST	[C:D], #49	; 00110001 (31) arg=49
-	0x68			; 01101000 (68) Undefined opcode
-	0x3D 0x1C		; 00111101 (3D) Undefined opcode
-	CMP	B, A		; 01110001 (71)
-	OR	D, #C8		; 00101111 (2F) arg=C8
-	LD	B, [297F]	; 00010101 (15) arg=297F
-	ADD	A, D		; 11001100 (CC)
-	SBC	D, C		; 10111011 (BB)
-	0x6B			; 01101011 (6B) Undefined opcode
-	SUB	D, C		; 10101011 (AB)
-	JNC	-#69		; 00001000 (08) arg=E9
-	OR	A, C		; 11111000 (F8)
-	0x42			; 01000010 (42) Undefined opcode
-	JC	+#59		; 00001001 (09) arg=59
-	0x41			; 01000001 (41) Undefined opcode
-	OR	B, C		; 11111001 (F9)
-	0xEF			; 11101111 (EF) Undefined opcode
-	0x33 0x69		; 00110011 (33) Undefined opcode
-	ST	[C:D], A	; 00011000 (18)
-	ST	[37A9], C	; 00010010 (12) arg=37A9
-	OR	B, A		; 11110001 (F1)
-	CMP	C, D		; 01111110 (7E)
-	JNC	A:B		; 10000000 (80)
-	XOR	D, #19		; 00100111 (27) arg=19
-	0x62			; 01100010 (62) Undefined opcode
-	SBC	B, D		; 10111101 (BD)
-	CMP	C, B		; 01110110 (76)
-	CMP	C, A		; 01110010 (72)
-	AND	D, B		; 11100111 (E7)
-	AND	A, C		; 11101000 (E8)
-	SBC	A, C		; 10111000 (B8)
-	ST	[91B3], D	; 00010011 (13) arg=91B3
-	XOR	D, B		; 11010111 (D7)
-	ADD	A, B		; 11000100 (C4)
-	JNE	#92A8		; 00000100 (04) arg=92A8
-	0x54			; 01010100 (54) Undefined opcode
-	0x43			; 01000011 (43) Undefined opcode
-	0x33 0x6B		; 00110011 (33) Undefined opcode
-	0x5B			; 01011011 (5B) Undefined opcode
-	0xBA			; 10111010 (BA) Undefined opcode
-	JE	#596A		; 00000101 (05) arg=596A
-	JE	A:B		; 10000101 (85)
-	SUB	D, B		; 10100111 (A7)
-	0xE0			; 11100000 (E0) Undefined opcode
-	0x45			; 01000101 (45) Undefined opcode
-	ADC	A, D		; 10011100 (9C)
-	ST	[C:D], A	; 00011000 (18)
-	ADD	D, B		; 11000111 (C7)
-	0x5C			; 01011100 (5C) Undefined opcode
-	ADC	B, C		; 10011001 (99)
-	XOR	B, #FD		; 00100101 (25) arg=FD
-	0x4C			; 01001100 (4C) Undefined opcode
-	AND	D, B		; 11100111 (E7)
-	ADC	A, D		; 10011100 (9C)
-	HALT			; 10000110 (86)
-	ADD	C, D		; 11001110 (CE)
-	XOR	A, A		; 11010000 (D0)
-	0x33 0x95		; 00110011 (33) Undefined opcode
-	0xB0			; 10110000 (B0) Undefined opcode
-	SUB	B, A		; 10100001 (A1)
-	ADC	C, D		; 10011110 (9E)
-	0x3E 0x79		; 00111110 (3E) Undefined opcode
-	0x5F			; 01011111 (5F) Undefined opcode
-	0x4F			; 01001111 (4F) Undefined opcode
-	XOR	C, B		; 11010110 (D6)
-	ADC	C, B		; 10010110 (96)
-	JNE	A:B		; 10000100 (84)
-	0x69			; 01101001 (69) Undefined opcode
-	SUB	B, D		; 10101101 (AD)
-	0x52			; 01010010 (52) Undefined opcode
-	AND	D, B		; 11100111 (E7)
-	SBC	B, C		; 10111001 (B9)
-	0xA5			; 10100101 (A5) Undefined opcode
-	SBC	A, B		; 10110100 (B4)
-	JNE	C:D		; 10001100 (8C)
-	0x67			; 01100111 (67) Undefined opcode
-	SBC	A, D		; 10111100 (BC)
-	0x65			; 01100101 (65) Undefined opcode
-	0x7A			; 01111010 (7A) Undefined opcode
-	0x0E 0x4D		; 00001110 (0E) Undefined opcode
-	LD	A, #A6		; 00110100 (34) arg=A6
-	JNZ	#A25E		; 00000010 (02) arg=A25E
-	CMP	B, C		; 01111001 (79)
-	JE	C:D		; 10001101 (8D)
-	JZ	C:D		; 10001011 (8B)
-	ADC	C, A		; 10010010 (92)
-	ST	[A:B], #A1	; 00110000 (30) arg=A1
-	SBC	A, B		; 10110100 (B4)
-	ADD	C, C		; 11001010 (CA)
-	CMP	D, B		; 01110111 (77)
-	JZ	C:D		; 10001011 (8B)
-	0x67			; 01100111 (67) Undefined opcode
-	AND	B, #AA		; 00101001 (29) arg=AA
-	JNE	-#65		; 00001100 (0C) arg=E5
-	AND	C, D		; 11101110 (EE)
-	SUB	A, B		; 10100100 (A4)
-	ADC	A, A		; 10010000 (90)
-	0x4D			; 01001101 (4D) Undefined opcode
-	OR	C, B		; 11110110 (F6)
-	CMP	B, D		; 01111101 (7D)
-	SBC	B, A		; 10110001 (B1)
-	AND	B, C		; 11101001 (E9)
-	SBC	D, C		; 10111011 (BB)
-	ADD	C, D		; 11001110 (CE)
-	0x63			; 01100011 (63) Undefined opcode
-	0x06 0xB3 0xFC		; 00000110 (06) Undefined opcode
-	ADC	C, C		; 10011010 (9A)
-	0x3D 0xA2		; 00111101 (3D) Undefined opcode
-	0x06 0xDF 0x4D		; 00000110 (06) Undefined opcode
-	ADC	D, B		; 10010111 (97)
-	JC	A:B		; 10000001 (81)
-	XOR	D, B		; 11010111 (D7)
-	0x7F			; 01111111 (7F) Undefined opcode
-	JZ	A:B		; 10000011 (83)
-	SBC	B, C		; 10111001 (B9)
-	ST	[86A4], C	; 00010010 (12) arg=86A4
-	ADC	D, A		; 10010011 (93)
-	0x6B			; 01101011 (6B) Undefined opcode
-	0x52			; 01010010 (52) Undefined opcode
-	OR	B, #04		; 00101101 (2D) arg=04
-	ADC	A, C		; 10011000 (98)
-	ADD	D, B		; 11000111 (C7)
-	SUB	C, A		; 10100010 (A2)
-	JE	#0EBF		; 00000101 (05) arg=0EBF
-	LD	B, [C:D]	; 00011101 (1D)
-	XOR	C, A		; 11010010 (D2)
-	0x46			; 01000110 (46) Undefined opcode
-	XOR	D, B		; 11010111 (D7)
-	SUB	C, A		; 10100010 (A2)
-	LD	D, #9E		; 00110111 (37) arg=9E
-	0xE5			; 11100101 (E5) Undefined opcode
-	0x5F			; 01011111 (5F) Undefined opcode
-	0xBA			; 10111010 (BA) Undefined opcode
-	CMP	A, C		; 01111000 (78)
-	ST	[A:B], #CC	; 00110000 (30) arg=CC
-	LD	B, #91		; 00110101 (35) arg=91
-	JMP	#BE33		; 00000111 (07) arg=BE33
-	AND	B, C		; 11101001 (E9)
-	LD	B, [B628]	; 00010101 (15) arg=B628
-	XOR	A, C		; 11011000 (D8)
-	ADC	D, C		; 10011011 (9B)
-	ADC	A, A		; 10010000 (90)
-	XOR	D, C		; 11011011 (DB)
-	CMP	D, A		; 01110011 (73)
-	AND	C, A		; 11100010 (E2)
-	JMP	#E972		; 00000111 (07) arg=E972
-	JZ	+#51		; 00001011 (0B) arg=51
-	OR	D, B		; 11110111 (F7)
-	0x5F			; 01011111 (5F) Undefined opcode
-	CMP	A, C		; 01111000 (78)
-	LD	B, [C:D]	; 00011101 (1D)
-	0x3E 0x2C		; 00111110 (3E) Undefined opcode
-	ST	[E50D], D	; 00010011 (13) arg=E50D
-	OR	D, #66		; 00101111 (2F) arg=66
-	CMP	C, B		; 01110110 (76)
-	ADD	D, B		; 11000111 (C7)
-	JMP	C:D		; 10001111 (8F)
-	CMP	B, A		; 01110001 (71)
-	0x49			; 01001001 (49) Undefined opcode
-	SBC	D, A		; 10110011 (B3)
-	0x39 0x78		; 00111001 (39) Undefined opcode
-	LD	C, #3F		; 00110110 (36) arg=3F
-	JZ	#A8E0		; 00000011 (03) arg=A8E0
-	SUB	D, A		; 10100011 (A3)
-	0x32 0xFB		; 00110010 (32) Undefined opcode
-	SUB	D, C		; 10101011 (AB)
-	ST	[4CB3], D	; 00010011 (13) arg=4CB3
-	OR	D, #7D		; 00101111 (2F) arg=7D
-	ADD	A, C		; 11001000 (C8)
-	0x6F			; 01101111 (6F) Undefined opcode
-	JZ	+#59		; 00001011 (0B) arg=59
-	ST	[16C9], C	; 00010010 (12) arg=16C9
-	ST	[A:B], D	; 00011011 (1B)
-	ADC	A, D		; 10011100 (9C)
-	SUB	C, A		; 10100010 (A2)
-	0x5D			; 01011101 (5D) Undefined opcode
-	OR	C, D		; 11111110 (FE)
-	SUB	D, B		; 10100111 (A7)
-	ADC	A, A		; 10010000 (90)
-	ADC	C, D		; 10011110 (9E)
-	XOR	D, D		; 11011111 (DF)
-	0x6E			; 01101110 (6E) Undefined opcode
-	0x5E			; 01011110 (5E) Undefined opcode
-	0x69			; 01101001 (69) Undefined opcode
-	CMP	D, A		; 01110011 (73)
-	0x49			; 01001001 (49) Undefined opcode
-	AND	B, A		; 11100001 (E1)
-	JNZ	+#33		; 00001010 (0A) arg=33
-	JZ	C:D		; 10001011 (8B)
-	XOR	A, B		; 11010100 (D4)
-	0x5B			; 01011011 (5B) Undefined opcode
-	XOR	A, C		; 11011000 (D8)
-	0xBA			; 10111010 (BA) Undefined opcode
-	0x3A 0x73		; 00111010 (3A) Undefined opcode
-	SBC	D, A		; 10110011 (B3)
-	XOR	D, #33		; 00100111 (27) arg=33
-	ADC	A, B		; 10010100 (94)
-	JMP	C:D		; 10001111 (8F)
-	0x59			; 01011001 (59) Undefined opcode
-	ADC	D, D		; 10011111 (9F)
-	0x45			; 01000101 (45) Undefined opcode
-	NOP			; 11111111 (FF)
-	OR	D, B		; 11110111 (F7)
-	JNC	A:B		; 10000000 (80)
-	CMP	B, C		; 01111001 (79)
-	OR	A, C		; 11111000 (F8)
-	CMP	C, B		; 01110110 (76)
-	XOR	D, #30		; 00100111 (27) arg=30
-	0x4B			; 01001011 (4B) Undefined opcode
-	JNZ	C:D		; 10001010 (8A)
-	0x4D			; 01001101 (4D) Undefined opcode
-	HALT			; 10000110 (86)
-	OR	D, B		; 11110111 (F7)
-	JC	#EF40		; 00000001 (01) arg=EF40
-	ADD	B, C		; 11001001 (C9)
-	ST	[A:B], #1B	; 00110000 (30) arg=1B
-	LD	B, #63		; 00110101 (35) arg=63
-	0x5B			; 01011011 (5B) Undefined opcode
-	0x7F			; 01111111 (7F) Undefined opcode
-	JNZ	C:D		; 10001010 (8A)
-	JMP	#B3AF		; 00000111 (07) arg=B3AF
-	SUB	C, A		; 10100010 (A2)
-	0x5F			; 01011111 (5F) Undefined opcode
-	LD	C, [6CF4]	; 00010110 (16) arg=6CF4
-	0x5B			; 01011011 (5B) Undefined opcode
-	0xAF			; 10101111 (AF) Undefined opcode
-	SUB	A, B		; 10100100 (A4)
-	LD	D, #AE		; 00110111 (37) arg=AE
-	ADC	C, B		; 10010110 (96)
-	XOR	C, A		; 11010010 (D2)
-	CMP	D, A		; 01110011 (73)
-	OR	B, #F5		; 00101101 (2D) arg=F5
-	LD	D, [A:B]	; 00011111 (1F)
-	0x64			; 01100100 (64) Undefined opcode
-	JNE	#5448		; 00000100 (04) arg=5448
-	LD	B, [C:D]	; 00011101 (1D)
-	JC	+#1D		; 00001001 (09) arg=1D
-	0x5C			; 01011100 (5C) Undefined opcode
-	SBC	C, B		; 10110110 (B6)
-	HALT			; 10001110 (8E)
-	OR	A, #9F		; 00101100 (2C) arg=9F
-	0x7A			; 01111010 (7A) Undefined opcode
-	ADD	D, B		; 11000111 (C7)
-	0x53			; 01010011 (53) Undefined opcode
-	0x3F 0xFC		; 00111111 (3F) Undefined opcode
-	AND	B, #51		; 00101001 (29) arg=51
-	ADC	B, B		; 10010101 (95)
-	ADC	C, D		; 10011110 (9E)
-	JMP	C:D		; 10001111 (8F)
-	0x61			; 01100001 (61) Undefined opcode
-	CMP	B, D		; 01111101 (7D)
-	ST	[A:B], D	; 00011011 (1B)
-	HALT			; 10000110 (86)
-	ADD	C, #D6		; 00100010 (22) arg=D6
-	0x4C			; 01001100 (4C) Undefined opcode
-	ADC	C, B		; 10010110 (96)
-	LD	D, [A:B]	; 00011111 (1F)
-	0x6D			; 01101101 (6D) Undefined opcode
-	ADD	B, A		; 11000001 (C1)
-	SBC	C, D		; 10111110 (BE)
-	ADD	D, #4B		; 00100011 (23) arg=4B
-	ADD	A, #88		; 00100000 (20) arg=88
-	SBC	C, D		; 10111110 (BE)
-	0x7F			; 01111111 (7F) Undefined opcode
-	SBC	D, B		; 10110111 (B7)
-	0xAA			; 10101010 (AA) Undefined opcode
-	SBC	B, D		; 10111101 (BD)
-	JC	+#78		; 00001001 (09) arg=78
-	0x45			; 01000101 (45) Undefined opcode
-	0x55			; 01010101 (55) Undefined opcode
-	0xAF			; 10101111 (AF) Undefined opcode
-	0x57			; 01010111 (57) Undefined opcode
-	0x62			; 01100010 (62) Undefined opcode
-	OR	A, D		; 11111100 (FC)
-	JE	+#41		; 00001101 (0D) arg=41
-	XOR	C, A		; 11010010 (D2)
-	AND	D, C		; 11101011 (EB)
-	ADD	B, #A4		; 00100001 (21) arg=A4
-	SUB	C, B		; 10100110 (A6)
-	SUB	B, A		; 10100001 (A1)
-	0x33 0x95		; 00110011 (33) Undefined opcode
-	0xB0			; 10110000 (B0) Undefined opcode
-	0x50			; 01010000 (50) Undefined opcode
-	JNE	#D4C7		; 00000100 (04) arg=D4C7
-	0x51			; 01010001 (51) Undefined opcode
-	ST	[A:B], C	; 00011010 (1A)
-	LD	D, [A:B]	; 00011111 (1F)
-	0x59			; 01011001 (59) Undefined opcode
-	0xBF			; 10111111 (BF) Undefined opcode
-	0x6E			; 01101110 (6E) Undefined opcode
-	ST	[A:B], D	; 00011011 (1B)
-	0x0E 0xAE		; 00001110 (0E) Undefined opcode
-	AND	D, C		; 11101011 (EB)
-	OR	D, B		; 11110111 (F7)
-	XOR	D, A		; 11010011 (D3)
-	AND	D, A		; 11100011 (E3)
-	ST	[C:D], A	; 00011000 (18)
-	ADC	B, D		; 10011101 (9D)
-	XOR	B, #8F		; 00100101 (25) arg=8F
-	XOR	C, D		; 11011110 (DE)
-	CMP	D, A		; 01110011 (73)
-	JNZ	+#1D		; 00001010 (0A) arg=1D
-	AND	B, A		; 11100001 (E1)
-	ADC	D, B		; 10010111 (97)
-	0x4A			; 01001010 (4A) Undefined opcode
-	0xE5			; 11100101 (E5) Undefined opcode
-	ADC	D, A		; 10010011 (93)
-	ADD	C, #4C		; 00100010 (22) arg=4C
-	XOR	C, A		; 11010010 (D2)
-	0xAA			; 10101010 (AA) Undefined opcode
-	AND	D, B		; 11100111 (E7)
-	0xE5			; 11100101 (E5) Undefined opcode
-	SUB	A, D		; 10101100 (AC)
-	ADC	D, B		; 10010111 (97)
-	XOR	C, D		; 11011110 (DE)
-	0xEA			; 11101010 (EA) Undefined opcode
-	CMP	C, B		; 01110110 (76)
-	XOR	C, C		; 11011010 (DA)
-	0x4B			; 01001011 (4B) Undefined opcode
-	JE	A:B		; 10000101 (85)
-	ADC	C, D		; 10011110 (9E)
-	ST	[A:B], C	; 00011010 (1A)
-	0x45			; 01000101 (45) Undefined opcode
-	JMP	#28FB		; 00000111 (07) arg=28FB
-	ADC	B, A		; 10010001 (91)
-	0x6A			; 01101010 (6A) Undefined opcode
-	0x70			; 01110000 (70) Undefined opcode
-	SUB	B, C		; 10101001 (A9)
-	0xE0			; 11100000 (E0) Undefined opcode
-	HALT			; 10001110 (8E)
-	CMP	B, C		; 01111001 (79)
-	JMP	C:D		; 10001111 (8F)
-	0x58			; 01011000 (58) Undefined opcode
-	SUB	A, D		; 10101100 (AC)
-	SBC	C, B		; 10110110 (B6)
-	ADD	B, #AE		; 00100001 (21) arg=AE
-	LD	D, [8DDD]	; 00010111 (17) arg=8DDD
-	0x44			; 01000100 (44) Undefined opcode
-	0x6B			; 01101011 (6B) Undefined opcode
-	SBC	B, C		; 10111001 (B9)
-	JNE	+#4F		; 00001100 (0C) arg=4F
-	SUB	A, B		; 10100100 (A4)
-	AND	B, #85		; 00101001 (29) arg=85
-	CMP	D, B		; 01110111 (77)
-	0x65			; 01100101 (65) Undefined opcode
-	AND	D, C		; 11101011 (EB)
-	0x75			; 01110101 (75) Undefined opcode
-	0x5E			; 01011110 (5E) Undefined opcode
-	AND	B, A		; 11100001 (E1)
-	JC	C:D		; 10001001 (89)
-	0x45			; 01000101 (45) Undefined opcode
-	0xE0			; 11100000 (E0) Undefined opcode
-	OR	D, C		; 11111011 (FB)
-	XOR	D, A		; 11010011 (D3)
-	0x46			; 01000110 (46) Undefined opcode
-	ADD	C, A		; 11000010 (C2)
-	ADD	D, A		; 11000011 (C3)
-	0x50			; 01010000 (50) Undefined opcode
-	ADD	B, #9B		; 00100001 (21) arg=9B
-	CMP	A, C		; 01111000 (78)
-	JE	A:B		; 10000101 (85)
-	SUB	D, B		; 10100111 (A7)
-	0x40			; 01000000 (40) Undefined opcode
-	JNE	C:D		; 10001100 (8C)
-	ADC	C, A		; 10010010 (92)
-	CMP	A, C		; 01111000 (78)
-	ADD	B, C		; 11001001 (C9)
-	SUB	A, B		; 10100100 (A4)
-	CMP	A, B		; 01110100 (74)
-	0xFA			; 11111010 (FA) Undefined opcode
-	0x51			; 01010001 (51) Undefined opcode
-	LD	B, #87		; 00110101 (35) arg=87
-	JZ	-#1F		; 00001011 (0B) arg=9F
-	ADD	A, C		; 11001000 (C8)
-	CMP	D, B		; 01110111 (77)
-	AND	C, D		; 11101110 (EE)
-	ST	[A:B], #EB	; 00110000 (30) arg=EB
-	0x4C			; 01001100 (4C) Undefined opcode
-	OR	A, B		; 11110100 (F4)
-	LD	A, [91DE]	; 00010100 (14) arg=91DE
-	0x59			; 01011001 (59) Undefined opcode
-	LD	D, [A:B]	; 00011111 (1F)
-	0xA0			; 10100000 (A0) Undefined opcode
-	0x63			; 01100011 (63) Undefined opcode
-	0x3E 0x70		; 00111110 (3E) Undefined opcode
-	0xA0			; 10100000 (A0) Undefined opcode
-	SBC	C, D		; 10111110 (BE)
-	0xAF			; 10101111 (AF) Undefined opcode
-	ADC	C, B		; 10010110 (96)
-	0x66			; 01100110 (66) Undefined opcode
-	JMP	C:D		; 10001111 (8F)
-	ST	[0A5A], A	; 00010000 (10) arg=0A5A
-	SBC	A, C		; 10111000 (B8)
-	0x39 0x9C		; 00111001 (39) Undefined opcode
-	ADD	B, C		; 11001001 (C9)
-	0x0E 0x21		; 00001110 (0E) Undefined opcode
-	AND	C, D		; 11101110 (EE)
-	0x64			; 01100100 (64) Undefined opcode
-	ADD	B, A		; 11000001 (C1)
-	OR	B, D		; 11111101 (FD)
-	AND	B, #C1		; 00101001 (29) arg=C1
-	OR	B, D		; 11111101 (FD)
-	SUB	A, B		; 10100100 (A4)
-	OR	A, D		; 11111100 (FC)
-	CMP	B, D		; 01111101 (7D)
-	JMP	-#00		; 00001111 (0F) arg=80
-	0xE5			; 11100101 (E5) Undefined opcode
-	XOR	A, D		; 11011100 (DC)
-	LD	B, [F0CF]	; 00010101 (15) arg=F0CF
-	0x7F			; 01111111 (7F) Undefined opcode
-	JE	C:D		; 10001101 (8D)
-	ADC	B, C		; 10011001 (99)
-	SBC	D, C		; 10111011 (BB)
-	SUB	D, C		; 10101011 (AB)
-	SBC	C, D		; 10111110 (BE)
-	SBC	B, D		; 10111101 (BD)
-	SUB	B, D		; 10101101 (AD)
-	OR	A, C		; 11111000 (F8)
-	XOR	D, B		; 11010111 (D7)
-	ADD	D, #76		; 00100011 (23) arg=76
-	JNE	C:D		; 10001100 (8C)
-	0x41			; 01000001 (41) Undefined opcode
-	XOR	A, D		; 11011100 (DC)
-	0x50			; 01010000 (50) Undefined opcode
-	XOR	B, A		; 11010001 (D1)
-	SBC	A, B		; 10110100 (B4)
-	SBC	B, D		; 10111101 (BD)
-	XOR	C, #AF		; 00100110 (26) arg=AF
-	XOR	C, D		; 11011110 (DE)
-	0x46			; 01000110 (46) Undefined opcode
-	SBC	C, D		; 10111110 (BE)
-	0x41			; 01000001 (41) Undefined opcode
-	LD	C, #4D		; 00110110 (36) arg=4D
-	CMP	C, A		; 01110010 (72)
-	ADD	A, C		; 11001000 (C8)
-	CMP	B, D		; 01111101 (7D)
-	ADC	B, C		; 10011001 (99)
-	LD	A, [C:D]	; 00011100 (1C)
-	0x66			; 01100110 (66) Undefined opcode
-	JNZ	-#46		; 00001010 (0A) arg=C6
-	0xB5			; 10110101 (B5) Undefined opcode
-	0x46			; 01000110 (46) Undefined opcode
-	0x3A 0xFB		; 00111010 (3A) Undefined opcode
-	XOR	B, B		; 11010101 (D5)
-	0x0E 0xFC		; 00001110 (0E) Undefined opcode
-	ADC	B, A		; 10010001 (91)
-	0x63			; 01100011 (63) Undefined opcode
-	AND	C, A		; 11100010 (E2)
-	SBC	B, A		; 10110001 (B1)
-	0x3A 0xB0		; 00111010 (3A) Undefined opcode
-	JMP	C:D		; 10001111 (8F)
-	LD	B, [C:D]	; 00011101 (1D)
-	0x55			; 01010101 (55) Undefined opcode
-	0x42			; 01000010 (42) Undefined opcode
-	LD	D, [A:B]	; 00011111 (1F)
-	0x54			; 01010100 (54) Undefined opcode
-	0x42			; 01000010 (42) Undefined opcode
-	CMP	D, A		; 01110011 (73)
-	0xAA			; 10101010 (AA) Undefined opcode
-	0x5F			; 01011111 (5F) Undefined opcode
-	0xF5			; 11110101 (F5) Undefined opcode
-	ST	[C:D], B	; 00011001 (19)
-	0x6F			; 01101111 (6F) Undefined opcode
-	ST	[C:D], #34	; 00110001 (31) arg=34
-	0x5C			; 01011100 (5C) Undefined opcode
-	0x32 0x56		; 00110010 (32) Undefined opcode
-	ADC	A, A		; 10010000 (90)
-	ADD	C, D		; 11001110 (CE)
-	LD	B, [C:D]	; 00011101 (1D)
-	0x66			; 01100110 (66) Undefined opcode
-	ADC	A, A		; 10010000 (90)
-	ADD	C, C		; 11001010 (CA)
-	SBC	D, A		; 10110011 (B3)
-	AND	D, #BA		; 00101011 (2B) arg=BA
-	OR	A, #D7		; 00101100 (2C) arg=D7
-	ST	[0664], C	; 00010010 (12) arg=0664
-	0xEA			; 11101010 (EA) Undefined opcode
-	ADD	B, A		; 11000001 (C1)
-	OR	A, B		; 11110100 (F4)
-	JZ	A:B		; 10000011 (83)
-	0x5A			; 01011010 (5A) Undefined opcode
-	ADC	D, A		; 10010011 (93)
-	LD	B, [C:D]	; 00011101 (1D)
-	JE	A:B		; 10000101 (85)
-	AND	A, C		; 11101000 (E8)
-	0x66			; 01100110 (66) Undefined opcode
-	0xE0			; 11100000 (E0) Undefined opcode
-	0xE5			; 11100101 (E5) Undefined opcode
-	LD	D, [FDFC]	; 00010111 (17) arg=FDFC
-	CMP	C, B		; 01110110 (76)
-	XOR	B, D		; 11011101 (DD)
-	LD	A, #6B		; 00110100 (34) arg=6B
-	LD	A, #EF		; 00110100 (34) arg=EF
-	OR	D, B		; 11110111 (F7)
-	0x75			; 01110101 (75) Undefined opcode
-	0x68			; 01101000 (68) Undefined opcode
-	CMP	B, D		; 01111101 (7D)
-	0xAF			; 10101111 (AF) Undefined opcode
-	JNZ	#0944		; 00000010 (02) arg=0944
-	CMP	B, A		; 01110001 (71)
-	0xA0			; 10100000 (A0) Undefined opcode
-	LD	A, #9D		; 00110100 (34) arg=9D
-	ADD	B, C		; 11001001 (C9)
-	XOR	C, A		; 11010010 (D2)
-	JMP	C:D		; 10001111 (8F)
-	ST	[C:D], #FF	; 00110001 (31) arg=FF
-	JE	#F215		; 00000101 (05) arg=F215
-	0x6E			; 01101110 (6E) Undefined opcode
-	ADD	A, D		; 11001100 (CC)
-	JNC	C:D		; 10001000 (88)
-	ADD	B, #0C		; 00100001 (21) arg=0C
-	LD	B, [FC51]	; 00010101 (15) arg=FC51
-	CMP	C, D		; 01111110 (7E)
-	0x54			; 01010100 (54) Undefined opcode
-	HALT			; 10001110 (8E)
-	ADD	C, C		; 11001010 (CA)
-	AND	C, A		; 11100010 (E2)
-	ADC	B, C		; 10011001 (99)
-	0x3C 0x87		; 00111100 (3C) Undefined opcode
-	XOR	D, D		; 11011111 (DF)
-	OR	D, C		; 11111011 (FB)
-	SUB	C, B		; 10100110 (A6)
-	OR	B, #FB		; 00101101 (2D) arg=FB
-	AND	A, B		; 11100100 (E4)
-	SUB	B, D		; 10101101 (AD)
-	0x66			; 01100110 (66) Undefined opcode
-	AND	C, #45		; 00101010 (2A) arg=45
-	0xB0			; 10110000 (B0) Undefined opcode
-	ADC	B, A		; 10010001 (91)
-	JE	C:D		; 10001101 (8D)
-	0x4F			; 01001111 (4F) Undefined opcode
-	SUB	B, C		; 10101001 (A9)
-	ADD	B, D		; 11001101 (CD)
-	OR	B, #18		; 00101101 (2D) arg=18
-	0x45			; 01000101 (45) Undefined opcode
-	0x47			; 01000111 (47) Undefined opcode
-	SUB	C, B		; 10100110 (A6)
-	JMP	A:B		; 10000111 (87)
-	JNE	-#1E		; 00001100 (0C) arg=9E
-	LD	D, [B566]	; 00010111 (17) arg=B566
-	0x4A			; 01001010 (4A) Undefined opcode
-	SUB	D, C		; 10101011 (AB)
-	OR	C, B		; 11110110 (F6)
-	ADC	A, B		; 10010100 (94)
-	XOR	B, C		; 11011001 (D9)
-	XOR	A, D		; 11011100 (DC)
-	ADC	A, A		; 10010000 (90)
-	0x43			; 01000011 (43) Undefined opcode
-	ADC	B, D		; 10011101 (9D)
-	0x58			; 01011000 (58) Undefined opcode
-	JNZ	-#48		; 00001010 (0A) arg=C8
-	CMP	C, D		; 01111110 (7E)
-	SUB	D, B		; 10100111 (A7)
-	AND	D, #C2		; 00101011 (2B) arg=C2
-	JZ	A:B		; 10000011 (83)
-	LD	A, [C:D]	; 00011100 (1C)
-	0x48			; 01001000 (48) Undefined opcode
-	0xB5			; 10110101 (B5) Undefined opcode
-	JNC	-#06		; 00001000 (08) arg=86
-	XOR	D, C		; 11011011 (DB)
-	0x67			; 01100111 (67) Undefined opcode
-	SUB	C, D		; 10101110 (AE)
-	JNC	#18F9		; 00000000 (00) arg=18F9
-	XOR	D, C		; 11011011 (DB)
-	AND	D, #C6		; 00101011 (2B) arg=C6
-	SUB	D, A		; 10100011 (A3)
-	0x63			; 01100011 (63) Undefined opcode
-	0xAF			; 10101111 (AF) Undefined opcode
-	0xEF			; 11101111 (EF) Undefined opcode
-	0x41			; 01000001 (41) Undefined opcode
-	0x46			; 01000110 (46) Undefined opcode
-	OR	A, D		; 11111100 (FC)
-	LD	B, [44AA]	; 00010101 (15) arg=44AA
-	OR	A, B		; 11110100 (F4)
-	JZ	#817E		; 00000011 (03) arg=817E
-	AND	A, D		; 11101100 (EC)
-	LD	D, [BAC1]	; 00010111 (17) arg=BAC1
-	AND	D, C		; 11101011 (EB)
-	0x5E			; 01011110 (5E) Undefined opcode
-	JNZ	+#66		; 00001010 (0A) arg=66
-	0x64			; 01100100 (64) Undefined opcode
-	ADD	B, A		; 11000001 (C1)
-	AND	C, B		; 11100110 (E6)
-	0x48			; 01001000 (48) Undefined opcode
-	0x42			; 01000010 (42) Undefined opcode
-	JE	#0CE1		; 00000101 (05) arg=0CE1
-	0x3F 0x0D		; 00111111 (3F) Undefined opcode
-	0x44			; 01000100 (44) Undefined opcode
-	0x55			; 01010101 (55) Undefined opcode
-	JZ	C:D		; 10001011 (8B)
-	JC	#7C65		; 00000001 (01) arg=7C65
-	OR	B, A		; 11110001 (F1)
-	JE	C:D		; 10001101 (8D)
-	SUB	A, C		; 10101000 (A8)
-	ST	[C:D], A	; 00011000 (18)
-	0x4B			; 01001011 (4B) Undefined opcode
-	LD	D, [5082]	; 00010111 (17) arg=5082
-	JNC	C:D		; 10001000 (88)
-	XOR	C, A		; 11010010 (D2)
-	ADD	B, C		; 11001001 (C9)
-	ADD	A, #09		; 00100000 (20) arg=09
-	0x61			; 01100001 (61) Undefined opcode
-	ST	[C:D], B	; 00011001 (19)
-	SUB	B, D		; 10101101 (AD)
-	AND	B, A		; 11100001 (E1)
-	0xA0			; 10100000 (A0) Undefined opcode
-	SUB	C, A		; 10100010 (A2)
-	SBC	D, C		; 10111011 (BB)
-	0x52			; 01010010 (52) Undefined opcode
-	JZ	C:D		; 10001011 (8B)
-	JC	#D0BB		; 00000001 (01) arg=D0BB
-	ADC	A, A		; 10010000 (90)
-	OR	B, D		; 11111101 (FD)
-	XOR	C, D		; 11011110 (DE)
-	0xF0			; 11110000 (F0) Undefined opcode
-	ADD	B, D		; 11001101 (CD)
-	ST	[A:B], #CF	; 00110000 (30) arg=CF
-	AND	D, A		; 11100011 (E3)
-	AND	A, B		; 11100100 (E4)
-	LD	A, [236E]	; 00010100 (14) arg=236E
-	0x40			; 01000000 (40) Undefined opcode
-	0x49			; 01001001 (49) Undefined opcode
-	0x43			; 01000011 (43) Undefined opcode
-	JNZ	#827E		; 00000010 (02) arg=827E
-	ADD	C, B		; 11000110 (C6)
-	ADD	B, C		; 11001001 (C9)
-	0x54			; 01010100 (54) Undefined opcode
-	0x47			; 01000111 (47) Undefined opcode
-	0x65			; 01100101 (65) Undefined opcode
-	AND	A, D		; 11101100 (EC)
-	SUB	A, B		; 10100100 (A4)
-	ADD	C, B		; 11000110 (C6)
-	ADC	D, C		; 10011011 (9B)
-	HALT			; 10000110 (86)
-	0x4C			; 01001100 (4C) Undefined opcode
-	SUB	D, A		; 10100011 (A3)
-	ADC	B, A		; 10010001 (91)
-	CMP	C, A		; 01110010 (72)
-	LD	A, [C:D]	; 00011100 (1C)
-	AND	B, C		; 11101001 (E9)
-	ADD	B, #ED		; 00100001 (21) arg=ED
-	ADD	A, D		; 11001100 (CC)
-	OR	B, #A3		; 00101101 (2D) arg=A3
-	AND	A, C		; 11101000 (E8)
-	0x5B			; 01011011 (5B) Undefined opcode
-	0xAF			; 10101111 (AF) Undefined opcode
-	ADD	A, #F0		; 00100000 (20) arg=F0
-	OR	C, B		; 11110110 (F6)
-	JNZ	C:D		; 10001010 (8A)
-	LD	C, #67		; 00110110 (36) arg=67
-	0x64			; 01100100 (64) Undefined opcode
-	0x43			; 01000011 (43) Undefined opcode
-	LD	B, #EF		; 00110101 (35) arg=EF
-	SUB	A, D		; 10101100 (AC)
-	SUB	B, C		; 10101001 (A9)
-	ADD	C, #E2		; 00100010 (22) arg=E2
-	0x60			; 01100000 (60) Undefined opcode
-	0x54			; 01010100 (54) Undefined opcode
-	ADC	D, B		; 10010111 (97)
-	OR	C, A		; 11110010 (F2)
-	0x4D			; 01001101 (4D) Undefined opcode
-	0x63			; 01100011 (63) Undefined opcode
-	SBC	D, A		; 10110011 (B3)
-	OR	D, #2B		; 00101111 (2F) arg=2B
-	ADD	D, D		; 11001111 (CF)
-	0xA5			; 10100101 (A5) Undefined opcode
-	0x7A			; 01111010 (7A) Undefined opcode
-	0x5D			; 01011101 (5D) Undefined opcode
-	SBC	A, B		; 10110100 (B4)
-	LD	D, #10		; 00110111 (37) arg=10
-	0xBF			; 10111111 (BF) Undefined opcode
-	0x60			; 01100000 (60) Undefined opcode
-	SBC	C, A		; 10110010 (B2)
-	JE	-#67		; 00001101 (0D) arg=E7
-	XOR	C, C		; 11011010 (DA)
-	ADC	A, C		; 10011000 (98)
-	0x6A			; 01101010 (6A) Undefined opcode
-	0x51			; 01010001 (51) Undefined opcode
-	SBC	A, D		; 10111100 (BC)
-	XOR	B, D		; 11011101 (DD)
-	AND	D, A		; 11100011 (E3)
-	ADC	D, B		; 10010111 (97)
-	ADC	D, A		; 10010011 (93)
-	SUB	A, B		; 10100100 (A4)
-	0xEF			; 11101111 (EF) Undefined opcode
-	JE	-#29		; 00001101 (0D) arg=A9
-	LD	D, [A:B]	; 00011111 (1F)
-	0x06 0xCE 0xC4		; 00000110 (06) Undefined opcode
-	JC	-#31		; 00001001 (09) arg=B1
-	CMP	D, A		; 01110011 (73)
-	XOR	A, A		; 11010000 (D0)
-	0xE5			; 11100101 (E5) Undefined opcode
-	0x75			; 01110101 (75) Undefined opcode
-	0x47			; 01000111 (47) Undefined opcode
-	0x59			; 01011001 (59) Undefined opcode
-	SUB	A, D		; 10101100 (AC)
-	0x3E 0x25		; 00111110 (3E) Undefined opcode
-	0x3C 0x6A		; 00111100 (3C) Undefined opcode
-	ADC	C, D		; 10011110 (9E)
-	SBC	A, C		; 10111000 (B8)
-	ST	[041E], A	; 00010000 (10) arg=041E
-	0x7A			; 01111010 (7A) Undefined opcode
-	0xBF			; 10111111 (BF) Undefined opcode
-	0xB0			; 10110000 (B0) Undefined opcode
-	0x65			; 01100101 (65) Undefined opcode
-	XOR	D, A		; 11010011 (D3)
-	0xE5			; 11100101 (E5) Undefined opcode
-	LD	A, [E124]	; 00010100 (14) arg=E124
-	0x58			; 01011000 (58) Undefined opcode
-	OR	B, #B1		; 00101101 (2D) arg=B1
-	ADC	B, A		; 10010001 (91)
-	ADC	D, B		; 10010111 (97)
-	AND	C, #88		; 00101010 (2A) arg=88
-	SBC	D, A		; 10110011 (B3)
-	AND	A, C		; 11101000 (E8)
-	OR	A, B		; 11110100 (F4)
-	LD	C, [E0DA]	; 00010110 (16) arg=E0DA
-	ADD	D, D		; 11001111 (CF)
-	SBC	C, B		; 10110110 (B6)
-	XOR	C, #B4		; 00100110 (26) arg=B4
-	0x06 0x5D 0x5A		; 00000110 (06) Undefined opcode
-	AND	A, #04		; 00101000 (28) arg=04
-	0x5C			; 01011100 (5C) Undefined opcode
-	XOR	A, #9E		; 00100100 (24) arg=9E
-	SUB	D, C		; 10101011 (AB)
-	ST	[C:D], A	; 00011000 (18)
-	CMP	D, C		; 01111011 (7B)
-	SBC	A, D		; 10111100 (BC)
-	XOR	C, A		; 11010010 (D2)
-	XOR	A, #05		; 00100100 (24) arg=05
-	0x7F			; 01111111 (7F) Undefined opcode
-	0x62			; 01100010 (62) Undefined opcode
-	SBC	D, C		; 10111011 (BB)
-	0x39 0x11		; 00111001 (39) Undefined opcode
-	JZ	#4E32		; 00000011 (03) arg=4E32
-	AND	B, A		; 11100001 (E1)
-	LD	D, [A:B]	; 00011111 (1F)
-	ADC	A, B		; 10010100 (94)
-	CMP	A, D		; 01111100 (7C)
-	0x38 0x04		; 00111000 (38) Undefined opcode
-	0x4A			; 01001010 (4A) Undefined opcode
-	ST	[C5C9], D	; 00010011 (13) arg=C5C9
-	XOR	B, D		; 11011101 (DD)
-	ST	[A7A7], D	; 00010011 (13) arg=A7A7
-	SUB	D, A		; 10100011 (A3)
-	SUB	C, A		; 10100010 (A2)
-	ADC	A, B		; 10010100 (94)
-	JNE	A:B		; 10000100 (84)
-	JNZ	#12A5		; 00000010 (02) arg=12A5
-	JNE	C:D		; 10001100 (8C)
-	0x66			; 01100110 (66) Undefined opcode
-	LD	C, [A:B]	; 00011110 (1E)
-	SBC	C, D		; 10111110 (BE)
-	0x45			; 01000101 (45) Undefined opcode
-	0x0E 0x3B		; 00001110 (0E) Undefined opcode
-	0x33 0xCB		; 00110011 (33) Undefined opcode
-	0xF0			; 11110000 (F0) Undefined opcode
-	0xAF			; 10101111 (AF) Undefined opcode
-	0x6F			; 01101111 (6F) Undefined opcode
-	0x6D			; 01101101 (6D) Undefined opcode
-	SBC	A, B		; 10110100 (B4)
-	ADC	A, D		; 10011100 (9C)
-	CMP	C, B		; 01110110 (76)
-	XOR	C, C		; 11011010 (DA)
-	0x5F			; 01011111 (5F) Undefined opcode
-	ADC	B, D		; 10011101 (9D)
-	0x06 0x9A 0x9A		; 00000110 (06) Undefined opcode
-	AND	D, A		; 11100011 (E3)
-	0x3B 0x84		; 00111011 (3B) Undefined opcode
-	JC	#C921		; 00000001 (01) arg=C921
-	JMP	-#72		; 00001111 (0F) arg=F2
-	0x3A 0x4C		; 00111010 (3A) Undefined opcode
-	SUB	D, C		; 10101011 (AB)
-	XOR	C, B		; 11010110 (D6)
-	XOR	A, #CC		; 00100100 (24) arg=CC
-	OR	D, B		; 11110111 (F7)
-	0x3F 0x7D		; 00111111 (3F) Undefined opcode
-	0xBA			; 10111010 (BA) Undefined opcode
-	LD	C, [0E17]	; 00010110 (16) arg=0E17
-	0x5B			; 01011011 (5B) Undefined opcode
-	0x3F 0xB6		; 00111111 (3F) Undefined opcode
-	0xFA			; 11111010 (FA) Undefined opcode
-	ADC	B, B		; 10010101 (95)
-	OR	C, D		; 11111110 (FE)
-	ADC	D, A		; 10010011 (93)
-	CMP	C, B		; 01110110 (76)
-	ADC	B, D		; 10011101 (9D)
-	ADD	B, A		; 11000001 (C1)
-	OR	A, C		; 11111000 (F8)
-	ADC	A, A		; 10010000 (90)
-	0xBA			; 10111010 (BA) Undefined opcode
-	ADC	A, C		; 10011000 (98)
-	ADC	C, A		; 10010010 (92)
-	ADD	D, C		; 11001011 (CB)
-	JNZ	C:D		; 10001010 (8A)
-	OR	C, B		; 11110110 (F6)
-	0x58			; 01011000 (58) Undefined opcode
-	SBC	C, B		; 10110110 (B6)
-	SUB	B, C		; 10101001 (A9)
-	ADD	D, A		; 11000011 (C3)
-	0x70			; 01110000 (70) Undefined opcode
-	ST	[E1ED], D	; 00010011 (13) arg=E1ED
-	CMP	D, A		; 01110011 (73)
-	ADC	B, D		; 10011101 (9D)
-	0xB5			; 10110101 (B5) Undefined opcode
-	SUB	B, D		; 10101101 (AD)
-	ST	[A:B], #90	; 00110000 (30) arg=90
-	0x4D			; 01001101 (4D) Undefined opcode
-	ADD	D, A		; 11000011 (C3)
-	SBC	D, A		; 10110011 (B3)
-	XOR	B, D		; 11011101 (DD)
-	0x60			; 01100000 (60) Undefined opcode
-	0x3B 0x22		; 00111011 (3B) Undefined opcode
-	0x3D 0xE4		; 00111101 (3D) Undefined opcode
-	ADD	B, D		; 11001101 (CD)
-	ADD	D, C		; 11001011 (CB)
-	CMP	D, C		; 01111011 (7B)
-	XOR	D, C		; 11011011 (DB)
-	0x4A			; 01001010 (4A) Undefined opcode
-	LD	C, #BD		; 00110110 (36) arg=BD
-	ADD	A, A		; 11000000 (C0)
-	0x54			; 01010100 (54) Undefined opcode
-	SUB	C, B		; 10100110 (A6)
-	0x06 0xA1 0x7E		; 00000110 (06) Undefined opcode
-	0x68			; 01101000 (68) Undefined opcode
-	ADD	B, C		; 11001001 (C9)
-	SUB	B, C		; 10101001 (A9)
-	JNZ	C:D		; 10001010 (8A)
-	ADD	A, #A4		; 00100000 (20) arg=A4
-	0xA5			; 10100101 (A5) Undefined opcode
-	SUB	C, B		; 10100110 (A6)
-	0x3D 0xA5		; 00111101 (3D) Undefined opcode
-	AND	A, D		; 11101100 (EC)
-	ADC	D, A		; 10010011 (93)
-	0x59			; 01011001 (59) Undefined opcode
-	AND	C, A		; 11100010 (E2)
-	0x69			; 01101001 (69) Undefined opcode
-	JC	#3072		; 00000001 (01) arg=3072
-	XOR	B, A		; 11010001 (D1)
-	XOR	B, C		; 11011001 (D9)
-	OR	C, B		; 11110110 (F6)
-	0xBF			; 10111111 (BF) Undefined opcode
-	JNE	A:B		; 10000100 (84)
-	ST	[A:B], C	; 00011010 (1A)
-	ADC	B, D		; 10011101 (9D)
-	0x33 0xEC		; 00110011 (33) Undefined opcode
-	CMP	A, D		; 01111100 (7C)
-	SUB	B, D		; 10101101 (AD)
-	SBC	C, A		; 10110010 (B2)
-	AND	D, C		; 11101011 (EB)
-	JNE	A:B		; 10000100 (84)
-	ADC	A, C		; 10011000 (98)
-	ADC	A, B		; 10010100 (94)
-	0xA5			; 10100101 (A5) Undefined opcode
-	JNC	A:B		; 10000000 (80)
-	SUB	A, D		; 10101100 (AC)
-	JNE	A:B		; 10000100 (84)
-	JNC	#1646		; 00000000 (00) arg=1646
-	XOR	D, C		; 11011011 (DB)
-	CMP	D, A		; 01110011 (73)
-	ADD	C, C		; 11001010 (CA)
-	OR	B, #C1		; 00101101 (2D) arg=C1
-	0x7F			; 01111111 (7F) Undefined opcode
-	AND	D, #A4		; 00101011 (2B) arg=A4
-	ADD	B, #93		; 00100001 (21) arg=93
-	ADD	A, C		; 11001000 (C8)
-	ADD	C, D		; 11001110 (CE)
-	0x49			; 01001001 (49) Undefined opcode
-	ADD	B, D		; 11001101 (CD)
-	XOR	B, D		; 11011101 (DD)
-	0x3B 0x22		; 00111011 (3B) Undefined opcode
-	OR	B, C		; 11111001 (F9)
-	ST	[A:B], C	; 00011010 (1A)
-	SUB	C, A		; 10100010 (A2)
-	ST	[AD4C], B	; 00010001 (11) arg=AD4C
-	SBC	A, B		; 10110100 (B4)
-	XOR	A, B		; 11010100 (D4)
-	SUB	C, A		; 10100010 (A2)
-	ADD	A, #61		; 00100000 (20) arg=61
-	0xBF			; 10111111 (BF) Undefined opcode
-	ADC	C, D		; 10011110 (9E)
-	SUB	D, C		; 10101011 (AB)
-	0x68			; 01101000 (68) Undefined opcode
-	AND	B, D		; 11101101 (ED)
-	XOR	C, B		; 11010110 (D6)
-	0x3C 0x86		; 00111100 (3C) Undefined opcode
-	XOR	A, B		; 11010100 (D4)
-	CMP	B, A		; 01110001 (71)
-	SBC	D, C		; 10111011 (BB)
-	ADC	C, C		; 10011010 (9A)
-	LD	D, #0D		; 00110111 (37) arg=0D
-	LD	D, #6C		; 00110111 (37) arg=6C
-	0x51			; 01010001 (51) Undefined opcode
-	CMP	C, A		; 01110010 (72)
-	JNZ	-#78		; 00001010 (0A) arg=F8
-	SUB	B, A		; 10100001 (A1)
-	JNE	C:D		; 10001100 (8C)
-	ADC	C, D		; 10011110 (9E)
-	SBC	D, C		; 10111011 (BB)
-	0x64			; 01100100 (64) Undefined opcode
-	0x4B			; 01001011 (4B) Undefined opcode
-	ADC	D, D		; 10011111 (9F)
-	0x58			; 01011000 (58) Undefined opcode
-	ADC	C, B		; 10010110 (96)
-	CMP	A, B		; 01110100 (74)
-	0x66			; 01100110 (66) Undefined opcode
-	ADC	B, A		; 10010001 (91)
-	0x51			; 01010001 (51) Undefined opcode
-	OR	B, #6B		; 00101101 (2D) arg=6B
-	ADD	C, A		; 11000010 (C2)
-	ADC	A, A		; 10010000 (90)
-	OR	A, D		; 11111100 (FC)
-	0x4F			; 01001111 (4F) Undefined opcode
-	AND	C, D		; 11101110 (EE)
-	XOR	A, B		; 11010100 (D4)
-	0x53			; 01010011 (53) Undefined opcode
-	JNZ	#FBB5		; 00000010 (02) arg=FBB5
-	XOR	C, B		; 11010110 (D6)
-	ADD	B, #2D		; 00100001 (21) arg=2D
-	JNZ	-#21		; 00001010 (0A) arg=A1
-	ADC	D, A		; 10010011 (93)
-	0x63			; 01100011 (63) Undefined opcode
-	0x52			; 01010010 (52) Undefined opcode
-	OR	B, A		; 11110001 (F1)
-	JNZ	A:B		; 10000010 (82)
-	ADC	C, A		; 10010010 (92)
-	0x62			; 01100010 (62) Undefined opcode
-	ADD	B, D		; 11001101 (CD)
-	XOR	A, B		; 11010100 (D4)
-	SUB	C, B		; 10100110 (A6)
-	JZ	C:D		; 10001011 (8B)
-	OR	C, B		; 11110110 (F6)
-	ST	[A:B], #0C	; 00110000 (30) arg=0C
-	OR	C, D		; 11111110 (FE)
-	JZ	#5172		; 00000011 (03) arg=5172
-	0xBA			; 10111010 (BA) Undefined opcode
-	ADD	A, #15		; 00100000 (20) arg=15
-	0x66			; 01100110 (66) Undefined opcode
-	0x55			; 01010101 (55) Undefined opcode
-	0xF5			; 11110101 (F5) Undefined opcode
-	0x60			; 01100000 (60) Undefined opcode
-	0x67			; 01100111 (67) Undefined opcode
-	OR	B, D		; 11111101 (FD)
-	ADD	D, D		; 11001111 (CF)
-	CMP	D, A		; 01110011 (73)
-	0xFA			; 11111010 (FA) Undefined opcode
-	0x6B			; 01101011 (6B) Undefined opcode
-	JNC	A:B		; 10000000 (80)
-	0x52			; 01010010 (52) Undefined opcode
-	0xF0			; 11110000 (F0) Undefined opcode
-	0xBA			; 10111010 (BA) Undefined opcode
-	XOR	D, B		; 11010111 (D7)
-	OR	B, A		; 11110001 (F1)
-	LD	D, [6E94]	; 00010111 (17) arg=6E94
-	0x51			; 01010001 (51) Undefined opcode
-	JZ	#D962		; 00000011 (03) arg=D962
-	0x63			; 01100011 (63) Undefined opcode
-	0x4C			; 01001100 (4C) Undefined opcode
-	AND	A, #5D		; 00101000 (28) arg=5D
-	XOR	D, B		; 11010111 (D7)
-	OR	C, D		; 11111110 (FE)
-	XOR	B, #7C		; 00100101 (25) arg=7C
-	SBC	D, C		; 10111011 (BB)
-	0xA5			; 10100101 (A5) Undefined opcode
-	0xEA			; 11101010 (EA) Undefined opcode
-	SBC	B, A		; 10110001 (B1)
-	ADC	A, A		; 10010000 (90)
-	SBC	C, A		; 10110010 (B2)
-	ADC	A, A		; 10010000 (90)
-	SBC	C, A		; 10110010 (B2)
-	OR	A, #F1		; 00101100 (2C) arg=F1
-	0x0E 0x15		; 00001110 (0E) Undefined opcode
-	0x65			; 01100101 (65) Undefined opcode
-	OR	C, D		; 11111110 (FE)
-	ADD	B, D		; 11001101 (CD)
-	JNZ	A:B		; 10000010 (82)
-	0x70			; 01110000 (70) Undefined opcode
-	ST	[374D], D	; 00010011 (13) arg=374D
-	0x4D			; 01001101 (4D) Undefined opcode
-	0x4D			; 01001101 (4D) Undefined opcode
-	0x38 0x59		; 00111000 (38) Undefined opcode
-	ADD	C, D		; 11001110 (CE)
-	AND	A, B		; 11100100 (E4)
-	SBC	C, A		; 10110010 (B2)
-	OR	A, C		; 11111000 (F8)
-	JNC	+#32		; 00001000 (08) arg=32
-	ADC	B, C		; 10011001 (99)
-	ST	[C17A], D	; 00010011 (13) arg=C17A
-	0x75			; 01110101 (75) Undefined opcode
-	ST	[A:B], #CA	; 00110000 (30) arg=CA
-	LD	B, [C:D]	; 00011101 (1D)
-	SBC	A, B		; 10110100 (B4)
-	XOR	D, #30		; 00100111 (27) arg=30
-	XOR	A, D		; 11011100 (DC)
-	0xA0			; 10100000 (A0) Undefined opcode
-	ADC	B, A		; 10010001 (91)
-	AND	B, C		; 11101001 (E9)
-	AND	B, D		; 11101101 (ED)
-	AND	A, B		; 11100100 (E4)
-	LD	B, [C:D]	; 00011101 (1D)
-	CMP	A, C		; 01111000 (78)
-	ADD	A, D		; 11001100 (CC)
-	0xE5			; 11100101 (E5) Undefined opcode
-	ST	[A:B], #2E	; 00110000 (30) arg=2E
-	0x67			; 01100111 (67) Undefined opcode
-	0x5C			; 01011100 (5C) Undefined opcode
-	0x0E 0xA9		; 00001110 (0E) Undefined opcode
-	XOR	D, D		; 11011111 (DF)
-	ST	[C:D], A	; 00011000 (18)
-	0xBA			; 10111010 (BA) Undefined opcode
-	OR	D, B		; 11110111 (F7)
-	JMP	C:D		; 10001111 (8F)
-	0x45			; 01000101 (45) Undefined opcode
-	XOR	B, C		; 11011001 (D9)
-	OR	A, B		; 11110100 (F4)
-	0x4B			; 01001011 (4B) Undefined opcode
-	SUB	B, D		; 10101101 (AD)
-	OR	A, D		; 11111100 (FC)
-	ADD	B, A		; 11000001 (C1)
-	JZ	C:D		; 10001011 (8B)
-	0x6B			; 01101011 (6B) Undefined opcode
-	ADC	B, C		; 10011001 (99)
-	0x66			; 01100110 (66) Undefined opcode
-	AND	A, #1D		; 00101000 (28) arg=1D
-	0x43			; 01000011 (43) Undefined opcode
-	XOR	A, B		; 11010100 (D4)
-	0x57			; 01010111 (57) Undefined opcode
-	SUB	A, D		; 10101100 (AC)
-	CMP	B, C		; 01111001 (79)
-	0xAF			; 10101111 (AF) Undefined opcode
-	AND	A, C		; 11101000 (E8)
-	OR	B, D		; 11111101 (FD)
-	SUB	A, C		; 10101000 (A8)
-	XOR	D, B		; 11010111 (D7)
-	0x4C			; 01001100 (4C) Undefined opcode
-	JNC	C:D		; 10001000 (88)
-	0x3C 0xFB		; 00111100 (3C) Undefined opcode
-	0x38 0x31		; 00111000 (38) Undefined opcode
-	ADC	A, C		; 10011000 (98)
-	0x56			; 01010110 (56) Undefined opcode
-	0xE0			; 11100000 (E0) Undefined opcode
-	CMP	C, D		; 01111110 (7E)
-	CMP	D, B		; 01110111 (77)
-	ST	[A:B], #F0	; 00110000 (30) arg=F0
-	0x75			; 01110101 (75) Undefined opcode
-	ADC	D, A		; 10010011 (93)
-	OR	A, B		; 11110100 (F4)
-	0x49			; 01001001 (49) Undefined opcode
-	0x3D 0xA0		; 00111101 (3D) Undefined opcode
-	JMP	A:B		; 10000111 (87)
-	SUB	D, B		; 10100111 (A7)
-	SUB	C, D		; 10101110 (AE)
-	SUB	A, D		; 10101100 (AC)
-	OR	A, #2F		; 00101100 (2C) arg=2F
-	SUB	D, C		; 10101011 (AB)
-	ADC	D, A		; 10010011 (93)
-	OR	D, A		; 11110011 (F3)
-	0x5E			; 01011110 (5E) Undefined opcode
-	0xB0			; 10110000 (B0) Undefined opcode
-	AND	A, B		; 11100100 (E4)
-	0x6B			; 01101011 (6B) Undefined opcode
-	0x4D			; 01001101 (4D) Undefined opcode
-	JMP	#E9ED		; 00000111 (07) arg=E9ED
-	0x43			; 01000011 (43) Undefined opcode
-	JC	#51E5		; 00000001 (01) arg=51E5
-	ST	[82E2], A	; 00010000 (10) arg=82E2
-	ADC	C, B		; 10010110 (96)
-	ADC	D, B		; 10010111 (97)
-	0x4D			; 01001101 (4D) Undefined opcode
-	0xAA			; 10101010 (AA) Undefined opcode
-	XOR	A, C		; 11011000 (D8)
-	AND	A, C		; 11101000 (E8)
-	SUB	B, D		; 10101101 (AD)
-	CMP	C, B		; 01110110 (76)
-	JNC	A:B		; 10000000 (80)
-	0xEF			; 11101111 (EF) Undefined opcode
-	ADD	A, B		; 11000100 (C4)
-	LD	D, [21FA]	; 00010111 (17) arg=21FA
-	AND	D, B		; 11100111 (E7)
-	OR	D, A		; 11110011 (F3)
-	XOR	C, #94		; 00100110 (26) arg=94
-	JE	#D124		; 00000101 (05) arg=D124
-	ADD	D, C		; 11001011 (CB)
-	JMP	#81BB		; 00000111 (07) arg=81BB
-	LD	D, #D2		; 00110111 (37) arg=D2
-	0x32 0x7D		; 00110010 (32) Undefined opcode
-	0x3A 0xD2		; 00111010 (3A) Undefined opcode
-	0x75			; 01110101 (75) Undefined opcode
-	LD	D, #9B		; 00110111 (37) arg=9B
-	SBC	D, C		; 10111011 (BB)
-	AND	A, D		; 11101100 (EC)
-	ADD	B, D		; 11001101 (CD)
-	0x3B 0xE9		; 00111011 (3B) Undefined opcode
-	ADD	C, C		; 11001010 (CA)
-	SUB	D, C		; 10101011 (AB)
-	0xA5			; 10100101 (A5) Undefined opcode
-	0xF0			; 11110000 (F0) Undefined opcode
-	0x65			; 01100101 (65) Undefined opcode
-	LD	D, [A:B]	; 00011111 (1F)
-	OR	A, D		; 11111100 (FC)
-	ST	[8E5A], B	; 00010001 (11) arg=8E5A
-	0x48			; 01001000 (48) Undefined opcode
-	JNE	+#76		; 00001100 (0C) arg=76
-	CMP	C, D		; 01111110 (7E)
-	JE	C:D		; 10001101 (8D)
-	JNE	#6CA8		; 00000100 (04) arg=6CA8
-	CMP	A, D		; 01111100 (7C)
-	SBC	A, C		; 10111000 (B8)
-	AND	B, C		; 11101001 (E9)
-	SBC	C, A		; 10110010 (B2)
-	CMP	A, D		; 01111100 (7C)
-	0x51			; 01010001 (51) Undefined opcode
-	OR	B, A		; 11110001 (F1)
-	SBC	A, C		; 10111000 (B8)
-	SUB	C, A		; 10100010 (A2)
-	XOR	A, C		; 11011000 (D8)
-	ST	[74FB], C	; 00010010 (12) arg=74FB
-	LD	D, [A:B]	; 00011111 (1F)
-	0xAF			; 10101111 (AF) Undefined opcode
-	ADD	D, D		; 11001111 (CF)
-	XOR	A, B		; 11010100 (D4)
-	OR	A, #E7		; 00101100 (2C) arg=E7
-	0x3C 0xC9		; 00111100 (3C) Undefined opcode
-	JZ	-#71		; 00001011 (0B) arg=F1
-	0xB5			; 10110101 (B5) Undefined opcode
-	LD	D, [A:B]	; 00011111 (1F)
-	SUB	D, B		; 10100111 (A7)
-	LD	C, [839C]	; 00010110 (16) arg=839C
-	0x69			; 01101001 (69) Undefined opcode
-	CMP	D, A		; 01110011 (73)
-	JC	#7BDB		; 00000001 (01) arg=7BDB
-	AND	C, #E4		; 00101010 (2A) arg=E4
-	0x3E 0x32		; 00111110 (3E) Undefined opcode
-	0xF0			; 11110000 (F0) Undefined opcode
-	0x58			; 01011000 (58) Undefined opcode
-	0x5D			; 01011101 (5D) Undefined opcode
-	0x50			; 01010000 (50) Undefined opcode
-	SUB	C, A		; 10100010 (A2)
-	ADC	D, A		; 10010011 (93)
-	ADD	C, A		; 11000010 (C2)
-	0x46			; 01000110 (46) Undefined opcode
-	OR	A, B		; 11110100 (F4)
-	JMP	C:D		; 10001111 (8F)
-	0x64			; 01100100 (64) Undefined opcode
-	0x55			; 01010101 (55) Undefined opcode
-	0x3A 0xAE		; 00111010 (3A) Undefined opcode
-	SUB	A, C		; 10101000 (A8)
-	OR	C, B		; 11110110 (F6)
-	0x5C			; 01011100 (5C) Undefined opcode
-	XOR	D, D		; 11011111 (DF)
-	JNE	A:B		; 10000100 (84)
-	XOR	D, C		; 11011011 (DB)
-	ADD	D, B		; 11000111 (C7)
-	ADC	A, A		; 10010000 (90)
-	AND	C, #3D		; 00101010 (2A) arg=3D
-	ADD	B, D		; 11001101 (CD)
-	0x6C			; 01101100 (6C) Undefined opcode
-	ADC	D, A		; 10010011 (93)
-	ADC	C, A		; 10010010 (92)
-	LD	D, #61		; 00110111 (37) arg=61
-	ST	[C:D], B	; 00011001 (19)
-	OR	C, B		; 11110110 (F6)
-	CMP	C, B		; 01110110 (76)
-	XOR	D, B		; 11010111 (D7)
-	ST	[841B], B	; 00010001 (11) arg=841B
-	JMP	-#51		; 00001111 (0F) arg=D1
-	JC	#6415		; 00000001 (01) arg=6415
-	ST	[7EC7], A	; 00010000 (10) arg=7EC7
-	ADD	A, D		; 11001100 (CC)
-	XOR	C, D		; 11011110 (DE)
-	SUB	D, C		; 10101011 (AB)
+	ADD   $0x00, B
+	SBC   D, B
+	NOP   0x9F08 
+	SUB   D, D
+	SUB   A, B
+	OR    A, D
+	MOV   C, B
+	ADC   C, B
+	OR    $0x3F, D
+	ADD   B, D
+	SBC   $0x5B, A
+	MOV   A, D
+	OR    D, C
+	MOV   [0x10], D
+	...    
+	OR    B, D
+	MOV   A, B
+	SBC   C, A
+	AND   A, C
+	XOR   C, A
+	CMP   D, A
+	JS    +0x62 
+	SUB   C, D
+	SUB   C, B
+	ADD   D, B
+	XOR   A, D
+	...    
+	ADC   C, C
+	SUB   B, A
+	ADD   C, B
+	XOR   A, B
+	...    
+	ADD   D, B
+	ADD   A, A
+	SUB   B, D
+	AND   C, D
+	ADC   B, A
+	JNC   +0x6C 
+	AND   C, C
+	OR    C, B
+	ADC   A, D
+	...    
+	...    
+	AND   D, A
+	AND   B, A
+	JZ    +0x2A 
+	SBC   $0x6C, B
+	OR    B, B
+	XOR   $0xF7, A
+	ADC   A, B
+	...    
+	AND   A, D
+	SUB   D, C
+	XOR   A, A
+	...    
+	ADC   D, C
+	...    
+	SBC   D, B
+	SUB   A, C
+	SUB   A, B
+	JNC   0xE533 
+	AND   B, B
+	ADD   $0x65, B
+	JNS   -0x37 
+	...    
+	MOV   [0x4D95], C
+	OR    D, D
+	...    
+	...    
+	ADD   B, D
+	JNS   -0x4A 
+	ADC   $0x33, A
+	...    
+	ADD   D, C
+	AND   B, A
+	AND   C, B
+	MOV   C, C
+	MOV   A, B
+	ADD   B, C
+	...    
+	SBC   D, B
+	XOR   C, C
+	CMP   A, B
+	XOR   A, C
+	ADD   A, C
+	XOR   C, C
+	ADD   $0x7A, B
+	MOV   D, A
+	AND   A, D
+	ADD   B, C
+	SBC   D, B
+	ADC   $0x3D, D
+	...    
+	MOV   C, B
+	ADC   C, B
+	ADD   C, C
+	...    
+	OR    A, D
+	AND   D, A
+	MOV   B, D
+	...    
+	JZ    0xCB17 
+	ADD   C, D
+	OR    $0x81, C
+	MOV   [0x64], B
+	XOR   $0x20, C
+	CMP   A, B
+	SUB   D, A
+	ADC   $0x1E, C
+	ADD   C, C
+	...    
+	ADD   B, A
+	ADC   $0xD9, A
+	ADD   D, B
+	SBC   A, A
+	SBC   D, A
+	MOV   A, C
+	SBC   D, A
+	MOV   $0x77, A
+	MOV   B, D
+	SUB   $0xB3, C
+	OR    A, D
+	MOV   $0x3C, B
+	OR    $0x62, A
+	SUB   A, C
+	CMP   B, A
+	MOV   B, D
+	MOV   [0xA0], A
+	XOR   $0xF3, C
+	MOV   B, B
+	...    
+	MOV   C, B
+	ADD   B, B
+	...    
+	SUB   $0x6C, C
+	JNS   0xE141 
+	AND   A, B
+	AND   D, C
+	ADD   C, D
+	AND   A, D
+	JC    0x99B1 
+	SUB   C, B
+	AND   C, B
+	...    
+	OR    $0x3A, A
+	ADC   A, B
+	...    
+	CMP   $0xF8, A
+	OR    B, D
+	...    
+	ADD   D, A
+	XOR   C, A
+	OR    B, A
+	...    
+	...    
+	ADD   B, A
+	SBC   $0x5F, B
+	AND   B, B
+	...    
+	...    
+	SUB   D, D
+	...    
+	SBC   C, A
+	JMP   0x3C84 
+	OR    $0x93, A
+	XOR   D, D
+	SUB   B, B
+	ADC   $0x31, D
+	SBC   A, A
+	...    
+	...    
+	OR    D, D
+	MOV   [0x409B], A
+	MOV   [0x2E80], B
+	MOV   [0x06], D
+	OR    $0x39, D
+	...    
+	SUB   B, A
+	...    
+	OR    B, C
+	MOV   D, D
+	AND   D, D
+	...    
+	ADC   $0xDD, B
+	ADC   A, A
+	JS    0x5355 
+	...    
+	JC    0x9FE6 
+	SUB   D, D
+	MOV   A, A
+	ADD   D, A
+	AND   C, B
+	SUB   D, C
+	OR    $0x56, B
+	SBC   D, A
+	...    
+	MOV   B, [0x582E]
+	...    
+	XOR   A, A
+	AND   D, D
+	MOV   B, B
+	ADC   D, A
+	...    
+	XOR   C, D
+	MOV   A, A
+	OR    $0x9F, D
+	SBC   C, D
+	...    
+	ADC   D, A
+	...    
+	MOV   D, [0x2AA4]
+	XOR   $0x4A, C
+	OR    D, B
+	OR    $0xBE, A
+	SUB   B, A
+	CMP   C, A
+	...    
+	AND   $0xD7, D
+	OR    C, D
+	...    
+	ADC   C, C
+	MOV   B, C
+	...    
+	MOV   $0x11, A
+	MOV   [0xFD3B], B
+	ADD   $0xDF, A
+	...    
+	...    
+	SBC   D, A
+	MOV   B, C
+	JMP   0x41BA 
+	MOV   $0xDE, B
+	XOR   D, C
+	...    
+	SUB   A, D
+	XOR   B, C
+	CMP   B, C
+	ADD   C, D
+	MOV   A, [0x3E17]
+	NOP   $0x51 
+	SBC   $0xF3, C
+	SBC   C, C
+	XOR   $0x20, A
+	AND   C, C
+	CMP   A, D
+	XOR   C, C
+	SBC   $0x72, D
+	MOV   D, C
+	NOP   $0xB3 
+	...    
+	SUB   A, C
+	AND   $0x4E, D
+	...    
+	XOR   C, B
+	SBC   B, D
+	ADC   $0x50, A
+	XOR   D, C
+	MOV   B, [0x831A]
+	CMP   B, A
+	CMP   B, B
+	...    
+	JMP   -0x1C 
+	AND   B, C
+	SBC   $0x35, C
+	AND   $0xAB, C
+	XOR   D, C
+	JMP   -0x27 
+	AND   C, C
+	ADD   $0x0C, C
+	...    
+	SUB   C, C
+	CMP   C, C
+	OR    C, D
+	ADC   D, D
+	MOV   C, [0xD1]
+	SUB   B, D
+	OR    A, B
+	ADD   D, C
+	SBC   A, D
+	CMP   $0xE4, C
+	SUB   $0xF9, B
+	...    
+	...    
+	XOR   D, A
+	XOR   C, D
+	SUB   D, A
+	SBC   D, C
+	MOV   A, [0xFC62]
+	SBC   A, A
+	MOV   [0x76], A
+	ADD   B, C
+	SBC   B, A
+	...    
+	SBC   B, B
+	SUB   A, C
+	SBC   C, D
+	ADC   B, A
+	MOV   [0xFF], A
+	XOR   B, B
+	OR    $0xF6, C
+	ADC   D, C
+	OR    D, B
+	JNZ   0xF35D 
+	OR    A, D
+	CMP   B, A
+	OR    C, C
+	SBC   $0x12, A
+	JS    0x7D2E 
+	MOV   D, B
+	XOR   A, D
+	...    
+	...    
+	ADC   $0xD5, A
+	CMP   A, D
+	SUB   D, C
+	XOR   A, A
+	MOV   B, D
+	SUB   $0xE7, A
+	XOR   C, B
+	ADD   A, B
+	ADC   D, C
+	MOV   B, [0x39]
+	ADD   D, D
+	CMP   C, C
+	AND   $0x99, C
+	OR    C, A
+	XOR   A, B
+	MOV   B, C
+	SBC   D, B
+	...    
+	...    
+	SBC   C, C
+	XOR   B, A
+	MOV   [0x80], C
+	MOV   A, A
+	XOR   C, B
+	...    
+	NOP   0x5468 
+	...    
+	...    
+	AND   B, D
+	AND   $0xEC, A
+	AND   $0x4B, B
+	...    
+	XOR   D, B
+	CMP   A, D
+	OR    A, B
+	ADD   $0x3E, D
+	SBC   A, A
+	JMP   +0x34 
+	SUB   $0x91, B
+	MOV   A, [0x8E]
+	MOV   [0xA5], A
+	ADD   $0x03, B
+	MOV   C, D
+	OR    $0x8B, A
+	...    
+	SBC   C, D
+	...    
+	JMP   -0x31 
+	XOR   C, A
+	ADD   B, A
+	AND   D, D
+	SUB   $0xFF, D
+	JS    +0x03 
+	MOV   D, A
+	...    
+	OR    C, C
+	OR    $0xE7, C
+	ADC   A, B
+	...    
+	XOR   A, B
+	CMP   $0x8A, D
+	CMP   $0x84, B
+	SUB   A, C
+	AND   A, A
+	ADD   D, B
+	OR    B, B
+	SBC   A, D
+	...    
+	AND   $0x44, B
+	ADD   C, A
+	ADD   $0x49, B
+	...    
+	OR    $0x1C, B
+	MOV   A, B
+	ADC   $0xC8, D
+	MOV   B, [0x0000]
+	SBC   $0x7F, B
+	ADD   D, A
+	ADC   C, D
+	...    
+	SBC   C, D
+	JMP   -0x69 
+	MOV   $0x09, C
+	NOP   $0x59 
+	OR    C, B
+	AND   D, D
+	ADD   $0x69, D
+	MOV   [0x2E], A
+	MOV   [0xA937], C
+	OR    A, B
+	MOV   D, C
+	CMP   A, A
+	SUB   $0x19, D
+	...    
+	ADC   D, B
+	MOV   B, C
+	MOV   A, C
+	AND   B, D
+	AND   C, A
+	ADC   C, A
+	MOV   [0xB391], D
+	XOR   B, D
+	ADD   B, A
+	JNZ   0xA892 
+	SBC   C, A
+	...    
+	MOV   $0x33, D
+	ADD   $0x6B, D
+	...    
+	ADC   C, C
+	JZ    0x6A59 
+	...    
+	CMP   B, B
+	SBC   B, D
+	AND   A, A
+	...    
+	SUB   D, A
+	MOV   [0xE1], A
+	ADD   B, D
+	...    
+	SUB   C, B
+	SUB   $0xFD, B
+	...    
+	AND   B, D
+	SUB   D, A
+	CMP   B, C
+	ADD   D, C
+	XOR   A, A
+	ADD   $0x95, D
+	ADC   A, A
+	SBC   A, B
+	SUB   D, C
+	OR    $0x79, C
+	...    
+	...    
+	XOR   B, C
+	SUB   B, C
+	CMP   B, A
+	...    
+	SBC   D, B
+	...    
+	AND   B, D
+	ADC   C, B
+	SBC   B, B
+	ADC   B, A
+	CMP   D, A
+	...    
+	ADC   D, A
+	...    
+	MOV   C, C
+	JNS   +0x4D 
+	SBC   B, C
+	JNC   0x5EA2 
+	...    
+	MOV   C, B
+	CMP   D, B
+	CMP   C, D
+	SUB   A, C
+	ADD   $0xA1, A
+	ADC   B, A
+	ADD   C, C
+	MOV   B, D
+	CMP   C, D
+	...    
+	SBC   $0xAA, B
+	JNZ   -0x65 
+	SBC   B, A
+	SUB   A, A
+	...    
+	OR    B, C
+	MOV   D, B
+	ADC   A, B
+	AND   C, B
+	ADC   C, D
+	ADD   D, C
+	...    
+	JNS   0xFCB3 
+	OR    D, A
+	SUB   C, C
+	OR    $0xA2, B
+	JNS   0x4DDF 
+	...    
+	SUB   B, D
+	CMP   A, B
+	XOR   B, D
+	MOV   D, D
+	CMP   A, D
+	ADC   C, B
+	MOV   [0xA486], C
+	SUB   A, D
+	...    
+	...    
+	ADC   $0x04, B
+	SUB   C, A
+	ADD   B, D
+	SBC   A, C
+	JZ    0xBF0E 
+	ADC   D, D
+	MOV   B, [0xAD]
+	XOR   A, C
+	...    
+	XOR   B, D
+	SBC   A, C
+	XOR   $0x9E, D
+	AND   B, B
+	...    
+	ADC   C, C
+	MOV   C, A
+	ADD   $0xCC, A
+	XOR   $0x91, B
+	JS    0x33BE 
+	ADD   $0xE9, D
+	MOV   B, [0x28B6]
+	XOR   C, A
+	SUB   C, D
+	SUB   A, A
+	XOR   C, D
+	MOV   A, D
+	AND   A, C
+	JS    0x72E9 
+	MOV   A, C
+	JC    +0x51 
+	...    
+	MOV   C, A
+	MOV   B, [0x8B]
+	OR    $0x2C, C
+	MOV   [0x0DE5], D
+	ADC   $0x66, D
+	MOV   B, C
+	ADD   B, D
+	CMP   D, D
+	MOV   A, B
+	...    
+	ADC   A, D
+	AND   $0x78, B
+	XOR   $0x3F, C
+	JC    0xE0A8 
+	AND   A, A
+	SBC   A, D
+	ADD   $0xFB, C
+	SBC   C, D
+	MOV   [0xB34C], D
+	ADC   $0x7D, D
+	ADD   C, A
+	...    
+	JC    +0x59 
+	MOV   C, [0x1BC9]
+	OR    D, D
+	SUB   D, A
+	SBC   A, C
+	...    
+	OR    D, C
+	SBC   B, D
+	SUB   A, A
+	SUB   D, C
+	XOR   D, D
+	...    
+	...    
+	...    
+	MOV   A, D
+	...    
+	AND   A, B
+	JNC   +0x33 
+	XOR   B, A
+	...    
+	XOR   C, A
+	ADC   C, C
+	AND   $0x73, C
+	ADC   A, D
+	SUB   $0x33, D
+	SUB   B, A
+	CMP   D, D
+	...    
+	SUB   D, D
+	...    
+	OR    D, D
+	OR    B, D
+	CMP   A, A
+	MOV   C, B
+	OR    C, A
+	MOV   B, C
+	SUB   $0x30, D
+	...    
+	CMP   C, C
+	...    
+	CMP   B, C
+	OR    B, D
+	NOP   0x40EF 
+	MOV   $0xC9, A
+	ADD   C, B
+	ADD   $0x1B, A
+	XOR   $0x63, B
+	...    
+	MOV   D, D
+	CMP   C, C
+	JS    0xAFB3 
+	SBC   D, D
+	SBC   A, C
+	...    
+	MOV   C, [0xF46C]
+	...    
+	SBC   D, D
+	SBC   B, A
+	XOR   $0xAE, D
+	SUB   B, C
+	XOR   A, C
+	MOV   A, D
+	ADC   $0xF5, B
+	MOV   D, [0x4C]
+	...    
+	JNZ   0x4854 
+	...    
+	MOV   B, [0x1A]
+	NOP   $0x1D 
+	ADC   B, C
+	CMP   D, C
+	ADC   $0x9F, A
+	MOV   C, C
+	ADD   B, D
+	...    
+	OR    $0xFC, D
+	SBC   $0x51, B
+	SUB   B, B
+	SUB   D, C
+	CMP   D, D
+	...    
+	MOV   D, B
+	MOV   [0x5B], D
+	CMP   B, C
+	CMP   $0xD6, C
+	...    
+	SUB   B, C
+	MOV   D, [0x0C]
+	...    
+	ADD   A, B
+	ADC   D, C
+	CMP   $0x4B, D
+	CMP   $0x88, A
+	ADC   D, C
+	MOV   D, D
+	ADC   B, D
+	SBC   C, C
+	ADC   D, B
+	NOP   $0x78 
+	...    
+	SBC   D, D
+	...    
+	...    
+	OR    D, A
+	JZ    +0x41 
+	AND   C, D
+	CMP   $0xA4, B
+	SBC   B, C
+	SBC   A, B
+	ADD   $0x95, D
+	ADC   A, A
+	...    
+	JNZ   0xC7D4 
+	ADD   B, D
+	...    
+	MOV   [0xCE], C
+	MOV   D, [0xD2]
+	...    
+	ADC   D, D
+	...    
+	MOV   [0xE4], D
+	JNS   -0x2E 
+	OR    B, D
+	XOR   A, D
+	AND   A, D
+	MOV   [0xD5], A
+	SUB   D, B
+	SUB   $0x8F, B
+	XOR   D, C
+	MOV   A, D
+	JNC   +0x1D 
+	SUB   B, D
+	...    
+	AND   B, B
+	SUB   A, D
+	CMP   $0x4C, C
+	XOR   A, C
+	SBC   C, C
+	AND   B, D
+	AND   B, B
+	SBC   D, A
+	SUB   B, D
+	XOR   D, C
+	AND   C, C
+	MOV   B, C
+	XOR   C, C
+	...    
+	CMP   B, B
+	SUB   D, C
+	MOV   [0x3C], C
+	...    
+	JS    0xFB28 
+	OR    C, D
+	SUB   A, B
+	...    
+	MOV   A, A
+	SBC   C, B
+	AND   A, A
+	CMP   D, C
+	MOV   C, B
+	CMP   D, D
+	...    
+	SBC   D, A
+	ADC   B, C
+	CMP   $0xAE, B
+	MOV   D, [0xDD8D]
+	...    
+	...    
+	ADC   C, B
+	JNZ   +0x4F 
+	SBC   $0x85, B
+	MOV   B, D
+	...    
+	AND   C, D
+	MOV   B, B
+	...    
+	AND   A, B
+	CMP   C, B
+	...    
+	AND   A, A
+	OR    C, D
+	XOR   A, D
+	...    
+	ADD   A, C
+	ADD   A, D
+	...    
+	CMP   $0x9B, B
+	MOV   C, A
+	CMP   B, B
+	SBC   B, D
+	MOV   $0x8C, A
+	CMP   D, A
+	SUB   A, C
+	MOV   C, A
+	ADD   C, B
+	SBC   B, A
+	MOV   B, A
+	OR    C, C
+	...    
+	XOR   $0x87, B
+	JC    -0x1F 
+	MOV   B, D
+	AND   D, C
+	ADD   $0xEB, A
+	...    
+	OR    B, A
+	MOV   A, [0xDE91]
+	...    
+	MOV   D, [0x49]
+	SBC   A, A
+	...    
+	OR    $0x70, C
+	SBC   A, A
+	ADC   D, C
+	SBC   D, D
+	SUB   B, C
+	...    
+	CMP   D, D
+	MOV   [0x5A0A], A
+	ADC   C, A
+	AND   $0x00, B
+	SUB   D, A
+	ADD   C, B
+	JNS   +0x21 
+	...    
+	ADD   A, B
+	OR    D, B
+	SBC   $0xC1, B
+	OR    D, B
+	SBC   B, A
+	OR    D, A
+	MOV   D, B
+	JS    -0x00 
+	XOR   D, A
+	MOV   B, [0xCFF0]
+	MOV   D, D
+	CMP   D, B
+	SUB   C, B
+	ADC   C, D
+	SBC   C, D
+	ADC   D, C
+	ADC   D, B
+	SBC   D, B
+	OR    C, A
+	XOR   B, D
+	CMP   $0x76, D
+	CMP   D, A
+	MOV   $0xDC, B
+	XOR   D, A
+	...    
+	XOR   A, B
+	ADC   B, A
+	ADC   D, B
+	SUB   $0xAF, C
+	XOR   D, C
+	...    
+	ADC   D, C
+	MOV   $0x36, B
+	XOR   $0x4D, C
+	MOV   A, C
+	ADD   C, A
+	MOV   D, B
+	SUB   C, B
+	MOV   A, [0x30]
+	...    
+	JNC   -0x46 
+	...    
+	AND   $0xFB, C
+	XOR   B, B
+	JNS   -0x7C 
+	...    
+	AND   A, C
+	ADC   A, B
+	AND   $0xB0, C
+	CMP   D, D
+	MOV   B, [0xA3]
+	...    
+	MOV   $0x1F, C
+	MOV   D, [0x38]
+	...    
+	MOV   $0x73, C
+	MOV   A, D
+	SBC   C, C
+	...    
+	OR    B, B
+	MOV   [0x58], B
+	...    
+	ADD   $0x34, B
+	...    
+	ADD   $0x56, C
+	SUB   A, A
+	ADD   D, C
+	MOV   B, [0x53]
+	...    
+	SUB   A, A
+	ADD   C, C
+	ADC   A, D
+	SBC   $0xBA, D
+	ADC   $0xD7, A
+	MOV   [0x6406], C
+	AND   C, C
+	ADD   A, B
+	OR    B, A
+	CMP   A, D
+	...    
+	SUB   A, D
+	MOV   B, [0x16]
+	CMP   B, B
+	AND   C, A
+	...    
+	AND   A, A
+	AND   B, B
+	MOV   D, [0xFCFD]
+	MOV   B, C
+	XOR   D, B
+	XOR   $0x6B, A
+	XOR   $0xEF, A
+	OR    B, D
+	MOV   B, B
+	...    
+	MOV   D, B
+	SBC   D, D
+	JNC   0x4409 
+	...    
+	MOV   A, B
+	SBC   A, A
+	XOR   $0x9D, A
+	ADD   C, B
+	XOR   A, C
+	CMP   D, D
+	ADD   $0xFF, B
+	JZ    0x15F2 
+	MOV   B, [0xCC6E]
+	CMP   C, A
+	CMP   $0x0C, B
+	MOV   B, [0x51FC]
+	MOV   D, C
+	...    
+	CMP   D, C
+	ADD   C, C
+	AND   A, C
+	SUB   C, B
+	OR    $0x87, A
+	XOR   D, D
+	OR    C, D
+	SBC   B, C
+	ADC   $0xFB, B
+	AND   B, A
+	SBC   D, B
+	...    
+	SBC   $0x45, C
+	ADC   A, A
+	SUB   A, B
+	CMP   D, B
+	...    
+	SBC   C, B
+	ADD   D, B
+	ADC   $0x18, B
+	...    
+	...    
+	SBC   B, C
+	CMP   B, D
+	JNZ   -0x1E 
+	ADC   B, B
+	...    
+	...    
+	SBC   C, D
+	OR    B, C
+	SUB   B, A
+	XOR   C, B
+	XOR   D, A
+	SUB   A, A
+	MOV   $0x9D, D
+	SUB   D, B
+	...    
+	JNC   -0x48 
+	SBC   B, D
+	SBC   $0xC2, D
+	CMP   A, D
+	MOV   A, [0x2A]
+	...    
+	ADC   B, B
+	JMP   -0x06 
+	...    
+	SBC   D, C
+	JMP   0xF918 
+	OR    C, B
+	XOR   C, D
+	SBC   $0xC6, D
+	SBC   A, D
+	...    
+	SBC   D, D
+	AND   D, D
+	MOV   $0x46, B
+	...    
+	OR    D, A
+	MOV   B, [0xAA44]
+	OR    B, A
+	JC    0x7E81 
+	MOV   D, C
+	AND   D, A
+	MOV   D, [0xC1BA]
+	AND   C, D
+	...    
+	JNC   +0x66 
+	ADD   A, B
+	AND   B, C
+	...    
+	MOV   $0x05, C
+	JZ    0xE10C 
+	AND   A, B
+	OR    $0x0D, D
+	...    
+	...    
+	CMP   C, D
+	NOP   0x657C 
+	...    
+	OR    A, B
+	CMP   D, B
+	SBC   C, A
+	MOV   [0x9E], A
+	...    
+	MOV   D, [0x8250]
+	CMP   C, A
+	XOR   A, C
+	ADD   C, B
+	CMP   $0x09, A
+	...    
+	MOV   [0x05], B
+	SBC   D, B
+	AND   A, B
+	SBC   A, A
+	SBC   A, C
+	ADC   C, D
+	...    
+	CMP   C, D
+	NOP   0xBBD0 
+	ADC   C, D
+	SUB   A, A
+	OR    D, B
+	XOR   D, C
+	OR    A, A
+	ADD   D, B
+	ADD   $0xCF, A
+	AND   A, D
+	AND   B, A
+	MOV   A, [0x6E23]
+	MOV   $0x49, A
+	...    
+	MOV   $0x02, D
+	JNC   0x7E82 
+	MOV   D, C
+	ADD   B, C
+	ADD   C, B
+	...    
+	...    
+	...    
+	AND   D, A
+	SBC   B, A
+	ADD   B, C
+	SUB   C, D
+	CMP   B, C
+	...    
+	SBC   A, D
+	SUB   A, B
+	MOV   A, C
+	MOV   A, [0xC2]
+	AND   C, B
+	CMP   $0xED, B
+	ADD   D, A
+	ADC   $0xA3, B
+	AND   C, A
+	...    
+	SBC   D, D
+	CMP   $0xF0, A
+	OR    B, C
+	CMP   C, C
+	XOR   $0x67, C
+	...    
+	MOV   $0x35, D
+	XOR   $0xEF, B
+	SBC   D, A
+	SBC   C, B
+	CMP   $0xE2, C
+	...    
+	...    
+	SUB   B, D
+	OR    A, C
+	...    
+	...    
+	ADC   A, D
+	ADC   $0x2B, D
+	ADD   D, D
+	SBC   B, B
+	MOV   C, C
+	...    
+	ADC   B, A
+	XOR   $0x10, D
+	ADC   D, D
+	...    
+	ADC   A, C
+	JZ    -0x67 
+	SUB   C, A
+	...    
+	...    
+	ADC   D, A
+	XOR   D, B
+	AND   A, D
+	SUB   B, D
+	SUB   A, D
+	SBC   B, A
+	AND   D, D
+	JZ    -0x29 
+	ADD   C, B
+	JNS   0xC4CE 
+	ADD   B, A
+	NOP   $0xB1 
+	XOR   A, A
+	AND   B, B
+	MOV   B, B
+	...    
+	...    
+	SBC   D, A
+	OR    $0x25, C
+	OR    $0x6A, A
+	SUB   D, C
+	ADC   C, A
+	MOV   [0x1E04], A
+	MOV   C, C
+	ADC   D, D
+	ADC   A, A
+	...    
+	XOR   A, D
+	AND   B, B
+	MOV   A, [0x24E1]
+	...    
+	ADC   $0xB1, B
+	SUB   A, B
+	SUB   B, D
+	SBC   $0x88, C
+	ADC   A, D
+	AND   C, A
+	OR    B, A
+	MOV   C, [0xDAE0]
+	ADD   D, D
+	ADC   B, C
+	SUB   $0xB4, C
+	JNS   0x5A5D 
+	...    
+	SBC   $0x04, A
+	...    
+	SUB   $0x9E, A
+	SBC   C, D
+	MOV   [0x26], A
+	MOV   C, D
+	ADC   D, A
+	XOR   A, C
+	SUB   $0x05, A
+	MOV   D, D
+	...    
+	ADC   C, D
+	AND   $0x11, B
+	JC    0x324E 
+	ADD   $0xE1, C
+	MOV   D, [0x97]
+	SUB   B, A
+	MOV   D, A
+	AND   $0x04, A
+	...    
+	MOV   [0xC9C5], D
+	XOR   D, B
+	MOV   [0xA7A7], D
+	SBC   A, D
+	SBC   A, C
+	SUB   B, A
+	CMP   B, A
+	JNC   0xA512 
+	SBC   B, B
+	CMP   D, A
+	...    
+	MOV   C, [0x97]
+	ADC   D, C
+	...    
+	JNS   +0x3B 
+	ADD   C, D
+	OR    A, A
+	SBC   D, D
+	...    
+	...    
+	ADC   B, A
+	SUB   D, A
+	MOV   B, C
+	XOR   C, C
+	...    
+	SUB   D, B
+	JNS   0x9A9A 
+	SUB   C, C
+	AND   A, D
+	AND   $0x84, D
+	NOP   0x21C9 
+	CMP   $0x0F, B
+	OR    A, C
+	AND   $0x4C, C
+	SBC   C, D
+	XOR   B, C
+	SUB   $0xCC, A
+	OR    B, D
+	OR    $0x7D, D
+	ADC   C, C
+	MOV   C, [0x170E]
+	...    
+	OR    $0xB6, D
+	OR    C, C
+	SUB   B, B
+	OR    D, C
+	SUB   A, D
+	MOV   B, C
+	SUB   D, B
+	ADD   A, B
+	OR    C, A
+	SUB   A, A
+	ADC   C, C
+	SUB   C, A
+	SUB   A, C
+	ADD   C, D
+	CMP   C, C
+	OR    B, C
+	...    
+	ADC   B, C
+	SBC   C, B
+	ADD   A, D
+	MOV   A, A
+	MOV   [0xEDE1], D
+	MOV   A, D
+	SUB   D, B
+	ADC   B, B
+	SBC   D, B
+	ADD   $0x90, A
+	...    
+	ADD   A, D
+	ADC   A, D
+	XOR   D, B
+	...    
+	AND   $0x22, D
+	OR    $0xE4, B
+	ADD   D, B
+	ADD   C, D
+	MOV   C, D
+	XOR   C, D
+	...    
+	XOR   $0xBD, C
+	ADD   A, A
+	...    
+	SBC   B, C
+	JNS   0x7EA1 
+	MOV   D, C
+	...    
+	ADD   C, B
+	SBC   C, B
+	CMP   C, C
+	CMP   $0xA4, A
+	SBC   B, B
+	SBC   B, C
+	OR    $0xA5, B
+	AND   D, A
+	SUB   A, D
+	...    
+	AND   A, C
+	...    
+	NOP   0x7230 
+	MOV   A, C
+	XOR   A, B
+	XOR   C, B
+	OR    B, C
+	ADC   D, D
+	CMP   B, A
+	MOV   [0xC4], C
+	SUB   D, B
+	ADD   $0xEC, D
+	MOV   D, A
+	SBC   D, B
+	ADC   A, C
+	AND   C, D
+	CMP   B, A
+	SUB   C, A
+	SUB   B, A
+	SBC   B, B
+	CMP   A, A
+	SBC   D, A
+	CMP   B, A
+	JMP   0x4616 
+	...    
+	XOR   C, D
+	MOV   A, D
+	ADD   C, C
+	ADC   $0xC1, B
+	MOV   D, D
+	SBC   $0xA4, D
+	CMP   $0x93, B
+	ADD   C, A
+	ADD   D, C
+	...    
+	ADD   D, B
+	XOR   D, B
+	AND   $0x22, D
+	OR    C, B
+	MOV   [0x00], C
+	SBC   A, C
+	MOV   [0x4CAD], B
+	ADC   B, A
+	XOR   B, A
+	SBC   A, C
+	CMP   $0x61, A
+	ADC   D, D
+	SUB   D, C
+	SBC   C, D
+	...    
+	AND   D, B
+	XOR   B, C
+	OR    $0x86, A
+	XOR   B, A
+	MOV   A, B
+	ADC   C, D
+	SUB   C, C
+	XOR   $0x0D, D
+	XOR   $0x6C, D
+	...    
+	MOV   A, C
+	JNC   -0x78 
+	CMP   D, A
+	SUB   D, C
+	ADC   C, D
+	...    
+	...    
+	SUB   D, D
+	...    
+	SUB   B, C
+	MOV   B, A
+	...    
+	SUB   A, B
+	...    
+	ADC   $0x6B, B
+	ADD   A, C
+	SUB   A, A
+	OR    D, A
+	...    
+	AND   D, C
+	XOR   B, A
+	...    
+	JNC   0xB5FB 
+	ADC   B, B
+	XOR   B, C
+	CMP   $0x2D, B
+	JNC   -0x21 
+	...    
+	...    
+	OR    A, B
+	CMP   A, C
+	SUB   A, C
+	...    
+	ADD   D, B
+	XOR   B, A
+	SBC   B, C
+	CMP   C, D
+	OR    B, C
+	ADD   $0x0C, A
+	OR    D, C
+	JC    0x7251 
+	MOV   A, C
+	ADC   C, C
+	CMP   $0x15, A
+	...    
+	...    
+	OR    B, B
+	...    
+	...    
+	OR    D, B
+	ADD   D, D
+	MOV   A, D
+	OR    C, C
+	...    
+	CMP   A, A
+	...    
+	OR    A, A
+	ADC   C, C
+	XOR   B, D
+	OR    A, B
+	MOV   D, [0x946E]
+	...    
+	JC    0x62D9 
+	...    
+	...    
+	...    
+	SBC   $0x5D, A
+	XOR   B, D
+	OR    D, C
+	SUB   $0x7C, B
+	ADC   C, D
+	SBC   B, B
+	AND   C, C
+	ADC   A, B
+	SUB   A, A
+	ADC   A, C
+	SUB   A, A
+	ADC   A, C
+	ADC   $0xF1, A
+	JNS   +0x15 
+	OR    D, C
+	ADD   D, B
+	CMP   A, C
+	MOV   A, A
+	MOV   [0x4D37], D
+	...    
+	...    
+	AND   $0x59, A
+	ADD   D, C
+	AND   B, A
+	ADC   A, C
+	OR    C, A
+	JMP   +0x32 
+	MOV   [0x7AC1], D
+	MOV   B, B
+	ADD   $0xCA, A
+	MOV   B, [0xF2]
+	ADC   B, A
+	SUB   $0x30, D
+	XOR   D, A
+	SBC   A, A
+	SUB   A, B
+	AND   C, B
+	AND   D, B
+	AND   B, A
+	MOV   B, [0xA8]
+	MOV   C, A
+	ADD   D, A
+	AND   B, B
+	ADD   $0x2E, A
+	...    
+	...    
+	JNS   -0x29 
+	MOV   [0x0E], A
+	ADC   C, C
+	OR    B, D
+	CMP   D, D
+	...    
+	XOR   C, B
+	OR    B, A
+	...    
+	SBC   D, B
+	OR    D, A
+	ADD   A, B
+	CMP   C, D
+	...    
+	SUB   C, B
+	...    
+	SBC   $0x1D, A
+	MOV   $0xD4, D
+	XOR   B, A
+	...    
+	SBC   D, A
+	MOV   C, B
+	SBC   D, D
+	AND   C, A
+	OR    D, B
+	SBC   C, A
+	XOR   B, D
+	...    
+	CMP   C, A
+	OR    $0xFB, A
+	AND   $0x31, A
+	SUB   C, A
+	...    
+	AND   A, A
+	MOV   D, C
+	MOV   B, D
+	ADD   $0xF0, A
+	MOV   B, B
+	SUB   A, D
+	OR    B, A
+	...    
+	OR    $0xA0, B
+	CMP   B, D
+	SBC   B, D
+	SBC   D, C
+	SBC   D, A
+	ADC   $0x2F, A
+	SBC   C, D
+	SUB   A, D
+	OR    A, D
+	...    
+	ADC   A, A
+	AND   B, A
+	...    
+	...    
+	JS    0xEDE9 
+	AND   D, B
+	MOV   $0x01, D
+	NOP   0xE551 
+	AND   B, B
+	MOV   [0xE282], A
+	SUB   B, C
+	SUB   B, D
+	...    
+	SBC   C, C
+	XOR   C, A
+	AND   C, A
+	SBC   D, B
+	MOV   B, C
+	CMP   A, A
+	AND   D, D
+	ADD   B, A
+	MOV   D, [0xFA21]
+	AND   B, D
+	OR    A, D
+	SUB   $0x94, C
+	JZ    0x24D1 
+	SUB   $0xCB, A
+	JS    0xBB81 
+	ADC   C, D
+	XOR   $0xD2, D
+	ADD   $0x7D, C
+	AND   $0xD2, C
+	MOV   B, B
+	XOR   $0x9B, D
+	ADC   C, D
+	AND   D, A
+	ADD   D, B
+	AND   $0xE9, D
+	ADD   C, C
+	SBC   C, D
+	SBC   B, B
+	OR    A, A
+	...    
+	MOV   D, [0xCC]
+	OR    D, A
+	MOV   [0x5A8E], B
+	...    
+	JNZ   +0x76 
+	CMP   D, B
+	JNZ   0xA86C 
+	SBC   C, A
+	MOV   D, A
+	ADC   C, A
+	AND   C, B
+	ADC   A, C
+	MOV   D, A
+	...    
+	OR    A, B
+	ADC   C, A
+	SBC   A, C
+	XOR   C, A
+	MOV   [0xFB74], C
+	MOV   D, [0x59]
+	SBC   D, D
+	ADD   D, D
+	XOR   B, A
+	ADC   $0xE7, A
+	OR    $0xC9, A
+	JC    -0x71 
+	MOV   D, [0xEC]
+	SBC   B, D
+	MOV   C, [0x9C83]
+	...    
+	MOV   A, D
+	NOP   0xDB7B 
+	XOR   C, D
+	SBC   $0xE4, C
+	OR    $0x32, C
+	OR    A, A
+	...    
+	...    
+	...    
+	SBC   A, C
+	SUB   A, D
+	ADD   A, C
+	...    
+	OR    B, A
+	CMP   D, D
+	...    
+	...    
+	AND   $0xAE, C
+	SBC   C, A
+	OR    B, C
+	...    
+	XOR   D, D
+	CMP   B, A
+	XOR   C, D
+	ADD   B, D
+	SUB   A, A
+	SBC   $0x3D, C
+	ADD   D, B
+	...    
+	SUB   A, D
+	SUB   A, C
+	XOR   $0x61, D
+	MOV   [0x9E], B
+	OR    B, C
+	MOV   B, C
+	XOR   B, D
+	MOV   [0x1B84], B
+	JS    -0x51 
+	...    
+	MOV   B, [0x7E10]
+	ADD   B, D
+	ADD   D, A
+	XOR   D, C
+	SBC   C, D
+	AND   $0x00, B

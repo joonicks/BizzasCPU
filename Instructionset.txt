@@ -1,35 +1,62 @@
-Registers:
-General purpose (8 bit): A, B, C, D
-Instruction registers (8 bit): IROP, IRLO, IRHI
-Constant registers: ZERO
+Registers (default size 8-bit):
+General purpose:	A, B, C, D					regbank
+Internal registers:	IROP (Instruction register)			control unit
+			INPC (Program Counter)				program counter
+			IMMA (IMM16 Address Buffer, 16 bit)		program counter
+Flags (1 bit):		Carry, Zero, Sign				alu unit
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~( only 0)~~~~~~~~~~~PC2addr={0 if condition true}, PCjump=1, PCjrel={IROP[3]}, addrLo=IRA
-( 0)0000####	JMP ...							addrHi=IRB
-	000X	JMP IMM16			Jump if IROP[0]=0 (NOP/Unconditional)
-	001X	JMP IMM16 if CARRY=X		(JNC, JC)
-	010X	JMP IMM16 if ZERO=X		(JNZ, JZ)
-	011X	JMP IMM16 if SIGN=X		(JNS, JS)
-	100X	JMP REL8			Jump if IROP[0]=0 (NOP/Unconditional)
-	101X	JMP REL8 if CARRY=X		(JNC, JC)
-	110X	JMP REL8 if ZERO=X		(JNZ, JZ)
-	111X	JMP REL8 if SIGN=X		(JNS, JS)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~( only 0)~~~~~~~~~~~PCjump=1, PCjrel=IROP[3]
+( 0)0000####	JMP ...
+		Byte order: [JMPOP][ADDRLO][ADDRHI][...]
+		At Cycle 2, addrHi/addrLo will be pointing at ADDRHI
+		and the value can be copied from MemBus into PC
+	000F	JMP IMM16	if 0=F		(JMP, NOP)		PC2addr=1
+	001F	JMP IMM16	if Carry=F	(JNC, JC)
+	010F	JMP IMM16	if Zero=F	(JNZ, JZ)
+	011F	JMP IMM16	if Sign=F	(JNS, JS)
+		At Cycle 1, address will be pointing at REL8
+		and the value can be copied from MemBus into PC
+	100F	JMP REL8	if 0=F		(JMP, NOP)
+	101F	JMP REL8	if Carry=F	(JNC, JC)
+	110F	JMP REL8	if Zero=F	(JNZ, JZ)
+	111F	JMP REL8	if Sign=F	(JNS, JS)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-( 1)000100YY	MOV [IMM16], DST
-	01YY	MOV SRC, [IMM16]
-	10YY	MOV [IMM8], DST			Zeropage
-	11YY	MOV SRC, [IMM8]			Zeropage
-( 2)0010SSYY
+( 1)0001####
+	00YY	MOV [IMM16], DST					Mem2ModBus=1, Mem_WR=0
+	01YY	MOV SRC, [IMM16]					Mem2ModBus=0, Mem_WR=1
+		When Mem2IMLo=1, immaHi is set to zero
+	10YY	MOV [IMM8], DST			Zeropage		Mem2ModBus=1, Mem_WR=0
+	11YY	MOV SRC, [IMM8]			Zeropage		Mem2ModBus=0, Mem_WR=1
+( 2)0010####								ALU_OE=1, DstSel=YY, Mem2ModBus=1, F_Store=1
 	00YY	CMP IMM8, DST
 	01YY	SUB IMM8, DST
 	10YY	SBC IMM8, DST
 	11YY	ADC IMM8, DST
-( 3)0011SSYY
+( 3)0011####
 	00YY	ADD IMM8, DST
 	01YY	XOR IMM8, DST
 	10YY	AND IMM8, DST
 	11YY	OR  IMM8, DST
+( 4)0100####								Mem2ModBus=1, DstSel=YY, ALU_Nop=1,
+	00YY	MOV IMM8, DST
+	01##	...
+	10##	...
+	11##	...
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	Unmapped possible extra instructions
+( 5)0101####	...
+( 6)0110####	...
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~(7 to 15)~~~~~~~~~~~ALU_OE=1, DstSel=YY, ModSel=XX, Mod2ModBus=1
+( 7)0111XXYY	MOV SRC, DST						ALUBus2Dst=1, ALU_Nop=1, F_Store=0
+( 8)1000XXYY	CMP MOD, DST						ALUBus2Dst=0, ALU_OP=ADD, InvertMod=1, F_Store=1, ALU_Carry=0
+( 9)1001XXYY	SUB MOD, DST						ALUBus2Dst=1, ALU_OP=ADD, InvertMod=1, F_Store=1, ALU_Carry=0
+(10)1010XXYY	SBC MOD, DST						ALUBus2Dst=1, ALU_OP=ADD, InvertMod=1, F_Store=1, ALU_Carry=Carry
+(11)1011XXYY	ADC MOD, DST						ALUBus2Dst=1, ALU_OP=ADD, InvertMod=0, F_Store=1, ALU_Carry=Carry
+(12)1100XXYY	ADD MOD, DST						ALUBus2Dst=1, ALU_OP=ADD, InvertMod=0, F_Store=1, ALU_Carry=0
+(13)1101XXYY	XOR MOD, DST						ALUBus2Dst=1, ALU_OP=XOR, InvertMod=0, F_Store=1, ALU_Carry=(*)
+(14)1110XXYY	AND MOD, DST						ALUBus2Dst=1, ALU_OP=AND, InvertMod=0, F_Store=1, ALU_Carry=(*)
+(15)1111XXYY	OR  MOD, DST						ALUBus2Dst=1, ALU_OP=OR,  InvertMod=0, F_Store=1, ALU_Carry=(*)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Unmapped instructions
 
 	DCNN	D = direction R/L, C = Through Carry, NN = 1, 2, 3 or 4 bits
 	00NN	SHR A, NN			Shift Right with Zero
@@ -39,21 +66,8 @@ Constant registers: ZERO
 
 	00YY	INC DST				ADC constant ZERO + Carry=1
 	01YY	DEC DST				SBC constant ZERO - Carry=1
+		DEC is equivalent to NOT(INC(NOT(X)))
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-( 4)0100####
-( 5)0101####
-( 6)0110####
-( 7)0111####
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~(8 to 15)~~~~~~~~~~~ALU2dst=1{IROP[7]}, XS=DST, YS=SRC, XS2xxbus=1, YS2yybus=1, Store_Flags=1
-( 8)1000XXYY	CMP SRC, DST						ALU_OP=SUB, ALU_Carry=0
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~(9 to 15)~~~~~~~~~~~dstbus2YS=1
-( 9)1001XXYY	SUB SRC, DST						ALU_OP=SUB, ALU_Carry=0
-(10)1010XXYY	SBC SRC, DST						ALU_OP=SUB, ALU_Carry=Carry
-(11)1011XXYY	ADC SRC, DST						ALU_OP=ADD, ALU_Carry=Carry
-(12)1100XXYY	ADD SRC, DST						ALU_OP=ADD, ALU_Carry=0
-(13)1101XXYY	XOR SRC, DST						ALU_OP=XOR, ALU_Carry=0 (*)
-(14)1110XXYY	AND SRC, DST						ALU_OP=AND, ALU_Carry=Carry (*)
-(15)1111XXYY	OR  SRC, DST						ALU_OP=OR,  ALU_Carry=Carry (*)
 
 * --> Value doesnt affect result
 
@@ -66,25 +80,6 @@ MOV SRC, [IMM16]	  X	  X	  X	  X
 MOV [IMM8], DST		  X	  X	  -	  X
 MOV SRC, [IMM8]		  X	  X	  -	  X
 ALU IMM8, DST		  X	  X	  -	  -
+MOV IMM8, DST		  X	  X	  -	  -
 MOV SRC, DST		  X	  -	  -	  -
 ALU SRC, DST		  X	  -	  -	  -
-
-jumpcond	= flag xnor irop0
-PC2addr		= irop7654 = 0, jumpcond = 0, (jump condition met & ira/irb not yet loaded)
-PCjump		= irop5 = 0, irop4 = 0, hasira = 1, hasirb = 1, jumpcond = 1
-
-Flags_Store	= irop7
-ALU2dstbus	= irop7
-ALU_Carry	= irop7 & irop5 & Carry
-ALU_Sub		= irop7 & (not irop6) & (irop5 nand irop4)
-ALU_OP[1]	= irop6 & irop5
-ALU_OP[0]	= irop6 & irop4
-
-XS2DstBus	=
-XS2XXBus	=
-YS2YYBus	=
-DstBus2YY	=
-YS[0]		=
-YS[1]		=
-XS[0]		=
-XS[1]		=

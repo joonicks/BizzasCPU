@@ -1,37 +1,26 @@
-
-
 	Bizzas CPU
 
-		Main blocks:	16-bit Program counter
-				16-bit Address bus
-				8-bit Data bus
-				Two 8-bit ALU busses (for source A and source B)
-				Instruction Loader (for 8, 16 and 24 bit instructions)
-				Instruction Executor (runs the instruction once it is loaded)
-				8-bit ALU capable of doing ADD, SUB, XOR, AND, OR, CMP
+		Main blocks:	16-bit Address bus
+				 8-bit Data bus
+
+				8-bit ALU capable of doing CMP, ADD, ADC, SUB, SBC, XOR, AND, OR
 				Four general purpose registers: A, B, C, D
-				Non-user registers: IROP, IRA, IRB
+				Non-user registers: IROP, INPC, IMMA
+				Flags: Carry, Zero, Sign
 
 		Future blocks:	IO, interrupts
 				Memory buffer
 				Instruction cache
-				Register renaming
 
 				Using idle memory-bus cycles for a second core (?)
 
-
-	Design process for (Instruction executor)
-
-		* Determine control signals required
-		* For each control signal, describe in text the logic for determining
-		  wether the signal should be high (active) or low (default/inactive),
-		  based on the contents of IROP
-		* Build that logic in Quartus
 
 	Hobbyist CPU design
 
 		Primarily for Quartus (II)/Block diagrams & Schematics for the visual
 		(and possibly more educational) style.
+
+		First draft in VHDL
 
 		Initial goal is to get the CPU working on an FPGA.
 

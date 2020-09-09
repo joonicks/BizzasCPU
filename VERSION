@@ -1,0 +1,5 @@
+2020-09-08		First opcode executing
+			Simple MOV, SUB, ADD, XOR, OR opcodes working
+
+2020-09-09		Flags implemented in ALU unit.
+			JMP, JNC, JC,  JNZ, JZ, JNS, JS REL8/IMM16 working

@@ -202,7 +202,7 @@ int disass(uint8_t *data)
 	if (mod == REL8)
 		sprintf((mod = immer),"%c0x%02X",(data[1] & 0x80) ? '-' : '+',data[1] & 0x7F);
 
-	to_file(1,"\t%s   %s%s %s\n",opcode,mod,(*dst) ? "," : "",dst);
+	to_file(1,"hex 0x%02X bin %s: \t%s   %s%s %s\n",irop,mkbin(irop),opcode,mod,(*dst) ? "," : "",dst);
 	return(1 + imm8 + imm16);
 }
 

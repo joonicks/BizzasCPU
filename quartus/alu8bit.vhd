@@ -39,7 +39,7 @@ begin
 		if (rising_edge(SYSCLK) and F_Store = '1') then
 			Carry <= adder(8);
 			Sign  <= adder(7);
-			Zero  <= adder(7) or adder(6) or adder(5) or adder(4) or adder(3) or adder(2) or adder(1) or adder(0);
+			Zero  <= not(adder(7) or adder(6) or adder(5) or adder(4) or adder(3) or adder(2) or adder(1) or adder(0));
 		end if;
 	end process;
 	
@@ -55,7 +55,7 @@ begin
 				modval := unsigned(ModBus);
 			end if;
 			case (ALU_OP) is
-				when "00"  => adder <= std_logic_vector(unsigned('0' & DstBus) + unsigned('0' & modval) + extra);
+				when "00"  => adder <= std_logic_vector(unsigned('0' & DstBus) + unsigned(InvertMod & modval) + extra);
 				when "01"  => adder(7 downto 0) <= ModBus xor DstBus;
 				when "10"  => adder(7 downto 0) <= ModBus and DstBus;
 				when "11"  => adder(7 downto 0) <= ModBus or  DstBus;

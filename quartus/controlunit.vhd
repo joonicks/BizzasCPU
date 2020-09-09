@@ -74,45 +74,76 @@ begin
 		end if;
 	end process;
 	
-	-- Dont let Memory drive MemBus in memory
-	-- todo: unless reading
+	-- Dont let Memory drive MemBus in memory cycle, unless reading
 	Mem_OE <= irop(2) when cycle = "0001" else '1';
 	PC_OE <= '1';
 	DstSel <= std_logic_vector(irop(1 downto 0));
-	
+
 	process(irop, c0)
 		variable opnum: integer range 0 to 15;
+		variable jmpflag: std_logic;
 	begin
 		opnum := to_integer(irop(7 downto 4));
 		case opnum is
+			when 0 => -- JMP IMM16, JMP REL8
+				case irop(2 downto 1) is
+					when "00" => jmpflag := '0' xnor irop(0);
+					when "01" => jmpflag := F_Carry xnor irop(0); 
+					when "10" => jmpflag := F_Zero xnor irop(0);
+					when "11" => jmpflag := F_Sign xnor irop(0);
+				end case;
+				PCjump <= jmpflag and ((c0 and irop(3)) or (c1 and not(irop(3))));
+				PCjrel <= jmpflag and c0 and irop(3);
+				Mem2IMLo <= jmpflag and c0 and not(irop(3));
+				ALU_Nop <= '1';
+				F_Store <= '0';
+				InvertMod <= '0';
+				Mod2ModBus <= '0';
+				ALUBus2Dst <= '0';
 			when 2 => -- CMP IMM8, SUB IMM8, SBC IMM8, ADC IMM8
+				PCjump <= '0';
+				PCjrel <= '0';
+				Mem2IMLo <= '0';
 				ALU_Cin <= '1'; --(F_Carry and irop(3)) xor (irop(3) nand irop(2)));
 				ALU_Nop <= '0';
-				F_Store <= '1';
+				F_Store <= c0;
 				Mod2ModBus <= '0';
 				ALUBus2Dst <= c0 and (irop(4) nor irop(3)); -- 1 if 00YY
 				InvertMod <= irop(3) nand irop(2);
 				ALU_OP <= "00";
 			when 3 => -- ADD, XOR, AND, OR
+				PCjump <= '0';
+				PCjrel <= '0';
+				Mem2IMLo <= '0';
+				ALU_Cin <= '0';
 				ALU_Nop <= '0';
-				F_Store <= '1';
+				F_Store <= c0;
 				InvertMod <= '0';
 				Mod2ModBus <= '0';
 				ALUBus2Dst <= c0;
 				ALU_OP <= std_logic_vector(irop(3 downto 2));
 			when 4 => -- MOV IMM, DST
+				PCjump <= '0';
+				PCjrel <= '0';
+				Mem2IMLo <= '0';
 				ALU_Nop <= '1';
 				F_Store <= '0';
 				Mod2ModBus <= '0';
 				ALUBus2Dst <= c0;
 			when 7 => -- MOV SRC, DST
+				PCjump <= '0';
+				PCjrel <= '0';
+				Mem2IMLo <= '0';
 				ALU_Nop <= '1';
-				F_Store <= '1';
+				F_Store <= '0';
 				InvertMod <= '0';
 				Mod2ModBus <= '1';
 				ALUBus2Dst <= '1';
 				ModSel <= std_logic_vector(irop(3 downto 2));
 			when 8 to 11 => -- CMP, SUB, SBC, ADC
+				PCjump <= '0';
+				PCjrel <= '0';
+				Mem2IMLo <= '0';
 				ALU_Cin <= (F_Carry and irop(5)) xor (irop(5) nand irop(4));
 				ALU_Nop <= '0';
 				F_Store <= '1';
@@ -122,6 +153,9 @@ begin
 				ALU_OP <= "00";
 				ModSel <= std_logic_vector(irop(3 downto 2));
 			when 12 to 15 => -- ADD, XOR, AND, OR
+				PCjump <= '0';
+				PCjrel <= '0';
+				Mem2IMLo <= '0';
 				ALU_Cin <= '0';
 				ALU_Nop <= '0';
 				F_Store <= '1';
@@ -131,6 +165,9 @@ begin
 				ALU_OP <= std_logic_vector(irop(5 downto 4));
 				ModSel <= std_logic_vector(irop(3 downto 2));
 			when others =>
+				PCjump <= '0';
+				PCjrel <= '0';
+				Mem2IMLo <= '0';
 				ALU_Cin <= '0';
 				ALU_Nop <= '0';
 				F_Store <= '0';

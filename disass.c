@@ -70,8 +70,8 @@ char *mkbin(uint8_t a)
 char *mnemo[] = {
 	"JMP",	"NOP",	"JNC",	"JC ",	"JNZ",	"JZ ",	"JNS",	"JS ",	//00
 	"JMP",	"NOP",	"JNC",	"JC ",	"JNZ",	"JZ ",	"JNS",	"JS ",
-	"MOV",	"MOV",	"MOV",	"MOV",	"MOV",	"MOV",	"MOV",	"MOV",	//10
-	"MOV",	"MOV",	"MOV",	"MOV",	"MOV",	"MOV",	"MOV",	"MOV",
+	"LD ",	"LD ",	"LD ",	"LD ",	"ST ",	"ST ",	"ST ",	"ST ",	//10
+	"LD ",	"LD ",	"LD ",	"LD ",	"ST ",	"ST ",	"ST ",	"ST ",
 	"CMP",	"CMP",	"CMP",	"CMP",	"SUB",	"SUB",	"SUB",	"SUB",	//20
 	"SBC",	"SBC",	"SBC",	"SBC",	"ADC",	"ADC",	"ADC",	"ADC",
 	"ADD",	"ADD",	"ADD",	"ADD",	"XOR",	"XOR",	"XOR",	"XOR",	//30

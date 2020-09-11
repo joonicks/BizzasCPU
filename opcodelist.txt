@@ -14,22 +14,22 @@ hex 0x0C bin 00001100: 	JNZ   +0x34
 hex 0x0D bin 00001101: 	JZ    +0x34 
 hex 0x0E bin 00001110: 	JNS   +0x34 
 hex 0x0F bin 00001111: 	JS    +0x34 
-hex 0x10 bin 00010000: 	MOV   [0x1234], A
-hex 0x11 bin 00010001: 	MOV   [0x1234], B
-hex 0x12 bin 00010010: 	MOV   [0x1234], C
-hex 0x13 bin 00010011: 	MOV   [0x1234], D
-hex 0x14 bin 00010100: 	MOV   A, [0x1234]
-hex 0x15 bin 00010101: 	MOV   B, [0x1234]
-hex 0x16 bin 00010110: 	MOV   C, [0x1234]
-hex 0x17 bin 00010111: 	MOV   D, [0x1234]
-hex 0x18 bin 00011000: 	MOV   [0x34], A
-hex 0x19 bin 00011001: 	MOV   [0x34], B
-hex 0x1A bin 00011010: 	MOV   [0x34], C
-hex 0x1B bin 00011011: 	MOV   [0x34], D
-hex 0x1C bin 00011100: 	MOV   A, [0x34]
-hex 0x1D bin 00011101: 	MOV   B, [0x34]
-hex 0x1E bin 00011110: 	MOV   C, [0x34]
-hex 0x1F bin 00011111: 	MOV   D, [0x34]
+hex 0x10 bin 00010000: 	LD    [0x1234], A
+hex 0x11 bin 00010001: 	LD    [0x1234], B
+hex 0x12 bin 00010010: 	LD    [0x1234], C
+hex 0x13 bin 00010011: 	LD    [0x1234], D
+hex 0x14 bin 00010100: 	ST    A, [0x1234]
+hex 0x15 bin 00010101: 	ST    B, [0x1234]
+hex 0x16 bin 00010110: 	ST    C, [0x1234]
+hex 0x17 bin 00010111: 	ST    D, [0x1234]
+hex 0x18 bin 00011000: 	LD    [0x34], A
+hex 0x19 bin 00011001: 	LD    [0x34], B
+hex 0x1A bin 00011010: 	LD    [0x34], C
+hex 0x1B bin 00011011: 	LD    [0x34], D
+hex 0x1C bin 00011100: 	ST    A, [0x34]
+hex 0x1D bin 00011101: 	ST    B, [0x34]
+hex 0x1E bin 00011110: 	ST    C, [0x34]
+hex 0x1F bin 00011111: 	ST    D, [0x34]
 hex 0x20 bin 00100000: 	CMP   $0x34, A
 hex 0x21 bin 00100001: 	CMP   $0x34, B
 hex 0x22 bin 00100010: 	CMP   $0x34, C

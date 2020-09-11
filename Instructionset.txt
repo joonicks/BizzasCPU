@@ -22,11 +22,11 @@ Flags (1 bit):		Carry, Zero, Sign				alu unit
 	111F	JMP REL8	if Sign=F	(JNS, JS)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ( 1)0001####
-	00YY	MOV [IMM16], DST					Mem2ModBus=1, Mem_WR=0
-	01YY	MOV SRC, [IMM16]					Mem2ModBus=0, Mem_WR=1
+	00YY	LD  [IMM16], DST					Mem2ModBus=1, Mem_WR=0
+	01YY	ST  SRC, [IMM16]					Mem2ModBus=0, Mem_WR=1
 		When Mem2IMLo=1, immaHi is set to zero
-	10YY	MOV [IMM8], DST			Zeropage		Mem2ModBus=1, Mem_WR=0
-	11YY	MOV SRC, [IMM8]			Zeropage		Mem2ModBus=0, Mem_WR=1
+	10YY	LD  [IMM8], DST			Zeropage		Mem2ModBus=1, Mem_WR=0
+	11YY	ST  SRC, [IMM8]			Zeropage		Mem2ModBus=0, Mem_WR=1
 ( 2)0010####								ALU_OE=1, DstSel=YY, Mem2ModBus=1, F_Store=1
 	00YY	CMP IMM8, DST
 	01YY	SUB IMM8, DST

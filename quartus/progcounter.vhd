@@ -28,14 +28,16 @@ alias  inpcLo:	unsigned( 7 downto 0) is inpc( 7 downto 0);
 alias  immaHi:	unsigned( 7 downto 0) is imma(15 downto 8);
 alias  immaLo:	unsigned( 7 downto 0) is imma( 7 downto 0);
 begin
-	addrLo <= std_logic_vector(inpcLo) when PC_OE = '1' else
-				 std_logic_vector(immaLo) when PC_IMMA = '1' else "ZZZZZZZZ";
-	addrHi <= std_logic_vector(inpcHi) when PC_OE = '1' else
-				 std_logic_vector(immaHi) when PC_IMMA = '1' else "ZZZZZZZZ";
+	addrLo <= std_logic_vector(immaLo) when PC_IMMA = '1' else
+				 std_logic_vector(inpcLo) when PC_OE = '1' else
+				 "ZZZZZZZZ";
+	addrHi <= std_logic_vector(immaHi) when PC_IMMA = '1' else
+				 std_logic_vector(inpcHi) when PC_OE = '1' else
+				 "ZZZZZZZZ";
 	
 	process(SYSCLK, PChold)
 	begin
-		if (rising_edge(SYSCLK) and PChold = '0') then
+		if (rising_edge(SYSCLK)) then
 			if (Mem2IMLo = '1') then
 				immaLo <= unsigned(MemBus);
 				immaHi <= "00000000";
@@ -50,7 +52,7 @@ begin
 				else
 					inpc <= inpc + unsigned(resize(signed(MemBus),16));
 				end if;
-			else
+			elsif (PChold = '0') then
 				inpc <= inpc + 1;
 			end if;
 		end if;

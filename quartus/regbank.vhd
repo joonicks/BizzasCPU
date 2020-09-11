@@ -16,7 +16,8 @@ port(
 	C,	D:				out	std_logic_vector(7 downto 0)
 	);
 end regbank;
--- Logic Elements: 36 37 44
+-- Logic Elements: 36 37 44 36(68)
+-- 88(152)
 architecture arch of regbank is
 type bytebank_t is array(0 to 3) of unsigned(7 downto 0);
 signal bytebank: bytebank_t;

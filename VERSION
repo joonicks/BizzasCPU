@@ -1,5 +1,12 @@
+2018			First draft: Revision 1
+			Revision 2: Some opcodes executing
+
 2020-09-08		First opcode executing
 			Simple MOV, SUB, ADD, XOR, OR opcodes working
 
 2020-09-09		Flags implemented in ALU unit.
-			JMP, JNC, JC,  JNZ, JZ, JNS, JS REL8/IMM16 working
+			JMP, JNC, JC, JNZ, JZ, JNS, JS REL8/IMM16 working
+
+2020-09-10
+			Introduced Gatekeeper unit
+			Implemented MOV [IMM16], DST (Memory reads) and MOV SRC, [IMM16] (Memory writes)

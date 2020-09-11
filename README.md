@@ -2,7 +2,7 @@
 
 Direct decode instructions (Not microcode)
 
-Main blocks:
+Main blocks:```
 		16-bit Address bus
 		 8-bit Data bus
 
@@ -10,12 +10,12 @@ Main blocks:
 		Four general purpose registers: A, B, C, D
 		Non-user registers: IROP, INPC, IMMA
 		Flags: Carry, Zero, Sign
-
-Future blocks:
+```
+Future blocks:```
 		IO/SPI/Serial
 		Interrupts
 		Instruction/Data cache
-
+```
 ## Hobbyist CPU design
 
 Primarily for Quartus (II)/Block diagrams & Schematics for the visual

@@ -57,7 +57,7 @@ Flags (1 bit):		Carry, Zero, Sign				alu unit
 (14)1110XXYY	AND MOD, DST						ALUBus2Dst=1, ALU_OP=AND, InvertMod=0, F_Store=1, ALU_Carry=(*)
 (15)1111XXYY	OR  MOD, DST						ALUBus2Dst=1, ALU_OP=OR,  InvertMod=0, F_Store=1, ALU_Carry=(*)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	Unmapped instructions
+	Unmapped/unimplemented instructions
 
 	DCNN	D = direction R/L, C = Through Carry, NN = 1, 2, 3 or 4 bits
 	00NN	SHR A, NN			Shift Right with Zero
@@ -76,11 +76,14 @@ OP/Cycle		  0	  1	  2	  3
 			[IROP]	[IRLO]	[IRHI]	[Memory]
 JMP IMM16		  X	  X	  X	  -
 JMP REL8		  X	  X	  -	  -
-MOV [IMM16], DST	  X	  X	  X	  X
-MOV SRC, [IMM16]	  X	  X	  X	  X
-MOV [IMM8], DST		  X	  X	  -	  X
-MOV SRC, [IMM8]		  X	  X	  -	  X
+LD  [IMM16], DST	  X	  X	  X	  X
+ST  SRC, [IMM16]	  X	  X	  X	  X
+LD  [IMM8], DST		  X	  X	  -	  X
+ST  SRC, [IMM8]		  X	  X	  -	  X
+LD  [C:D], A/B		  X	  -	  -	  X
+ST  A/B, [C:D]		  X	  -	  -	  X
 ALU IMM8, DST		  X	  X	  -	  -
 MOV IMM8, DST		  X	  X	  -	  -
 MOV SRC, DST		  X	  -	  -	  -
 ALU SRC, DST		  X	  -	  -	  -
+

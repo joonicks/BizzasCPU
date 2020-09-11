@@ -39,7 +39,8 @@ Flags (1 bit):		Carry, Zero, Sign				alu unit
 	11YY	OR  IMM8, DST
 ( 4)0100####								Mem2ModBus=1, DstSel=YY, ALU_Nop=1,
 	00YY	MOV IMM8, DST
-	01##	...
+	010Y	LD  [C:D], A/B
+	011Y	ST  A/B, [C:D]
 	10##	...
 	11##	...
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

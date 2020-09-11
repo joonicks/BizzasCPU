@@ -7,6 +7,8 @@
 2020-09-09		Flags implemented in ALU unit.
 			JMP, JNC, JC, JNZ, JZ, JNS, JS REL8/IMM16 working
 
-2020-09-10
-			Introduced Gatekeeper unit
+2020-09-10		Introduced Gatekeeper unit
 			Implemented MOV [IMM16], DST (Memory reads) and MOV SRC, [IMM16] (Memory writes)
+
+2020-09-11		Merged Gatekeeper into Regbank
+			Implemented LD [C:D], A/B and ST A/B, [C:D]

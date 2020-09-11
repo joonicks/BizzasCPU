@@ -76,7 +76,7 @@ char *mnemo[] = {
 	"SBC",	"SBC",	"SBC",	"SBC",	"ADC",	"ADC",	"ADC",	"ADC",
 	"ADD",	"ADD",	"ADD",	"ADD",	"XOR",	"XOR",	"XOR",	"XOR",	//30
 	"AND",	"AND",	"AND",	"AND",	"OR ",	"OR ",	"OR ",	"OR ",
-	"MOV",	"MOV",	"MOV",	"MOV",	"...",	"...",	"...",	"...",	//40
+	"MOV",	"MOV",	"MOV",	"MOV",	"LD ",	"LD ",	"ST ",	"ST ",	//40
 	"...",	"...",	"...",	"...",	"...",	"...",	"...",	"...",
 	"...",	"...",	"...",	"...",	"...",	"...",	"...",	"...",	//50
 	"...",	"...",	"...",	"...",	"...",	"...",	"...",	"...",
@@ -111,6 +111,7 @@ char *IMM16 = "IMM16";
 char *IMM8ADR = "[IMM8]";
 char *IMM8 = "IMM8";
 char *REL8 = "REL8";
+char *CDADDR = "[C:D]";
 
 int disass(uint8_t *data)
 {
@@ -167,6 +168,12 @@ int disass(uint8_t *data)
 		{
 			mod = IMM8;
 			dst = DST;
+		}
+		if ((irop & 0x0c) == 4)
+		{
+			im = id = irop & 1;
+			mod = (irop & 2) ? SRC : CDADDR;
+			dst = (irop & 2) ? CDADDR : SRC;
 		}
 		break;
 	case 5:

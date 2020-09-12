@@ -173,7 +173,7 @@ int disass(uint8_t *data)
 		{
 			im = id = irop & 1;
 			mod = (irop & 2) ? SRC : CDADDR;
-			dst = (irop & 2) ? CDADDR : SRC;
+			dst = (irop & 2) ? CDADDR : DST;
 		}
 		break;
 	case 5:

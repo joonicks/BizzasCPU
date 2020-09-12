@@ -27,7 +27,7 @@ signal Carry, Sign, Zero: std_logic;
 begin
 	ALUBus <= adder(7 downto 0);
 
-	extra(0) <= ALU_Cin;
+	extra(0) <= ALU_Cin xor InvertMod;
 
 	F_Carry <= Carry;
 	F_Zero  <= Zero;	
@@ -52,9 +52,9 @@ begin
 		end if;
 		case (ALU_OP) is
 			when "00"  => adder <= std_logic_vector(unsigned('0' & DstBus) + unsigned(InvertMod & modval) + extra);
-			when "01"  => adder(7 downto 0) <= ModBus xor DstBus;
-			when "10"  => adder(7 downto 0) <= ModBus and DstBus;
-			when "11"  => adder(7 downto 0) <= ModBus or  DstBus;
+			when "01"  => adder <= '0' & (ModBus xor DstBus);
+			when "10"  => adder <= '0' & (ModBus and DstBus);
+			when "11"  => adder <= '0' & (ModBus or  DstBus);
 		end case;
 	end process;
 end arch;

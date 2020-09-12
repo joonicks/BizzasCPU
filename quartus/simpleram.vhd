@@ -19,7 +19,25 @@ architecture arch of simpleram is
 		return memory_t is
 		variable tmp : memory_t;
 		begin
-			tmp(0 to 28) := (
+--			tmp(0 to 13) := (			-- Fibonnachi
+--				x"40", x"01",			-- MOV $0x01, A
+--				x"41", x"01",			-- MOV $0x01, B
+--				x"DA",					-- XOR C, C
+--				x"C2",					-- ADD A, C
+--				x"C6",					-- ADD B, C
+--				x"74",					-- MOV B, A
+--				x"79",					-- MOV C, B
+--				x"0A", x"FA",			-- JNC -6
+--				x"00", x"00", x"00"	-- JMP 0x0000
+--				);
+--			tmp(0 to 9) := (			-- Count down from 7
+--				x"40", x"01",			-- MOV $0x01, A
+--				x"41", x"07",			-- MOV $0x07, B
+--				x"91",					-- SUB A, B
+--				x"0A", x"FE",			-- JNC -2
+--				x"00", x"00", x"00"	-- JMP 0x0000
+--				);
+			tmp(0 to 28) := (			-- Test code
 				x"40", x"01",			-- MOV $0x01, A
 				x"32", x"06",			-- ADD $0x06, C
 				x"C1",					-- ADD A, B

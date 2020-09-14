@@ -14,7 +14,6 @@ port(
 	PC_IMMA,
 	PCjump,
 	PCjrel,
-	PChold,
 	Mem2IMHi,
 	Mem2IMLo:	out	std_logic;
 	ALU_OP:		out	std_logic_vector(1 downto 0);
@@ -38,7 +37,7 @@ end controlunit;
 
 architecture arch of controlunit is
 signal irop:	std_logic_vector(7 downto 0) := x"60";
-signal nrop:	std_logic_vector(7 downto 0) := x"9F";
+signal nrop:	std_logic_vector(7 downto 0);
 signal cycle:	std_logic_vector(3 downto 0) := "0000";
 signal c0, c1, c2:	std_logic;
 begin
@@ -89,7 +88,6 @@ begin
 		PC_IMMA <= '0';
 		PCjump <= '0';
 		PCjrel <= '0';
-		PChold <= '0';
 		Mem2IMHi <= '0';
 		Mem2IMLo <= '0';
 		ALU_OP <= "11"; -- Default ALU_OP=OR causes the least gate-flipping = power saving
@@ -122,7 +120,6 @@ begin
 				Mem_OE		<= v nand irop(2);
 				Mem_WR		<= v and irop(2);
 				PC_IMMA		<= v;
-				PChold		<= v;
 				Mem2IMHi		<= c1 and irop(2);
 				Mem2IMLo		<= c0;
 				DstBus2Mem	<= v and irop(2);
@@ -150,7 +147,6 @@ begin
 					Mem_OE <= not(c0 and irop(1));
 					Mem_WR <= c0 and irop(1);
 					PC_OE <= not(c0);
-					PChold <= c0;
 					CD2addr <= c0;
 					DstBus2Mem <= c0 and irop(1);
 					MemBus2Dst <= c0 and not(irop(1));

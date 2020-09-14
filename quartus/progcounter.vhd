@@ -9,7 +9,6 @@ port(
 	PC_IMMA,
 	PCjump,
 	PCjrel,
-	PChold,
 	Mem2IMHi,
 	Mem2IMLo:	in		std_logic;
 	addrLo:		out	std_logic_vector(7 downto 0);
@@ -35,7 +34,7 @@ begin
 				 std_logic_vector(inpcHi) when PC_OE = '1' else
 				 "ZZZZZZZZ";
 	
-	process(SYSCLK, PChold)
+	process(SYSCLK, PC_OE, PC_IMMA)
 	begin
 		if (rising_edge(SYSCLK)) then
 			if (Mem2IMLo = '1') then
@@ -52,7 +51,7 @@ begin
 				else
 					inpc <= inpc + unsigned(resize(signed(MemBus),16));
 				end if;
-			elsif (PChold = '0') then
+			elsif (PC_OE = '1' and PC_IMMA = '0') then
 				inpc <= inpc + 1;
 			end if;
 		end if;

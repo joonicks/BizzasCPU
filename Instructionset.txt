@@ -39,14 +39,22 @@ Flags (1 bit):		Carry, Zero, Sign				alu unit
 ( 6)0110####	...
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~(7 to 15)~~~~~~~~~~~ALU_OE=1, DstSel=YY, ModSel=XX, Mod2ModBus=1
 ( 7)0111XXYY	MOV SRC, DST						ALUBus2Dst=1, ALU_Nop=1, F_Store=0
+	XXYY	MOV IMM8, DST		(if XX==YY)
 ( 8)1000XXYY	CMP MOD, DST						ALUBus2Dst=0, ALU_OP=ADD, InvertMod=1, F_Store=1, ALU_Carry=0
+	XXYY	CMP IMM8, DST		(if XX==YY)
 ( 9)1001XXYY	SUB MOD, DST						ALUBus2Dst=1, ALU_OP=ADD, InvertMod=1, F_Store=1, ALU_Carry=0
+	XXYY	SUB IMM8, DST		(if XX==YY)
 (10)1010XXYY	SBC MOD, DST						ALUBus2Dst=1, ALU_OP=ADD, InvertMod=1, F_Store=1, ALU_Carry=Carry
+	XXYY	SBC IMM8, DST		(if XX==YY)
 (11)1011XXYY	ADC MOD, DST						ALUBus2Dst=1, ALU_OP=ADD, InvertMod=0, F_Store=1, ALU_Carry=Carry
+	XXYY	ADC IMM8, DST		(if XX==YY)
 (12)1100XXYY	ADD MOD, DST						ALUBus2Dst=1, ALU_OP=ADD, InvertMod=0, F_Store=1, ALU_Carry=0
+	XXYY	ADD IMM8, DST		(if XX==YY)
 (13)1101XXYY	XOR MOD, DST						ALUBus2Dst=1, ALU_OP=XOR, InvertMod=0, F_Store=1, ALU_Carry=(*)
 (14)1110XXYY	AND MOD, DST						ALUBus2Dst=1, ALU_OP=AND, InvertMod=0, F_Store=1, ALU_Carry=(*)
+	XXYY	AND IMM8, DST		(if XX==YY)
 (15)1111XXYY	OR  MOD, DST						ALUBus2Dst=1, ALU_OP=OR,  InvertMod=0, F_Store=1, ALU_Carry=(*)
+	XXYY	OR  IMM8, DST		(if XX==YY)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	Unmapped/unimplemented instructions
 

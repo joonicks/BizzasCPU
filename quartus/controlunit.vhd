@@ -25,7 +25,7 @@ port(
 	Mem2ModBus,
 	MemBus2Dst,
 	ALUBus2Dst,
-	RegCopy:		out	std_logic;								-- Store whats on ALUBus in register selected by DstSel
+	ModBus2Dst:		out	std_logic;								-- Store whats on ALUBus in register selected by DstSel
 	ModSel,
 	DstSel:		out	std_logic_vector(1 downto 0);
 	MemBus:		in		std_logic_vector(7 downto 0);
@@ -33,7 +33,8 @@ port(
 	);
 end controlunit;
 
--- Logic units: 300 299 298
+-- Logic units (whole design): 300 299 298 292 291 290
+-- Logic units (control unit): 52 50 53
 
 architecture arch of controlunit is
 signal irop:	std_logic_vector(7 downto 0) := x"60";
@@ -42,8 +43,11 @@ signal cycle:	std_logic_vector(3 downto 0) := "0000";
 signal c0, c1, c2:	std_logic;
 begin
 	IREG <= irop;
+	nrop <= not(irop);
 	
 	process(SYSCLK)
+		variable opnum: integer range 0 to 31;
+		variable aa: std_logic;
 	begin
 		if(rising_edge(SYSCLK)) then
 			c0 <= '0';
@@ -51,20 +55,40 @@ begin
 			c2 <= '0';
 			if (cycle = "0000") then
 				-- determine which opcodes requires which cycles, all opcodes get a c0 cycle
-				if MemBus(7 downto 3) = "01000" then
-					cycle(1) <= '1';
-				else
-					cycle(1) <= not(MemBus(7) or MemBus(6));
-				end if;
-				cycle(2) <= not(MemBus(7) or MemBus(6) or MemBus(5) or MemBus(3));
-				cycle(3) <= not(MemBus(7) or MemBus(6) or MemBus(5) or not(MemBus(4)));
+				opnum := to_integer(unsigned(MemBus(7 downto 3)));
 				irop <= MemBus;
-				nrop <= not(MemBus);
+				aa := (MemBus(3) xnor MemBus(1)) and (MemBus(2) xnor MemBus(0)); -- if XX is equal to YY (mod == dst)
+				case opnum is
+					when 1 | 4 =>
+						-- IROP + IMM8 cycle // IROP + MEM
+						cycle(1) <= '1';
+						cycle(2) <= '0';
+						cycle(3) <= '0';
+					when 0 | 3 =>
+						-- IROP + IMM8 + IMM16 cycles // IROP + IMM8 + MEM
+						cycle(1) <= '1';
+						cycle(2) <= '1';
+						cycle(3) <= '0';
+					when 2 =>
+						-- IROP + IMM8 + IMM16 + MEM cycles
+						cycle(1) <= '1';
+						cycle(2) <= '1';
+						cycle(3) <= '1';
+					when 14 to 25 | 28 to 31 =>
+						-- All ALU ops, except XOR, and MOV: if MOD == DST, use IMM8 for MOD
+						cycle(1) <= aa;
+						cycle(2) <= '0';
+						cycle(3) <= '0';
+					when others =>
+						cycle(1) <= '0';
+						cycle(2) <= '0';
+						cycle(3) <= '0';
+				end case;
 				c0 <= '1';
-			elsif (cycle(1) = '1') then -- IMM8, IMM16_LO
+			elsif (cycle(1) = '1') then -- IMM8
 				c1 <= '1';
 				cycle(1) <= '0';
-			elsif (cycle(2) = '1') then -- IMM16_HI
+			elsif (cycle(2) = '1') then -- IMM16
 				c2 <= '1';
 				cycle(2) <= '0';
 			elsif (cycle(3) = '1') then -- MEM Access
@@ -99,7 +123,7 @@ begin
 		Mem2ModBus <= '0';
 		MemBus2Dst <= '0';
 		ALUBus2Dst <= '0';
-		RegCopy <= '0';
+		ModBus2Dst <= '0';
 		ModSel <= "00";
 		DstSel <= irop(1 downto 0);
 		
@@ -124,48 +148,39 @@ begin
 				Mem2IMLo		<= c0;
 				DstBus2Mem	<= v and irop(2);
 				MemBus2Dst	<= v and nrop(2); -- save membus in dst
-			when 4 | 5 =>
-				-- CMP IMM8 001000xx, SUB IMM8 001001xx, SBC IMM8 001010xx, ADC IMM8 001011xx
-				ALU_OP		<= "00";
-				ALU_Cin		<= irop(3) and F_Carry;
-				F_Store		<= c0;
-				InvertMod	<= irop(3) nand irop(2);
-				Mem2ModBus	<= c0;
-				ALUBus2Dst	<= c0 and (irop(4) or irop(3)); -- Dont save if CMP
-			when 6 | 7 =>
-				-- ADD IMM8 001100xx, XOR IMM8 001101xx, AND IMM8 001010xx, OR  IMM8 001111xx
-				ALU_OP		<= irop(3 downto 2);
-				F_Store		<= c0;
-				Mem2ModBus	<= c0;
-				ALUBus2Dst	<= c0;
-			when 8 =>
-				if (irop(2) = '0') then
-					-- MOV IMM
-					MemBus2Dst <= c0;
-				else
-					-- LD/ST [C:D]
-					Mem_OE <= not(c0 and irop(1));
-					Mem_WR <= c0 and irop(1);
-					PC_OE <= not(c0);
-					CD2addr <= c0;
-					DstBus2Mem <= c0 and irop(1);
-					MemBus2Dst <= c0 and not(irop(1));
-					DstSel(1) <= '0';
-				end if;
-			when 9 to 13 => null;
+			when 4 =>
+				-- LD/ST [C:D]
+				Mem_OE <= not(c0 and irop(1));
+				Mem_WR <= c0 and irop(1);
+				PC_OE <= not(c0);
+				CD2addr <= c0;
+				DstBus2Mem <= c0 and irop(1);
+				MemBus2Dst <= c0 and not(irop(1));
+				DstSel(1) <= '0';
+			when 5 to 13 => null;
 			when 14 to 15 =>
 				-- MOV 0111xxxx
-				RegCopy		<= '1';
+				v := (irop(3) xnor irop(1)) and (irop(2) xnor irop(0));
+				Mem2ModBus	<= c0 and v;
+				ModBus2Dst	<= '1';
 				ModSel		<= irop(3 downto 2);
-			when 16 to 31 =>
+			when 16 to 25 | 28 to 31 =>
 				-- CMP 1000xxxx, SUB 1001xxxx, SBC 1010xxxx, ADC 1011xxxx
-				-- ADD 1100xxxx, XOR 1101xxxx, AND 1110xxxx, OR 1111xxxx
+				-- ADD 1100xxxx, AND 1110xxxx, OR 1111xxxx
+				v := (irop(3) xnor irop(1)) and (irop(2) xnor irop(0));
+				Mem2ModBus	<= c0 and v;
 				ALU_OP(0)	<= irop(6) and irop(4);
 				ALU_OP(1)	<= irop(6) and irop(5);				
 				ALU_Cin		<= nrop(6) and irop(5) and F_Carry;
-				F_Store		<= '1';
+				F_Store		<= c0;
 				InvertMod	<= nrop(6) and (irop(5) nand irop(4));
-				ALUBus2Dst	<= irop(6) or irop(5) or irop(4);
+				ALUBus2Dst	<= c0 and (irop(6) or irop(5) or irop(4));
+				ModSel		<= irop(3 downto 2);
+			when 26 | 27 =>
+				-- XOR 1101xxxx
+				ALU_OP		<= irop(5 downto 4);
+				F_Store		<= c0;
+				ALUBus2Dst	<= c0;
 				ModSel		<= irop(3 downto 2);
 		end case;
 	end process;

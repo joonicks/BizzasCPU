@@ -72,11 +72,11 @@ char *mnemo[] = {
 	"JMP",	"NOP",	"JNC",	"JC ",	"JNZ",	"JZ ",	"JNS",	"JS ",
 	"LD ",	"LD ",	"LD ",	"LD ",	"ST ",	"ST ",	"ST ",	"ST ",	//10
 	"LD ",	"LD ",	"LD ",	"LD ",	"ST ",	"ST ",	"ST ",	"ST ",
-	"CMP",	"CMP",	"CMP",	"CMP",	"SUB",	"SUB",	"SUB",	"SUB",	//20
-	"SBC",	"SBC",	"SBC",	"SBC",	"ADC",	"ADC",	"ADC",	"ADC",
-	"ADD",	"ADD",	"ADD",	"ADD",	"XOR",	"XOR",	"XOR",	"XOR",	//30
-	"AND",	"AND",	"AND",	"AND",	"OR ",	"OR ",	"OR ",	"OR ",
-	"MOV",	"MOV",	"MOV",	"MOV",	"LD ",	"LD ",	"ST ",	"ST ",	//40
+	"LD ",	"LD ",	"ST ",	"ST ",	"LD ",	"LD ",	"ST ",	"ST ",	//20
+	"LD ",	"LD ",	"ST ",	"ST ",	"LD ",	"LD ",	"ST ",	"ST ",
+	"...",	"...",	"...",	"...",	"...",	"...",	"...",	"...",	//30
+	"...",	"...",	"...",	"...",	"...",	"...",	"...",	"...",
+	"...",	"...",	"...",	"...",	"...",	"...",	"...",	"...",	//40
 	"...",	"...",	"...",	"...",	"...",	"...",	"...",	"...",
 	"...",	"...",	"...",	"...",	"...",	"...",	"...",	"...",	//50
 	"...",	"...",	"...",	"...",	"...",	"...",	"...",	"...",
@@ -158,26 +158,31 @@ int disass(uint8_t *data)
 		imm8 = 1;
 		break;
 	case 2:
+		im = id = irop & 1;
+		mod = (irop & 2) ? SRC : CDADDR;
+		dst = (irop & 2) ? CDADDR : DST;
+		break;
 	case 3:
-		mod = IMM8;
-		dst = DST;
-		imm8 = 1;
-		break;
 	case 4:
-		if ((irop & 0x0c) == 0)
-		{
-			mod = IMM8;
-			dst = DST;
-		}
-		if ((irop & 0x0c) == 4)
-		{
-			im = id = irop & 1;
-			mod = (irop & 2) ? SRC : CDADDR;
-			dst = (irop & 2) ? CDADDR : DST;
-		}
-		break;
 	case 5:
 	case 6:
+		break;
+
+	case 7:
+	case 8:
+	case 9:
+	case 10:
+	case 11:
+	case 12:
+	case 14:
+	case 15:
+		mod = SRC;
+		dst = DST;
+		if (im == id)
+		{
+			mod = IMM8;
+			imm8 = 1;
+		}
 		break;
 	default:
 		mod = SRC;

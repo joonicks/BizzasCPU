@@ -27,23 +27,14 @@ Flags (1 bit):		Carry, Zero, Sign				alu unit
 		When Mem2IMLo=1, immaHi is set to zero
 	10YY	LD  [IMM8], DST			Zeropage		Mem2ModBus=1, Mem_WR=0
 	11YY	ST  SRC, [IMM8]			Zeropage		Mem2ModBus=0, Mem_WR=1
-( 2)0010####								ALU_OE=1, DstSel=YY, Mem2ModBus=1, F_Store=1
-	00YY	CMP IMM8, DST
-	01YY	SUB IMM8, DST
-	10YY	SBC IMM8, DST
-	11YY	ADC IMM8, DST
-( 3)0011####
-	00YY	ADD IMM8, DST
-	01YY	XOR IMM8, DST
-	10YY	AND IMM8, DST
-	11YY	OR  IMM8, DST
-( 4)0100####								Mem2ModBus=1, DstSel=YY, ALU_Nop=1,
-	00YY	MOV IMM8, DST
-	010Y	LD  [C:D], A/B
-	011Y	ST  A/B, [C:D]
-	10##	...
-	11##	...
+( 2)0010####
+	000Y	LD  [C:D], A/B
+	001Y	ST  A/B, [C:D]
+	01##	...
+	1###	...
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+( 3)0011####	...
+( 4)0100####	...
 ( 5)0101####	...
 ( 6)0110####	...
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~(7 to 15)~~~~~~~~~~~ALU_OE=1, DstSel=YY, ModSel=XX, Mod2ModBus=1

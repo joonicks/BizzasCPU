@@ -17,7 +17,7 @@ port(
 	);
 end progcounter;
 
--- Logic Units: 47 53
+-- Logic Units: 47 53 60
 
 architecture arch of progcounter is
 signal inpc:	unsigned(15 downto 0) := x"0000";

@@ -7,7 +7,7 @@ all:		disass example_opcodelist.txt example_disassembly.txt
 disass:		disass.c
 		$(CC) -g -pipe -Os -Wall -o disass $<
 
-opcodelist.txt:	disass
+example_opcodelist.txt:	disass
 		./disass --oplist > example_opcodelist.txt
 
 example_disassembly.txt: disass

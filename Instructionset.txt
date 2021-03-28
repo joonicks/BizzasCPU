@@ -71,8 +71,8 @@ Flags (1 bit):		Carry, Zero, Sign				alu unit
 
 * --> Value doesnt affect result
 
-OP/Cycle		  0	  1	  2	  3
-			[IROP]	[IRLO]	[IRHI]	[Memory]
+OP/Cycle		[IROP]	[IRLO]	[IRHI]	[Memory]
+
 JMP IMM16		  X	  X	  X	  -
 JMP REL8		  X	  X	  -	  -
 LD  [IMM16], DST	  X	  X	  X	  X

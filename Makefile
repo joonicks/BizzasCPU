@@ -2,13 +2,13 @@ CC = gcc
 
 .PHONY:		all
 
-all:		disass opcodelist.txt example_disassembly.txt
+all:		disass example_opcodelist.txt example_disassembly.txt
 
 disass:		disass.c
 		$(CC) -g -pipe -Os -Wall -o disass $<
 
 opcodelist.txt:	disass
-		./disass --oplist > opcodelist.txt
+		./disass --oplist > example_opcodelist.txt
 
 example_disassembly.txt: disass
 		./disass random.bin > example_disassembly.txt

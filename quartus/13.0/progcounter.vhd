@@ -6,7 +6,7 @@ entity progcounter is
 port(
 	SYSCLK,
 	PC_OE,
-	PC_IMMA,
+	PChold,
 	PCjump,
 	PCjrel,
 	Mem2IMHi,
@@ -17,7 +17,7 @@ port(
 	);
 end progcounter;
 
--- Logic Units: 47 53 60
+-- Logic Units: 47 53 60 58
 
 architecture arch of progcounter is
 signal inpc:	unsigned(15 downto 0) := x"0000";
@@ -27,16 +27,18 @@ alias  inpcLo:	unsigned( 7 downto 0) is inpc( 7 downto 0);
 alias  immaHi:	unsigned( 7 downto 0) is imma(15 downto 8);
 alias  immaLo:	unsigned( 7 downto 0) is imma( 7 downto 0);
 begin
-	addrLo <= std_logic_vector(immaLo) when PC_IMMA = '1' else
+	addrLo <= std_logic_vector(immaLo) when PChold = '1' else
 				 std_logic_vector(inpcLo) when PC_OE = '1' else
 				 "ZZZZZZZZ";
-	addrHi <= std_logic_vector(immaHi) when PC_IMMA = '1' else
+	addrHi <= std_logic_vector(immaHi) when PChold = '1' else
 				 std_logic_vector(inpcHi) when PC_OE = '1' else
 				 "ZZZZZZZZ";
 	
-	process(SYSCLK, PC_OE, PC_IMMA)
+	process(SYSCLK, PC_OE, PChold)
+		variable inmod: unsigned(15 downto 0);
 	begin
 		if (rising_edge(SYSCLK)) then
+			inmod := "000000000000000" & not(PChold);
 			if (Mem2IMLo = '1') then
 				immaLo <= unsigned(MemBus);
 				immaHi <= "00000000";
@@ -49,11 +51,10 @@ begin
 					inpcHi <= unsigned(MemBus);
 					inpcLo <= immaLo;
 				else
-					inpc <= inpc + unsigned(resize(signed(MemBus),16));
+					inmod := unsigned(resize(signed(MemBus),16));
 				end if;
-			elsif (PC_OE = '1' and PC_IMMA = '0') then
-				inpc <= inpc + 1;
 			end if;
+			inpc <= inpc + inmod;
 		end if;
 	end process;
 end arch;

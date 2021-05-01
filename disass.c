@@ -1,6 +1,6 @@
 /*
 
-    Copyright (c) 2018-2020 proton
+    Copyright (c) 2018-2021 proton
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -94,12 +94,12 @@ char *mnemo[] = {
 	"ADC",	"ADC",	"ADC",	"ADC",	"ADC",	"ADC",	"ADC",	"ADC",
 	"ADD",	"ADD",	"ADD",	"ADD",	"ADD",	"ADD",	"ADD",	"ADD",	//C0
 	"ADD",	"ADD",	"ADD",	"ADD",	"ADD",	"ADD",	"ADD",	"ADD",
-	"XOR",	"XOR",	"XOR",	"XOR",	"XOR",	"XOR",	"XOR",	"XOR",	//D0
-	"XOR",	"XOR",	"XOR",	"XOR",	"XOR",	"XOR",	"XOR",	"XOR",
-	"AND",	"AND",	"AND",	"AND",	"AND",	"AND",	"AND",	"AND",	//E0
+	"AND",	"AND",	"AND",	"AND",	"AND",	"AND",	"AND",	"AND",	//D0
 	"AND",	"AND",	"AND",	"AND",	"AND",	"AND",	"AND",	"AND",
-	"OR ",	"OR ",	"OR ",	"OR ",	"OR ",	"OR ",	"OR ",	"OR ",	//F0
-	"OR ",	"OR ",	"OR ",	"OR ",	"OR ",	"OR ",	"OR ",	"OR "
+	"OR ",	"OR ",	"OR ",	"OR ",	"OR ",	"OR ",	"OR ",	"OR ",	//E0
+	"OR ",	"OR ",	"OR ",	"OR ",	"OR ",	"OR ",	"OR ",	"OR ",
+	"XOR",	"XOR",	"XOR",	"XOR",	"XOR",	"XOR",	"XOR",	"XOR",	//F0
+	"XOR",	"XOR",	"XOR",	"XOR",	"XOR",	"XOR",	"XOR",	"XOR"
 	};
 
 char *regs[] = { "A", "B", "C", "D" };
@@ -174,8 +174,8 @@ int disass(uint8_t *data)
 	case 10:
 	case 11:
 	case 12:
+	case 13:
 	case 14:
-	case 15:
 		mod = SRC;
 		dst = DST;
 		if (im == id)

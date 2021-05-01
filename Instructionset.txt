@@ -50,13 +50,21 @@ Flags (1 bit):		Carry, Zero, Sign				alu unit
 	XXYY	ADC IMM8, DST		(if XX==YY)
 (12)1100XXYY	ADD MOD, DST						ALUBus2Dst=1, ALU_OP=ADD, InvertMod=0, F_Store=1, ALU_Carry=0
 	XXYY	ADD IMM8, DST		(if XX==YY)
-(13)1101XXYY	XOR MOD, DST						ALUBus2Dst=1, ALU_OP=XOR, InvertMod=0, F_Store=1, ALU_Carry=(*)
-(14)1110XXYY	AND MOD, DST						ALUBus2Dst=1, ALU_OP=AND, InvertMod=0, F_Store=1, ALU_Carry=(*)
+(14)1101XXYY	AND MOD, DST						ALUBus2Dst=1, ALU_OP=AND, InvertMod=0, F_Store=1, ALU_Carry=(*)
 	XXYY	AND IMM8, DST		(if XX==YY)
-(15)1111XXYY	OR  MOD, DST						ALUBus2Dst=1, ALU_OP=OR,  InvertMod=0, F_Store=1, ALU_Carry=(*)
+(15)1110XXYY	OR  MOD, DST						ALUBus2Dst=1, ALU_OP=OR,  InvertMod=0, F_Store=1, ALU_Carry=(*)
 	XXYY	OR  IMM8, DST		(if XX==YY)
+(13)1101XXYY	XOR MOD, DST						ALUBus2Dst=1, ALU_OP=XOR, InvertMod=0, F_Store=1, ALU_Carry=(*)
+									XOR is a special case with no IMM8 variant
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	Unmapped/unimplemented instructions
+
+	XXYY	SHR/SHL/ROR/ROL
+		YY = Target register
+		XX = Option register
+		XX --> xxxCDNNN:	C	Rotate through Carry
+					D	Direction
+					NNN	Number of bit shifts
 
 	DCNN	D = direction R/L, C = Through Carry, NN = 1, 2, 3 or 4 bits
 	00NN	SHR A, NN			Shift Right with Zero
@@ -67,6 +75,11 @@ Flags (1 bit):		Carry, Zero, Sign				alu unit
 	00YY	INC DST				ADC constant ZERO + Carry=1
 	01YY	DEC DST				SBC constant ZERO - Carry=1
 		DEC is equivalent to NOT(INC(NOT(X)))
+
+		JSR IMM16
+		JSR C:D
+		RTS
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 * --> Value doesnt affect result

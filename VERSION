@@ -12,3 +12,8 @@
 
 2020-09-11		Merged Gatekeeper into Regbank
 			Implemented LD [C:D], A/B and ST A/B, [C:D]
+
+2021-03-28		Compiles into 290 Logic Elements on Quartus II 13.0.1
+
+2021-04-16		Moved XOR opcode from 13 to 15 since its an exception from IMM8 opcodes.
+			Compiles into 272 Logic Elements on Quartus II 13.0.1

@@ -17,7 +17,7 @@ port(
 	);
 end progcounter;
 
--- Logic Units: 47 53 60 58
+-- Logic Units: 47 53 60 59 60
 
 architecture arch of progcounter is
 signal inpc:	unsigned(15 downto 0) := x"0000";
@@ -38,12 +38,13 @@ begin
 		variable inmod: unsigned(15 downto 0);
 	begin
 		if (rising_edge(SYSCLK)) then
-			inmod := "000000000000000" & not(PChold);
+			inmod := "000000000000000" & (PC_OE and not(PChold));
 			if (Mem2IMLo = '1') then
 				immaLo <= unsigned(MemBus);
 				immaHi <= "00000000";
 			end if;
 			if (Mem2IMHi = '1') then
+				-- this is used for LD/ST IMM16 operations
 				immaHi <= unsigned(MemBus);
 			end if;
 			if (PCjump = '1') then
@@ -54,7 +55,9 @@ begin
 					inmod := unsigned(resize(signed(MemBus),16));
 				end if;
 			end if;
-			inpc <= inpc + inmod;
+			if (PCjump = '0' or PCjrel = '1') then
+				inpc <= inpc + inmod;
+			end if;
 		end if;
 	end process;
 end arch;

@@ -1,19 +1,26 @@
 2018			First draft: Revision 1
 			Revision 2: Some opcodes executing
 
-2020-09-08		First opcode executing
+2020-09-08		Revision 3: First opcode executing
 			Simple MOV, SUB, ADD, XOR, OR opcodes working
 
 2020-09-09		Flags implemented in ALU unit.
 			JMP, JNC, JC, JNZ, JZ, JNS, JS REL8/IMM16 working
 
 2020-09-10		Introduced Gatekeeper unit
-			Implemented MOV [IMM16], DST (Memory reads) and MOV SRC, [IMM16] (Memory writes)
+			Implemented LD [IMM16], DST (Memory reads) and ST SRC, [IMM16] (Memory writes)
 
 2020-09-11		Merged Gatekeeper into Regbank
 			Implemented LD [C:D], A/B and ST A/B, [C:D]
 
-2021-03-28		Compiles into 290 Logic Elements on Quartus II 13.0.1
+2021-03-28		Compiles into 290 Logic Elements (*)
 
 2021-04-16		Moved XOR opcode from 13 to 15 since its an exception from IMM8 opcodes.
-			Compiles into 272 Logic Elements on Quartus II 13.0.1
+			Compiles into 272 Logic Elements (*)
+
+2021-05-01		Added reset delay in control unit.
+			Changes to simulate with Altera ModelSim instead of builtin simulator.
+			Compiles into 286 Logic Elements (*)
+
+(*) Including debug outputs and simpleram
+    on Quartus II 13.0.1

@@ -9,7 +9,7 @@ port(
 	Mem_WR:		in		std_logic;
 	MemBus:		inout std_logic_vector(7 downto 0);
 	addrLo,
-	addrHi:		in		std_logic_vector(7 downto 0)
+	addrHi:		in		unsigned(7 downto 0)
 	);
 end entity;
 
@@ -19,22 +19,19 @@ architecture arch of simpleram is
 		return memory_t is
 		variable tmp : memory_t;
 		begin
---			tmp(0 to 13) := (			-- Fibonnachi
---				x"40", x"01",			-- MOV $0x01, A
---				x"41", x"01",			-- MOV $0x01, B
---				x"DA",					-- XOR C, C
---				x"C2",					-- ADD A, C
---				x"C6",					-- ADD B, C
---				x"74",					-- MOV B, A
---				x"79",					-- MOV C, B
---				x"0A", x"FA",			-- JNC -6
+--			tmp(0 to 9) := (			-- Fibonnachi
+--				x"70", x"01",			-- MOV $0x01, A
+--				x"71",					-- MOV A, B
+--				x"C1",					-- ADD A, B
+--				x"C4",					-- ADD B, A
+--				x"0A", x"FD",			-- JNC -3
 --				x"00", x"00", x"00"	-- JMP 0x0000
 --				);
 --			tmp(0 to 9) := (			-- Count down from 7
---				x"40", x"01",			-- MOV $0x01, A
---				x"41", x"07",			-- MOV $0x07, B
+--				x"70", x"01",			-- MOV $0x01, A
+--				x"75", x"07",			-- MOV $0x07, B
 --				x"91",					-- SUB A, B
---				x"0A", x"FE",			-- JNC -2
+--				x"0C", x"FE",			-- JNZ -2
 --				x"00", x"00", x"00"	-- JMP 0x0000
 --				);
 			tmp(0 to 29) := (			-- Test code
@@ -49,8 +46,8 @@ architecture arch of simpleram is
 				x"BF", x"05",			-- ADC $0x05, D
 				x"11", x"00", x"00",	-- LD  [0x0000], B
 				x"19", x"02",			-- LD  [0x02], B
-				x"D7",					-- XOR B, D
-				x"DA",					-- XOR C, C
+				x"F7",					-- XOR B, D
+				x"FA",					-- XOR C, C
 				x"1F", x"01",			-- ST  D, [0x01]
 				x"23",					-- ST  B, [C:D]
 				x"20",					-- LD  [C:D], A
@@ -60,22 +57,19 @@ architecture arch of simpleram is
 		return tmp;
 	end init_ram;
 	signal address: natural range 0 to 255 := 0;
-	signal compound: std_logic_vector(15 downto 0);
 	signal ram : memory_t := init_ram;
 begin
-	compound(15 downto 8) <= addrHi;
-	compound (7 downto 0) <= addrLo;
 	MemBus <= ram(address) when Mem_OE = '1' else "ZZZZZZZZ";
 	
-	process(SYSCLK, address)
-	begin
-		if(falling_edge(SYSCLK)) then
-			address <= to_integer(unsigned(compound));
-		end if;
-	end process;
 	process(SYSCLK, address, Mem_WR)
+		variable compound: unsigned(15 downto 0);
 	begin
-		if(rising_edge(SYSCLK)and Mem_WR = '1') then
+		if (falling_edge(SYSCLK)) then
+			compound(15 downto 8) := addrHi;
+			compound( 7 downto 0) := addrLo;
+			address <= to_integer(compound);
+		end if;
+		if (rising_edge(SYSCLK) and Mem_WR = '1') then
 			ram(address) <= MemBus;
 		end if;
 	end process;

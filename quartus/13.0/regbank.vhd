@@ -12,7 +12,7 @@ port(
 	ALUBus2Dst,
 	ModBus2Dst:		in		std_logic;
 	ModSel,
-	DstSel:		in		natural range 0 to 3;--std_logic_vector(1 downto 0);
+	DstSel:		in		natural range 0 to 3;
 	ALUBus:		in		std_logic_vector(7 downto 0);
 	MemBus,
 	ModBus:		inout	std_logic_vector(7 downto 0);
@@ -23,7 +23,9 @@ port(
 	C,	D:			out	std_logic_vector(7 downto 0)
 	);
 end regbank;
+
 -- Logic Elements: 36 37 44 36(68) 100 97 94
+
 architecture arch of regbank is
 type bytebank_t is array(0 to 3) of std_logic_vector(7 downto 0);
 signal bytebank: bytebank_t;

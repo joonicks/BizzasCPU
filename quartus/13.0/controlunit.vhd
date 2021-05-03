@@ -32,7 +32,7 @@ port(
 	);
 end controlunit;
 
--- Logic units (whole design): 300 299 298 292 291 290 265 271 286
+-- Logic units (whole design): 300 299 298 292 291 290 265 271 286 285
 -- Logic units (control unit): 52 50 53 51 58
 
 architecture arch of controlunit is
@@ -53,23 +53,23 @@ begin
 			c0 <= '0';
 			c1 <= '0';
 			c2 <= '0';
-			r <= '0';
+			r  <= '0';
 			if (cycle = "0000") then
 				-- determine which opcodes requires which cycles, all opcodes get a c0 cycle
 				opnum := to_integer(unsigned(MemBus(7 downto 3)));
 				irop <= MemBus;
 				aa := (MemBus(3) xnor MemBus(1)) and (MemBus(2) xnor MemBus(0)); -- if XX is equal to YY (mod == dst)
+				cycle(1) <= '0';
+				cycle(2) <= '0';
+				cycle(3) <= '0';
 				case opnum is
 					when 1 | 4 =>
 						-- IROP + IMM8 cycle // IROP + MEM
 						cycle(1) <= '1';
-						cycle(2) <= '0';
-						cycle(3) <= '0';
 					when 0 | 3 =>
 						-- IROP + IMM8 + IMM16 cycles // IROP + IMM8 + MEM
 						cycle(1) <= '1';
 						cycle(2) <= '1';
-						cycle(3) <= '0';
 					when 2 =>
 						-- IROP + IMM8 + IMM16 + MEM cycles
 						cycle(1) <= '1';
@@ -78,12 +78,7 @@ begin
 					when 14 to 29 =>
 						-- MOV and all ALU ops, except XOR: if MOD == DST, use IMM8 for MOD
 						cycle(1) <= aa;
-						cycle(2) <= '0';
-						cycle(3) <= '0';
-					when others =>
-						cycle(1) <= '0';
-						cycle(2) <= '0';
-						cycle(3) <= '0';
+					when others => null;
 				end case;
 				c0 <= '1';
 			elsif (cycle(1) = '1') then -- IMM8
@@ -102,32 +97,46 @@ begin
 
 	process(irop, nrop, c0, c1, c2, F_Carry, F_Zero, F_Sign)
 		variable opnum: integer range 0 to 31;
-		variable v, jmpflag: std_logic;
+		variable v, samereg, jmpflag: std_logic;
 	begin
 		opnum := to_integer(unsigned(irop(7 downto 3)));
 
 		-- default values
-		Mem_OE <= '1';
-		Mem_WR <= '0';
-		PC_OE <= '1';
-		PChold <= r;
-		PCjump <= '0';
-		PCjrel <= '0';
-		Mem2IMHi <= '0';
-		Mem2IMLo <= '0';
-		ALU_OP <= "010"; -- Default ALU_OP=OR causes the least gate-flipping = power saving
-		ALU_Cin <= '0';
-		F_Store <= '0';
-		CD2addr <= '0';
-		DstBus2Mem <= '0';
-		Mem2ModBus <= '0';
-		MemBus2Dst <= '0';
-		ALUBus2Dst <= '0';
-		ModBus2Dst <= '0';
-		ModSel <= "00";
-		DstSel <= irop(1 downto 0);
+		Mem_OE		<= '1';
+		Mem_WR		<= '0';
+		PC_OE			<= '1';
+		PChold		<= r;
+		PCjump		<= '0';
+		PCjrel		<= '0';
+		Mem2IMHi		<= '0';
+		Mem2IMLo		<= '0';
+		ALU_OP		<= "010"; -- Default ALU_OP=OR causes the least gate-flipping = power saving
+		ALU_Cin		<= '0';
+		F_Store		<= '0';
+		CD2addr		<= '0';
+		DstBus2Mem	<= '0';
+		Mem2ModBus	<= '0';
+		MemBus2Dst	<= '0';
+		ALUBus2Dst	<= '0';
+		ModBus2Dst	<= '0';
+		ModSel		<= "00";
+		DstSel		<= irop(1 downto 0);
+
+		if (irop(3 downto 2) = irop(1 downto 0)) then
+			samereg := '1';
+		else
+			samereg := '0';
+		end if;
 		
-		jmpflag := irop(0) xnor (((nrop(2) and irop(1)) and F_Carry) or ((irop(2) and nrop(1)) and F_Zero) or ((irop(2) and irop(1)) and F_Sign));
+		case irop(2 downto 1) is
+			when "00" => jmpflag := nrop(0);
+			when "01" => jmpflag := irop(0) xnor F_Carry;
+			when "10" => jmpflag := irop(0) xnor F_Zero;
+			when "11" => jmpflag := irop(0) xnor F_Sign;
+		end case;
+
+		-- long and complicated, but possibly fewer logic elements
+		-- jmpflag := irop(0) xnor (((nrop(2) and irop(1)) and F_Carry) or ((irop(2) and nrop(1)) and F_Zero) or ((irop(2) and irop(1)) and F_Sign));
 				
 		case opnum is
 			when 0 =>
@@ -147,33 +156,31 @@ begin
 				Mem2IMHi		<= c1 and irop(2);
 				Mem2IMLo		<= c0;
 				DstBus2Mem	<= v and irop(2);
-				MemBus2Dst	<= v and nrop(2); -- save membus in dst
+				MemBus2Dst	<= v and nrop(2);
 			when 4 =>
 				-- LD/ST [C:D] (only 4 opcodes actually needed)
-				Mem_OE <= not(c0 and irop(1));
-				Mem_WR <= c0 and irop(1);
-				PC_OE <= not(c0);
-				CD2addr <= c0;
-				DstBus2Mem <= c0 and irop(1);
-				MemBus2Dst <= c0 and not(irop(1));
-				DstSel(1) <= '0';
+				Mem_OE		<= not(c0 and irop(1));
+				Mem_WR		<= c0 and irop(1);
+				PC_OE			<= not(c0);
+				CD2addr		<= c0;
+				DstBus2Mem	<= c0 and irop(1);
+				MemBus2Dst	<= c0 and not(irop(1));
+				DstSel(1)	<= '0';
 			when 5 to 13 => null;
 			when 14 to 15 =>
 				-- MOV 0111xxxx
-				v := (irop(3) xnor irop(1)) and (irop(2) xnor irop(0));
-				Mem2ModBus	<= c0 and v; --(irop(3) xnor irop(1)) and (irop(2) xnor irop(0));
+				Mem2ModBus	<= c0 and samereg;
 				ModBus2Dst	<= '1';
 				ModSel		<= irop(3 downto 2);
 			when 16 to 29 =>
 				-- CMP 1000xxxx, SUB 1001xxxx, SBC 1010xxxx, ADC 1011xxxx
 				-- ADD 1100xxxx, AND 1101xxxx, OR 1110xxxx
-				v := (irop(3) xnor irop(1)) and (irop(2) xnor irop(0)); -- is XX different from YY
-				Mem2ModBus	<= c0 and v;
+				Mem2ModBus	<= c0 and samereg;
 				ALU_OP(0)	<= irop(6) and irop(4);
 				ALU_OP(1)	<= irop(6) and irop(5);				
+				ALU_OP(2)	<= nrop(6) and (irop(5) nand irop(4));
 				ALU_Cin		<= nrop(6) and irop(5) and F_Carry;
 				F_Store		<= c0;
-				ALU_OP(2)	<= nrop(6) and (irop(5) nand irop(4));
 				ALUBus2Dst	<= c0 and (irop(6) or irop(5) or irop(4));
 				ModSel		<= irop(3 downto 2);
 			when 30 | 31 =>

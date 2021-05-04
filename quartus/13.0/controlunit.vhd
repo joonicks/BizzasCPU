@@ -32,14 +32,17 @@ port(
 	);
 end controlunit;
 
--- Logic units (whole design): 300 299 298 292 291 290 265 271 286 285
--- Logic units (control unit): 52 50 53 51 58
+-- Logic units (whole design): 300 299 298 292 291 290 265 271 286 285 282 281
+-- Logic units (control unit): 52 50 53 51 58 55
 
 architecture arch of controlunit is
 signal irop:			std_logic_vector(7 downto 0) := x"F0";
 signal nrop:			std_logic_vector(7 downto 0);
-signal cycle:			std_logic_vector(3 downto 0) := "1000";
-signal c0, c1, c2:	std_logic;
+signal cycle:			natural range 0 to 3 := 1;
+signal mcycle:			std_logic_vector(2 downto 0);
+alias  c0:				std_logic is mcycle(0);
+alias  c1:				std_logic is mcycle(1);
+alias  c2:				std_logic is mcycle(2);
 signal r:				std_logic := '1';
 begin
 	IREG <= irop;
@@ -47,51 +50,40 @@ begin
 	
 	process(SYSCLK)
 		variable opnum: integer range 0 to 31;
-		variable aa: std_logic;
+		variable nextc: natural range 0 to 3;
 	begin
 		if(rising_edge(SYSCLK)) then
-			c0 <= '0';
-			c1 <= '0';
-			c2 <= '0';
 			r  <= '0';
-			if (cycle = "0000") then
+			mcycle(2 downto 1) <= mcycle(1 downto 0);
+			mcycle(0) <= '0';
+			nextc := cycle - 1;
+			if (cycle = 0) then
 				-- determine which opcodes requires which cycles, all opcodes get a c0 cycle
 				opnum := to_integer(unsigned(MemBus(7 downto 3)));
 				irop <= MemBus;
-				aa := (MemBus(3) xnor MemBus(1)) and (MemBus(2) xnor MemBus(0)); -- if XX is equal to YY (mod == dst)
-				cycle(1) <= '0';
-				cycle(2) <= '0';
-				cycle(3) <= '0';
+				nextc := 0;
 				case opnum is
 					when 1 | 4 =>
+						-- JMP REL8, LD/ST [C:D]
 						-- IROP + IMM8 cycle // IROP + MEM
-						cycle(1) <= '1';
+						nextc := 1;
 					when 0 | 3 =>
+						-- JMP IMM16, LD/ST IMM16
 						-- IROP + IMM8 + IMM16 cycles // IROP + IMM8 + MEM
-						cycle(1) <= '1';
-						cycle(2) <= '1';
+						nextc := 2;
 					when 2 =>
 						-- IROP + IMM8 + IMM16 + MEM cycles
-						cycle(1) <= '1';
-						cycle(2) <= '1';
-						cycle(3) <= '1';
+						nextc := 3;
 					when 14 to 29 =>
 						-- MOV and all ALU ops, except XOR: if MOD == DST, use IMM8 for MOD
-						cycle(1) <= aa;
+						if (MemBus(3 downto 2) = MemBus(1 downto 0)) then -- if XX is equal to YY (mod == dst)
+							nextc := 1;
+						end if;
 					when others => null;
 				end case;
-				c0 <= '1';
-			elsif (cycle(1) = '1') then -- IMM8
-				c1 <= '1';
-				cycle(1) <= '0';
-			elsif (cycle(2) = '1') then -- IMM16
-				c2 <= '1';
-				cycle(2) <= '0';
-			elsif (cycle(3) = '1') then -- MEM Access
-				-- Nothing actually happens in the mem cycle, setup is in c2
-				-- memory cycle is used to set address bus for next instruction
-				cycle(3) <= '0';
+				mcycle <= "001";
 			end if;
+			cycle <= nextc;
 		end if;
 	end process;
 

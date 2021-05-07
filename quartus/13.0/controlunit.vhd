@@ -32,8 +32,8 @@ port(
 	);
 end controlunit;
 
--- Logic units (whole design): 300 299 298 292 291 290 265 271 286 285 282 281
--- Logic units (control unit): 52 50 53 51 58 55
+-- Logic units (whole design/Cyclone II): 300 299 298 292 291 290 265 271 286 285 282 276
+-- Logic units (control unit/Cyclone II): 52 50 53 51 58 59 50
 
 architecture arch of controlunit is
 signal irop:			std_logic_vector(7 downto 0) := x"F0";
@@ -44,6 +44,7 @@ alias  c0:				std_logic is mcycle(0);
 alias  c1:				std_logic is mcycle(1);
 alias  c2:				std_logic is mcycle(2);
 signal r:				std_logic := '1';
+signal samereg:		std_logic := '0';
 begin
 	IREG <= irop;
 	nrop <= not(irop);
@@ -59,9 +60,15 @@ begin
 			nextc := cycle - 1;
 			if (cycle = 0) then
 				-- determine which opcodes requires which cycles, all opcodes get a c0 cycle
+				irop  <= MemBus;
+				if (((MemBus(3) xnor MemBus(1)) and (MemBus(2) xnor MemBus(0))) = '1') then
+					nextc := 1;
+					samereg <= '1';
+				else
+					nextc := 0;
+					samereg <= '0';
+				end if;
 				opnum := to_integer(unsigned(MemBus(7 downto 3)));
-				irop <= MemBus;
-				nextc := 0;
 				case opnum is
 					when 1 | 4 =>
 						-- JMP REL8, LD/ST [C:D]
@@ -74,11 +81,10 @@ begin
 					when 2 =>
 						-- IROP + IMM8 + IMM16 + MEM cycles
 						nextc := 3;
-					when 14 to 29 =>
+					-- when 14 to 29 =>
 						-- MOV and all ALU ops, except XOR: if MOD == DST, use IMM8 for MOD
-						if (MemBus(3 downto 2) = MemBus(1 downto 0)) then -- if XX is equal to YY (mod == dst)
-							nextc := 1;
-						end if;
+					when 30 | 31 =>
+						nextc := 0;
 					when others => null;
 				end case;
 				mcycle <= "001";
@@ -89,7 +95,7 @@ begin
 
 	process(irop, nrop, c0, c1, c2, F_Carry, F_Zero, F_Sign)
 		variable opnum: integer range 0 to 31;
-		variable v, samereg, jmpflag: std_logic;
+		variable v, jmpflag: std_logic;
 	begin
 		opnum := to_integer(unsigned(irop(7 downto 3)));
 
@@ -113,12 +119,6 @@ begin
 		ModBus2Dst	<= '0';
 		ModSel		<= "00";
 		DstSel		<= irop(1 downto 0);
-
-		if (irop(3 downto 2) = irop(1 downto 0)) then
-			samereg := '1';
-		else
-			samereg := '0';
-		end if;
 		
 		case irop(2 downto 1) is
 			when "00" => jmpflag := nrop(0);

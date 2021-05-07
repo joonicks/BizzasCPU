@@ -23,7 +23,8 @@
 			Compiles into 286 Logic Elements (*)
 
 2021-05-07		Simplified/optimised controlunit logic
-			Compiles into 276 Logic Elements (*)
+			ALU_Cin controlunit logic default value simplification
+			Compiles into 267 Logic Elements (*)
 
 (*) Including debug outputs and simpleram
     on Quartus II 13.0.1, device target Cyclone II - EP2C8T144C6

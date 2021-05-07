@@ -32,7 +32,7 @@ port(
 	);
 end controlunit;
 
--- Logic units (whole design/Cyclone II): 300 299 298 292 291 290 265 271 286 285 282 276
+-- Logic units (whole design/Cyclone II): 300 299 298 292 291 290 265 271 286 285 282 276 267
 -- Logic units (control unit/Cyclone II): 52 50 53 51 58 59 50
 
 architecture arch of controlunit is
@@ -109,7 +109,7 @@ begin
 		Mem2IMHi		<= '0';
 		Mem2IMLo		<= '0';
 		ALU_OP		<= "010"; -- Default ALU_OP=OR causes the least gate-flipping = power saving
-		ALU_Cin		<= '0';
+		ALU_Cin		<= nrop(6) and irop(5) and F_Carry; -- Only one instruction case uses ALU_Cin
 		F_Store		<= '0';
 		CD2addr		<= '0';
 		DstBus2Mem	<= '0';
@@ -171,7 +171,6 @@ begin
 				ALU_OP(0)	<= irop(6) and irop(4);
 				ALU_OP(1)	<= irop(6) and irop(5);				
 				ALU_OP(2)	<= nrop(6) and (irop(5) nand irop(4));
-				ALU_Cin		<= nrop(6) and irop(5) and F_Carry;
 				F_Store		<= c0;
 				ALUBus2Dst	<= c0 and (irop(6) or irop(5) or irop(4));
 				ModSel		<= irop(3 downto 2);

@@ -34,19 +34,18 @@ begin
 	end process;
 	
 	process(ALU_OP, ALU_Cin, ModBus, DstBus)
-		variable modval: unsigned(8 downto 0);
+		variable modval: unsigned(8 downto 0) := "000000000";
 	begin
-		modval(8) := '0';
 		case(ALU_OP) is
-			--- 001 AND
+			-- 001 AND
 			when "001" => accum <= '0' & (ModBus and DstBus);
-			--- 010 OR
+			-- 010 OR
 			when "010" => accum <= '0' & (ModBus or  DstBus);
-			--- 011 XOR
+			-- 011 XOR
 			when "011" => accum <= '0' & (ModBus xor DstBus);
-			-- when "100" =>
-			-- ADD (default case)
 			when others =>
+			-- 000 ADD
+			-- 100 SUB
 				modval(0) := ModBus(0) xor ALU_OP(2);
 				modval(1) := ModBus(1) xor ALU_OP(2);
 				modval(2) := ModBus(2) xor ALU_OP(2);

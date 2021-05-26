@@ -24,17 +24,16 @@ signal accum:  unsigned(8 downto 0);
 begin
 	ALUBus <= accum(7 downto 0);
 
-	process(SYSCLK, F_Store)
-	begin
+	process(SYSCLK, F_Store) begin
 		if (rising_edge(SYSCLK) and F_Store = '1') then
 			F_Carry <= accum(8);
 			F_Zero  <= not(accum(7) or accum(6) or accum(5) or accum(4) or accum(3) or accum(2) or accum(1) or accum(0));
 			F_Sign  <= accum(7);
 		end if;
 	end process;
-	
+
 	process(ALU_OP, ALU_Cin, ModBus, DstBus)
-		variable modval: unsigned(8 downto 0) := "000000000";
+		variable modval: unsigned(8 downto 0);
 	begin
 		case(ALU_OP) is
 			-- 001 AND
@@ -43,22 +42,24 @@ begin
 			when "010" => accum <= '0' & (ModBus or  DstBus);
 			-- 011 XOR
 			when "011" => accum <= '0' & (ModBus xor DstBus);
-			when others =>
 			-- 000 ADD
 			-- 100 SUB
-				modval(0) := ModBus(0) xor ALU_OP(2);
-				modval(1) := ModBus(1) xor ALU_OP(2);
-				modval(2) := ModBus(2) xor ALU_OP(2);
-				modval(3) := ModBus(3) xor ALU_OP(2);
-				modval(4) := ModBus(4) xor ALU_OP(2);
-				modval(5) := ModBus(5) xor ALU_OP(2);
-				modval(6) := ModBus(6) xor ALU_OP(2);
-				modval(7) := ModBus(7) xor ALU_OP(2);
-				modval(8) := ALU_OP(2);
-				if (ALU_Cin /= ALU_OP(2)) then
+			when "000" | "100" | "101" =>
+				if (ALU_OP(2) = '1') then
+					modval := '1' & not(ModBus);
+				else
+					modval := '0' & ModBus;
+				end if;
+				if ((ALU_OP(2) xor ALU_Cin) = '1') then
 					modval := modval + 1;
 				end if;
 				accum <= ('0' & DstBus) + modval;
+			-- 110 SHR Shift Right; dvide by 2
+			when "110" =>
+				accum <= DstBus(0) & ALU_Cin & DstBus(7 downto 1);
+			-- 111 SHL Shift Left; multiply by 2
+			when "111" =>
+				accum <= DstBus & ALU_Cin;
 		end case;
 	end process;
 end arch;

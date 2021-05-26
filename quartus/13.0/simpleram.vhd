@@ -14,30 +14,38 @@ port(
 end entity;
 
 architecture arch of simpleram is
-	type memory_t is array(0 to 255) of std_logic_vector(7 downto 0);
+	constant MemoryBytes : integer := 1024;
+	type memory_t is array(0 to MemoryBytes-1) of std_logic_vector(7 downto 0);
 	function init_ram
 		return memory_t is
 		variable tmp : memory_t;
 		begin
 			-- Fibonnachi output register A: 01, 03, 08, 15, 37, 90, 79 (loop)
 			--				  output register B: 01, 02, 05, 0D, 22, 59, E9 (loop)
-			tmp(0 to 12) := (			-- Fibonnachi
-				x"70", x"01",			-- MOV $0x01, A
-				x"71",					-- MOV A, B
-				x"C1",					-- ADD A, B
-				x"C4",					-- ADD B, A
+			tmp(0 to 255) := (		-- Fibonnachi
+				x"F0", x"01",			-- MOV $0x01, A
+				x"F1",					-- MOV A, B
+				x"81",					-- ADD A, B
+				x"84",					-- ADD B, A
 				x"0A", x"FD",			-- JNC -3
+				x"8F", x"06",			-- ADD $06, D
+				x"CF", x"17",			-- CMP $17, D
 				x"01", x"00", x"00", -- NOP 0x0000
-				x"00", x"00", x"00"	-- JMP 0x0000
-				);
---			tmp(0 to 9) := (			-- Count down from 7
+				x"6B",					-- INC D
+				x"6E",					-- DEC C
+				x"2E", x"00",			-- LD  [$00:D], C
+				x"12", x"02", x"00",	-- LD  [$0002], C
+				x"1A", x"04",			-- LD  [$04], C
+				x"00", x"00", x"00",	-- JMP 0x0000
+				others => x"00");
+--			tmp(0 to 255) := (		-- Count down from 7
 --				x"70", x"01",			-- MOV $0x01, A
 --				x"75", x"07",			-- MOV $0x07, B
 --				x"91",					-- SUB A, B
 --				x"0C", x"FE",			-- JNZ -2
---				x"00", x"00", x"00"	-- JMP 0x0000
---				);
---			tmp(0 to 29) := (			-- Test code
+--				x"00", x"00", x"00",	-- JMP 0x0000
+--				others => x"00");
+--			tmp(0 to 255) := (		-- Test code
 --				x"70", x"01",			-- MOV $0x01, A
 --				x"CA", x"06",			-- ADD $0x06, C
 --				x"C1",					-- ADD A, B
@@ -54,23 +62,21 @@ architecture arch of simpleram is
 --				x"1F", x"01",			-- ST  D, [0x01]
 --				x"23",					-- ST  B, [C:D]
 --				x"20",					-- LD  [C:D], A
---				x"00", x"56", x"78",	-- JMP 0x5678
---				x"0B", x"FD",			-- JC  -2
---				x"00" );
+--				x"00", x"78", x"56",	-- JMP 0x5678
+--				others => x"00");
+			tmp(256 to MemoryBytes-1) := (
+				others => x"00");
 		return tmp;
 	end init_ram;
-	signal address: natural range 0 to 255 := 0;
+	signal address: natural range 0 to MemoryBytes-1 := 0;
 	signal ram : memory_t := init_ram;
 begin
-	MemBus <= ram(address) when Mem_OE = '1' else "ZZZZZZZZ";
+	MemBus <= "ZZZZZZZZ" when Mem_OE = '0' else ram(address);
 	
-	process(SYSCLK, address, Mem_WR)
-		variable compound: unsigned(15 downto 0);
+	process(SYSCLK, address, ram, Mem_WR)
 	begin
 		if (falling_edge(SYSCLK)) then
-			compound(15 downto 8) := addrHi;
-			compound( 7 downto 0) := addrLo;
-			address <= to_integer(compound);
+			address <= to_integer(addrHi & addrLo);
 		end if;
 		if (rising_edge(SYSCLK) and Mem_WR = '1') then
 			ram(address) <= MemBus;

@@ -28,7 +28,18 @@
 			Included Quartus project files
 			Compiles into 267 Logic Elements (*)
 
+2021-05-25		Reshuffling ALU instructions to simplify decoding
+			Added instructions for INC and DEC
+			Changed ZERO constant to ONE constant
+			Introduced LD [imm8:reg] instruction but removed [C:D] addressing
+			Introduced Shift instructions (SHR, SHL, RCR, RCL)
+			Added c3 machine cycle to distinguish next IROP loading
+			Compiles into 313 Logic Elements (*)
+
 (*) Including debug outputs and simpleram
     on Quartus II 13.0.1 64-bit Web Edition,
     device target Cyclone II - EP2C8T144C6
 
+    For comparison:
+    MiSTer MOS6510 implementation compiles to 1,144 Logic Elements
+    on Quartus II and target device Cyclone II - EP2C8T144C6.

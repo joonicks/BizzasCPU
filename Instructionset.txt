@@ -1,101 +1,71 @@
+Byte order: Little endian
 Registers (default size 8-bit):
 General purpose:	A, B, C, D					regbank
 Internal registers:	IROP (Instruction register)			control unit
-			INPC (Program Counter)				program counter
-			IMMA (IMM16 Address Buffer, 16 bit)		program counter
+			INPC (16-bit Program Counter)			regbank
+			IMMA (16-bit Address Buffer)			regbank
+			ONE  (8-bit one constant)			regbank
 Flags (1 bit):		Carry, Zero, Sign				alu unit
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~( only 0)~~~~~~~~~~~PCjump=1, PCjrel=IROP[3]
-( 0)0000####	JMP ...
-		Byte order: [JMPOP][ADDRLO][ADDRHI][...]
-		At Cycle 2, addrHi/addrLo will be pointing at ADDRHI
-		and the value can be copied from MemBus into PC
-	000F	JMP IMM16	if 0=F		(JMP, NOP)		PC2addr=1
-	001F	JMP IMM16	if Carry=F	(JNC, JC)
-	010F	JMP IMM16	if Zero=F	(JNZ, JZ)
-	011F	JMP IMM16	if Sign=F	(JNS, JS)
-		At Cycle 1, address will be pointing at REL8
-		and the value can be copied from MemBus into PC
-	100F	JMP REL8	if 0=F		(JMP, NOP)
-	101F	JMP REL8	if Carry=F	(JNC, JC)
-	110F	JMP REL8	if Zero=F	(JNZ, JZ)
-	111F	JMP REL8	if Sign=F	(JNS, JS)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-( 1)0001####
-	00YY	LD  [IMM16], DST					Mem2ModBus=1, Mem_WR=0
-	01YY	ST  SRC, [IMM16]					Mem2ModBus=0, Mem_WR=1
-		When Mem2IMLo=1, immaHi is set to zero
-	10YY	LD  [IMM8], DST			Zeropage		Mem2ModBus=1, Mem_WR=0
-	11YY	ST  SRC, [IMM8]			Zeropage		Mem2ModBus=0, Mem_WR=1
-( 2)0010####
-	000Y	LD  [C:D], A/B
-	001Y	ST  A/B, [C:D]
-	01##	...
-	1###	...
+( 0)00000000	JMP imm16
+	0001	NOP imm16		(Load address into IMMA)
+	001F	JMP imm16		(if Carry=F, JNC, JC)
+	010F	JMP imm16		(if Zero=F,  JNZ, JZ)
+	011F	JMP imm16		(if Sign=F,  JNS, JS)
+	1000	JMP rel8
+	1001	NOP imm8		(Load zeropage address into IMMA)
+	101F	JMP rel8		(if Carry=F, JNC, JC)
+	110F	JMP rel8		(if Zero=F,  JNZ, JZ)
+	111F	JMP rel8		(if Sign=F,  JNS, JS)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-( 3)0011####	...
+( 1)000100YY	LD  [imm16], dst
+	01YY	ST  src, [imm16]
+	10YY	LD  [imm8], dst		Zeropage
+	11YY	ST  src, [imm8]		Zeropage
+( 2)0010XXYY	LD  [imm8:reg], dst
+( 3)0011XXYY	ST  src, [imm8:reg]
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ( 4)0100####	...
-( 5)0101####	...
-( 6)0110####	...
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~(7 to 15)~~~~~~~~~~~ALU_OE=1, DstSel=YY, ModSel=XX, Mod2ModBus=1
-( 7)0111XXYY	MOV SRC, DST						ALUBus2Dst=1, ALU_Nop=1, F_Store=0
-	XXYY	MOV IMM8, DST		(if XX==YY)
-( 8)1000XXYY	CMP MOD, DST						ALUBus2Dst=0, ALU_OP=ADD, InvertMod=1, F_Store=1, ALU_Carry=0
-	XXYY	CMP IMM8, DST		(if XX==YY)
-( 9)1001XXYY	SUB MOD, DST						ALUBus2Dst=1, ALU_OP=ADD, InvertMod=1, F_Store=1, ALU_Carry=0
-	XXYY	SUB IMM8, DST		(if XX==YY)
-(10)1010XXYY	SBC MOD, DST						ALUBus2Dst=1, ALU_OP=ADD, InvertMod=1, F_Store=1, ALU_Carry=Carry
-	XXYY	SBC IMM8, DST		(if XX==YY)
-(11)1011XXYY	ADC MOD, DST						ALUBus2Dst=1, ALU_OP=ADD, InvertMod=0, F_Store=1, ALU_Carry=Carry
-	XXYY	ADC IMM8, DST		(if XX==YY)
-(12)1100XXYY	ADD MOD, DST						ALUBus2Dst=1, ALU_OP=ADD, InvertMod=0, F_Store=1, ALU_Carry=0
-	XXYY	ADD IMM8, DST		(if XX==YY)
-(14)1101XXYY	AND MOD, DST						ALUBus2Dst=1, ALU_OP=AND, InvertMod=0, F_Store=1, ALU_Carry=(*)
-	XXYY	AND IMM8, DST		(if XX==YY)
-(15)1110XXYY	OR  MOD, DST						ALUBus2Dst=1, ALU_OP=OR,  InvertMod=0, F_Store=1, ALU_Carry=(*)
-	XXYY	OR  IMM8, DST		(if XX==YY)
-(13)1111XXYY	XOR MOD, DST						ALUBus2Dst=1, ALU_OP=XOR, InvertMod=0, F_Store=1, ALU_Carry=(*)
-									XOR is a special case with no IMM8 variant
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	Unmapped/unimplemented instructions
+( 5)010100YY	SHR reg			Shift 1 bit Right, msb = 0
+	01YY	SHL reg			Shift 1 bit Left,  lsb = 0
+	10YY	RCR reg			Shift 1 bit Right, msb = Carry
+	11YY	RCL reg			Shift 1 bit Left,  lsb = Carry
+( 6)01100###	...
+	10YY	INC reg
+	11YY	DEC reg
+( 7)0111XXYY	XOR mod, dst
+		XOR is a special case with no IMM8 variant
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+( 8)1000XXYY	ADD mod, dst
+	XXYY	ADD imm8, dst		(if XX==YY)
+( 9)1001XXYY	AND mod, dst
+	XXYY	AND imm8, dst		(if XX==YY)
+(10)1010XXYY	OR  mod, dst
+	XXYY	OR  imm8, dst		(if XX==YY)
+(11)1011XXYY	ADC mod, dst
+	XXYY	ADC imm8, dst		(if XX==YY)
+(12)1100XXYY	CMP mod, dst
+	XXYY	CMP imm8, dst		(if XX==YY)
+(13)1101XXYY	SUB mod, dst
+	XXYY	SUB imm8, dst		(if XX==YY)
+(14)1110XXYY	SBC mod, dst
+	XXYY	SBC imm8, dst		(if XX==YY)
+(15)1111XXYY	MOV src, dst
+	XXYY	MOV imm8, dst		(if XX==YY)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Unmapped/unimplemented instructions/ideas
+	(may or may not be implemented)
 
-	XXYY	SHR/SHL/ROR/ROL
-		YY = Target register
-		XX = Option register
-		XX --> xxxCDNNN:	C	Rotate through Carry
-					D	Direction
-					NNN	Number of bit shifts
+	Remaining available opcodes: 24 (out of 256)
 
-	DCNN	D = direction R/L, C = Through Carry, NN = 1, 2, 3 or 4 bits
-	00NN	SHR A, NN			Shift Right with Zero
-	01NN	ROR A, NN			Shift Right through Carry
-	10NN	SHL A, NN			Shift Left  with Zero
-	11NN	ROL A, NN			Shift Left  through Carry
-
-	00YY	INC DST				ADC constant ZERO + Carry=1
-	01YY	DEC DST				SBC constant ZERO - Carry=1
-		DEC is equivalent to NOT(INC(NOT(X)))
+	00YY	...
+	01YY	SIC reg			Set reg to $01 if Carry=1
+	10YY	SIZ reg			Set reg to $01 if Zero=1
+	11YY	SIS reg			Set reg to $01 if Sign=1
 
 		JSR IMM16
 		JSR C:D
 		RTS
-
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-* --> Value doesnt affect result
-
-OP/Cycle		[IROP]	[IRLO]	[IRHI]	[Memory]
-
-JMP IMM16		  X	  X	  X	  -
-JMP REL8		  X	  X	  -	  -
-LD  [IMM16], DST	  X	  X	  X	  X
-ST  SRC, [IMM16]	  X	  X	  X	  X
-LD  [IMM8], DST		  X	  X	  -	  X
-ST  SRC, [IMM8]		  X	  X	  -	  X
-LD  [C:D], A/B		  X	  -	  -	  X
-ST  A/B, [C:D]		  X	  -	  -	  X
-ALU IMM8, DST		  X	  X	  -	  -
-MOV IMM8, DST		  X	  X	  -	  -
-MOV SRC, DST		  X	  -	  -	  -
-ALU SRC, DST		  X	  -	  -	  -
-

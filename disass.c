@@ -26,6 +26,8 @@
 #include <fcntl.h>
 #include <errno.h>
 
+#include "bizzas.h"
+
 #define MSGLEN	2048
 
 #define uint8_t unsigned char
@@ -67,41 +69,6 @@ char *mkbin(uint8_t a)
 	return(tmp);
 }
 
-char *mnemo[] = {
-	"JMP",	"NOP",	"JNC",	"JC ",	"JNZ",	"JZ ",	"JNS",	"JS ",	//00
-	"JMP",	"NOP",	"JNC",	"JC ",	"JNZ",	"JZ ",	"JNS",	"JS ",
-	"LD ",	"LD ",	"LD ",	"LD ",	"ST ",	"ST ",	"ST ",	"ST ",	//10
-	"LD ",	"LD ",	"LD ",	"LD ",	"ST ",	"ST ",	"ST ",	"ST ",
-	"LD ",	"LD ",	"ST ",	"ST ",	"LD ",	"LD ",	"ST ",	"ST ",	//20
-	"LD ",	"LD ",	"ST ",	"ST ",	"LD ",	"LD ",	"ST ",	"ST ",
-	"...",	"...",	"...",	"...",	"...",	"...",	"...",	"...",	//30
-	"...",	"...",	"...",	"...",	"...",	"...",	"...",	"...",
-	"...",	"...",	"...",	"...",	"...",	"...",	"...",	"...",	//40
-	"...",	"...",	"...",	"...",	"...",	"...",	"...",	"...",
-	"...",	"...",	"...",	"...",	"...",	"...",	"...",	"...",	//50
-	"...",	"...",	"...",	"...",	"...",	"...",	"...",	"...",
-	"...",	"...",	"...",	"...",	"...",	"...",	"...",	"...",	//60
-	"...",	"...",	"...",	"...",	"...",	"...",	"...",	"...",
-	"MOV",	"MOV",	"MOV",	"MOV",	"MOV",	"MOV",	"MOV",	"MOV",	//70
-	"MOV",	"MOV",	"MOV",	"MOV",	"MOV",	"MOV",	"MOV",	"MOV",
-	"CMP",	"CMP",	"CMP",	"CMP",	"CMP",	"CMP",	"CMP",	"CMP",	//80
-	"CMP",	"CMP",	"CMP",	"CMP",	"CMP",	"CMP",	"CMP",	"CMP",
-	"SUB",	"SUB",	"SUB",	"SUB",	"SUB",	"SUB",	"SUB",	"SUB",	//90
-	"SUB",	"SUB",	"SUB",	"SUB",	"SUB",	"SUB",	"SUB",	"SUB",
-	"SBC",	"SBC",	"SBC",	"SBC",	"SBC",	"SBC",	"SBC",	"SBC",	//A0
-	"SBC",	"SBC",	"SBC",	"SBC",	"SBC",	"SBC",	"SBC",	"SBC",
-	"ADC",	"ADC",	"ADC",	"ADC",	"ADC",	"ADC",	"ADC",	"ADC",	//B0
-	"ADC",	"ADC",	"ADC",	"ADC",	"ADC",	"ADC",	"ADC",	"ADC",
-	"ADD",	"ADD",	"ADD",	"ADD",	"ADD",	"ADD",	"ADD",	"ADD",	//C0
-	"ADD",	"ADD",	"ADD",	"ADD",	"ADD",	"ADD",	"ADD",	"ADD",
-	"AND",	"AND",	"AND",	"AND",	"AND",	"AND",	"AND",	"AND",	//D0
-	"AND",	"AND",	"AND",	"AND",	"AND",	"AND",	"AND",	"AND",
-	"OR ",	"OR ",	"OR ",	"OR ",	"OR ",	"OR ",	"OR ",	"OR ",	//E0
-	"OR ",	"OR ",	"OR ",	"OR ",	"OR ",	"OR ",	"OR ",	"OR ",
-	"XOR",	"XOR",	"XOR",	"XOR",	"XOR",	"XOR",	"XOR",	"XOR",	//F0
-	"XOR",	"XOR",	"XOR",	"XOR",	"XOR",	"XOR",	"XOR",	"XOR"
-	};
-
 char *regs[] = { "A", "B", "C", "D" };
 
 char *DST = "DST";
@@ -111,7 +78,7 @@ char *IMM16 = "IMM16";
 char *IMM8ADR = "[IMM8]";
 char *IMM8 = "IMM8";
 char *REL8 = "REL8";
-char *CDADDR = "[C:D]";
+char *REGADDR = "[IMM8:REG]";
 
 int disass(uint8_t *data)
 {
@@ -120,7 +87,7 @@ int disass(uint8_t *data)
 	int	imm16,imm8;
 	int	im,id;
 
-	opcode = mnemo[data[0]];
+	opcode = mnemonics[data[0]];
 
 	irop = data[0];
 	im = ((irop >> 2) & 3);
@@ -158,17 +125,29 @@ int disass(uint8_t *data)
 		imm8 = 1;
 		break;
 	case 2:
-		im = id = irop & 1;
-		mod = (irop & 2) ? SRC : CDADDR;
-		dst = (irop & 2) ? CDADDR : DST;
+		mod = REGADDR;
+		dst = DST;
+		imm8 = 1;
 		break;
 	case 3:
+		mod = SRC;
+		dst = REGADDR;
+		imm8 = 1;
+		break;
 	case 4:
-	case 5:
-	case 6:
 		break;
 
-	case 7:
+	case 5:
+		dst = DST;
+		break;
+
+	case 6:
+		if (irop & 8)
+		{
+			dst = DST;
+		}
+		break;
+
 	case 8:
 	case 9:
 	case 10:
@@ -176,6 +155,7 @@ int disass(uint8_t *data)
 	case 12:
 	case 13:
 	case 14:
+	case 15:
 		mod = SRC;
 		dst = DST;
 		if (im == id)
@@ -184,6 +164,7 @@ int disass(uint8_t *data)
 			imm8 = 1;
 		}
 		break;
+	case 7:
 	default:
 		mod = SRC;
 		dst = DST;
@@ -194,27 +175,32 @@ int disass(uint8_t *data)
 	if (dst == DST)
 		dst = regs[id];
 
+	if (mod == REGADDR)
+		sprintf((mod = immer),"[$%02X:%s]",data[1],regs[im]);
+	if (dst == REGADDR)
+		sprintf((dst = immer),"[$%02X:%s]",data[1],regs[id]);
+
 	if (mod == IMM8)
-		sprintf((mod = immer),"$0x%02X",data[1]);
+		sprintf((mod = immer),"$%02X",data[1]);
 	if (mod == IMM8ADR)
-		sprintf((mod = immer),"[0x%02X]",data[1]);
+		sprintf((mod = immer),"[$%02X]",data[1]);
 	if (mod == IMM16ADR)
-		sprintf((mod = immer),"[0x%04X]",data[1] | ((int)data[2] << 8));
+		sprintf((mod = immer),"[$%04X]",data[1] | ((int)data[2] << 8));
 
 	if (dst == IMM8)
-		sprintf((dst = immer),"$0x%02X",data[1]);
+		sprintf((dst = immer),"$%02X",data[1]);
 	if (dst == IMM8ADR)
-		sprintf((dst = immer),"[0x%02X]",data[1]);
+		sprintf((dst = immer),"[$%02X]",data[1]);
 	if (dst == IMM16ADR)
-		sprintf((dst = immer),"[0x%04X]",data[1] | ((int)data[2] << 8));
+		sprintf((dst = immer),"[$%04X]",data[1] | ((int)data[2] << 8));
 
 	if (mod == IMM16)
-		sprintf((mod = immer),"0x%04X",data[1] | ((int)data[2] << 8));
+		sprintf((mod = immer),"$%04X",data[1] | ((int)data[2] << 8));
 
 	if (mod == REL8)
-		sprintf((mod = immer),"%c0x%02X",(data[1] & 0x80) ? '-' : '+',data[1] & 0x7F);
+		sprintf((mod = immer),"%c$%02X",(data[1] & 0x80) ? '-' : '+',data[1] & 0x7F);
 
-	to_file(1,"hex 0x%02X bin %s: \t%s   %s%s %s\n",irop,mkbin(irop),opcode,mod,(*dst) ? "," : "",dst);
+	to_file(1,"hex %02X bin %s: \t%s   %s%s%s\n",irop,mkbin(irop),opcode,mod,(*mod && *dst) ? ", " : "",dst);
 	return(1 + imm8 + imm16);
 }
 

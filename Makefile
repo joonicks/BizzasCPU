@@ -4,7 +4,7 @@ CC = gcc
 
 all:		disass example_opcodelist.txt example_disassembly.txt
 
-disass:		disass.c
+disass:		disass.c bizzas.h
 		$(CC) -g -pipe -Os -Wall -o disass $<
 
 example_opcodelist.txt:	disass

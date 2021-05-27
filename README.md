@@ -31,6 +31,11 @@ Design started in Quartus II, the first two revisions were entirely block diagra
 but that made development very slow and complex. Revision 3 started over with VHDL to make
 design and implementation easier/faster.
 
+## Goals
+
+To develop a fully functional, easily programmable CPU while minimizing resource usage
+(FPGA Logic Elements).
+
 Initial goal is to get the CPU working on an FPGA with external RAM/ROM.
 
 ---

@@ -7,54 +7,73 @@ Internal registers:	IROP (Instruction register)			control unit
 			ONE  (8-bit one constant)			regbank
 Flags (1 bit):		Carry, Zero, Sign				alu unit
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-( 0)00000000	JMP imm16
-	0001	NOP imm16		(Load address into IMMA)
-	001F	JMP imm16		(if Carry=F, JNC, JC)
-	010F	JMP imm16		(if Zero=F,  JNZ, JZ)
-	011F	JMP imm16		(if Sign=F,  JNS, JS)
-	1000	JMP rel8
-	1001	NOP imm8		(Load zeropage address into IMMA)
-	101F	JMP rel8		(if Carry=F, JNC, JC)
-	110F	JMP rel8		(if Zero=F,  JNZ, JZ)
-	111F	JMP rel8		(if Sign=F,  JNS, JS)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-( 1)000100YY	LD  [imm16], dst
-	01YY	ST  src, [imm16]
-	10YY	LD  [imm8], dst		Zeropage
-	11YY	ST  src, [imm8]		Zeropage
-( 2)0010XXYY	LD  [imm8:reg], dst
-( 3)0011XXYY	ST  src, [imm8:reg]
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Instruction entry format:
+(aa)bbbbbbbb	ccc ddd, ...		eee	fff			nnn
+
+a: Decimal value of the first four bits.
+b: instruction opcode, full 8-bits with argument bits as letters
+   if the first 4 bits are not written, they are same as preceeding line(s)
+   XX = 2 bits to select destination register,
+   YY = 2 bits to select modifier register,
+   F  = 1 bit to match against flag register
+c: Mnemonic for the instruction
+d: arguments for the instruction
+e: number of bytes for opcode + arguments
+f: order of bytes for opcode and arguments
+n: extra explanations
+
+Mnemonics for conditional jumps is listed as "Jcc" to cover both variants.
+ 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+( 0)00000000	JMP imm16		3	OP|IMM_LO8|IMM_HI8
+	0001	NOP imm16		3	OP|IMM_LO8|IMM_HI8	Load address into IMMA (affects nothing)
+	001F	Jcc imm16		3	OP|IMM_LO8|IMM_HI8	if Carry=F, JNC, JC
+	010F	Jcc imm16		3	OP|IMM_LO8|IMM_HI8	if Zero=F,  JNZ, JZ
+	011F	Jcc imm16		3	OP|IMM_LO8|IMM_HI8	if Sign=F,  JNS, JS
+	1000	JMP rel8		2	OP|REL8
+	1001	NOP imm8		2	OP|IMM8			Load zeropage address into IMMA (affects nothing)
+	101F	Jcc rel8		2	OP|REL8			if Carry=F, JNC, JC
+	110F	Jcc rel8		2	OP|REL8			if Zero=F,  JNZ, JZ
+	111F	Jcc rel8		2	OP|REL8			if Sign=F,  JNS, JS
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+( 1)000100YY	LD  [imm16], dst	3	OP|IMM_LO8|IMM_HI8
+	01YY	ST  src, [imm16]	3	OP|IMM_LO8|IMM_HI8
+	10YY	LD  [imm8], dst		2	OP|IMM8			Zeropage
+	11YY	ST  src, [imm8]		2	OP|IMM8			Zeropage
+( 2)0010XXYY	LD  [imm8:reg], dst	2	OP|IMM8
+( 3)0011XXYY	ST  src, [imm8:reg]	2	OP|IMM8
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ( 4)0100####	...
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-( 5)010100YY	SHR reg			Shift 1 bit Right, msb = 0
-	01YY	SHL reg			Shift 1 bit Left,  lsb = 0
-	10YY	RCR reg			Shift 1 bit Right, msb = Carry
-	11YY	RCL reg			Shift 1 bit Left,  lsb = Carry
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+( 5)010100YY	SHR reg			1	OP			Shift 1 bit Right, msb = 0 **
+	01YY	SHL reg			1	OP			Shift 1 bit Left,  lsb = 0 **
+	10YY	RCR reg			1	OP			Shift 1 bit Right, msb = Carry **
+	11YY	RCL reg			1	OP			Shift 1 bit Left,  lsb = Carry **
+									** Shifted out bit is stored in Carry		
 ( 6)01100###	...
-	10YY	INC reg
-	11YY	DEC reg
-( 7)0111XXYY	XOR mod, dst
-		XOR is a special case with no IMM8 variant
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-( 8)1000XXYY	ADD mod, dst
-	XXYY	ADD imm8, dst		(if XX==YY)
-( 9)1001XXYY	AND mod, dst
-	XXYY	AND imm8, dst		(if XX==YY)
-(10)1010XXYY	OR  mod, dst
-	XXYY	OR  imm8, dst		(if XX==YY)
-(11)1011XXYY	ADC mod, dst
-	XXYY	ADC imm8, dst		(if XX==YY)
-(12)1100XXYY	CMP mod, dst
-	XXYY	CMP imm8, dst		(if XX==YY)
-(13)1101XXYY	SUB mod, dst
-	XXYY	SUB imm8, dst		(if XX==YY)
-(14)1110XXYY	SBC mod, dst
-	XXYY	SBC imm8, dst		(if XX==YY)
-(15)1111XXYY	MOV src, dst
-	XXYY	MOV imm8, dst		(if XX==YY)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	10YY	INC reg			1	OP
+	11YY	DEC reg			1	OP
+( 7)0111XXYY	XOR mod, dst		1	OP			XOR is a special case with no IMM8 variant
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+( 8)1000XXYY	ADD mod, dst		1	OP
+		ADD imm8, dst		2	OP|IMM8			if src = dst
+( 9)1001XXYY	AND mod, dst		1	OP
+		AND imm8, dst		2	OP|IMM8			if src = dst
+(10)1010XXYY	OR  mod, dst		1	OP
+		OR  imm8, dst		2	OP|IMM8			if src = dst
+(11)1011XXYY	ADC mod, dst		1	OP
+		ADC imm8, dst		2	OP|IMM8			if src = dst
+(12)1100XXYY	CMP mod, dst		1	OP
+		CMP imm8, dst		2	OP|IMM8			if src = dst
+(13)1101XXYY	SUB mod, dst		1	OP
+		SUB imm8, dst		2	OP|IMM8			if src = dst
+(14)1110XXYY	SBC mod, dst		1	OP
+		SBC imm8, dst		2	OP|IMM8			if src = dst
+(15)1111XXYY	MOV src, dst		1	OP
+		MOV imm8, dst		2	OP|IMM8			if src = dst
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	Unmapped/unimplemented instructions/ideas
 	(may or may not be implemented)
 
@@ -68,4 +87,4 @@ Flags (1 bit):		Carry, Zero, Sign				alu unit
 		JSR IMM16
 		JSR C:D
 		RTS
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

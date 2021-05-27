@@ -34,6 +34,7 @@ signal imma:	std_logic_vector(15 downto 0) := x"0000";
 alias  immaHi:	std_logic_vector( 7 downto 0) is imma(15 downto 8);
 alias  immaLo:	std_logic_vector( 7 downto 0) is imma( 7 downto 0);
 signal regA, regB, regC, regD: std_logic_vector(7 downto 0);
+alias  M7:		std_logic is MemBus(7);
 begin	
 	MemBus <= DstBus when DstBus2Mem = '1'	else "ZZZZZZZZ";
 
@@ -42,21 +43,18 @@ begin
 	addrHi <= immaHi when Reg2addr = '1'	else 
 				 immaHi when PChold = '1'		else inpcHi;
 	
-	process(SYSCLK, PChold)
+	process(SYSCLK, PCjump, PCjrel, PChold, Reg2addr, Membus, immaLo)
 		variable inmod: std_logic_vector(15 downto 0);
 	begin
 		if (rising_edge(SYSCLK)) then
-			inmod := "000000000000000" & not(PChold or Reg2addr);
-			if (PCjrel = '1') then
-				inmod(15 downto 8) := (others => MemBus(7));
-				inmod( 7 downto 0) := MemBus;
-			end if;
 			if (PCjump = '1') then
-				inpcLo <= immaLo;
-				inpcHi <= MemBus;
+				inmod := MemBus & immaLo;
+			elsif (PCjrel = '1') then
+				inmod := inpc + (M7 & M7 & M7 & M7 & M7 & M7 & M7 & M7 & MemBus);
 			else
-				inpc <= inpc + inmod;
+				inmod := inpc + not(PChold or Reg2addr);
 			end if;
+			inpc <= inmod;
 		end if;
 	end process;
 

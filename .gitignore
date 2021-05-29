@@ -1,10 +1,12 @@
 disass
+zasm
 *~
 core
 db/*
 incremental_db/*
 output_files/*
 simulation/*
+*.o
 *.bak
 *.temp
 

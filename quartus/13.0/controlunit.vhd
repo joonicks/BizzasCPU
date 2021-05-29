@@ -26,7 +26,7 @@ port(
 	);
 end controlunit;
 
--- Logic units (whole design/Cyclone II): 300 299 298 292 291 290 265 271 286 285 282 276 267 265 263 258 300 305 301 312
+-- Logic units (whole design/Cyclone II): 300 299 298 292 291 290 265 271 286 285 282 276 267 265 263 258 300 305 301 311 290
 -- Logic units (control unit/Cyclone II): 52 50 53 51 58 59 50 52 51 49 58 67 74 70
 
 architecture arch of controlunit is
@@ -158,7 +158,7 @@ begin
 				Bus2Dst(0)	<= '0';
 			when 32 to 47 =>
 				-- 0010XXYY LD [imm8:reg], dst
-				Reg2addr	<= c1;
+				Reg2addr		<= c1;
 				if (c0 = '1') then
 					DstSel	<= "101"; -- immaHi
 				end if;

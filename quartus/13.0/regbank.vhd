@@ -65,14 +65,11 @@ begin
 	D <= regD;
 	IM <= imma;
 	
+	-- DstBus output is never actually used unless it is a register
 	DstBus <=	regA		when DstSel = "000" else
 					regB		when DstSel = "001" else
 					regC		when DstSel = "010" else
-					regD		when DstSel = "011" else
-					immaLo	when DstSel = "100" else
-					immaHi	when DstSel = "101" else
-					x"01"		when DstSel = "110" else
-					MemBus; --	  DstSel = "111"
+					regD;
 	
 	ModBus <=	regA		when ModSel = "000" else
 					regB		when ModSel = "001" else

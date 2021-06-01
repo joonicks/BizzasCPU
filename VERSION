@@ -39,6 +39,7 @@
 2021-05-29		Regbank DstSel logic reduction
 			Compiles into 290 Logic Elements (*)
 
+2021-05-31		Added time analysis constraints file.
 
 (*) Including debug outputs and simpleram
     on Quartus II 13.0.1 64-bit Web Edition,

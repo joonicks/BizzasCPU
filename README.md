@@ -34,9 +34,9 @@ design and implementation easier/faster.
 ## Goals
 
 To develop a fully functional, easily programmable CPU while minimizing resource usage
-(FPGA Logic Elements).
+(FPGA Logic Elements or other applicable units).
 
-Initial goal is to get the CPU working on an FPGA with external RAM/ROM.
+2021-06-04: Tested running small program successfully on a Terasic DE10-Nano.
 
 ---
 
@@ -44,5 +44,5 @@ License: GPL v2
 
 Project initiated by:
 
-Alan Londa (Not real name), a.k.a. joonicks (may be found on Freenode)
+Alan Londa (Not real name), a.k.a. joonicks
 in April 2018

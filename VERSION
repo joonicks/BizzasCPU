@@ -41,6 +41,9 @@
 
 2021-05-31		Added time analysis constraints file.
 
+2021-06-04		Verified the design on FPGA hardware (Terasic DE10-Nano)
+			1st test successful @ 12.5MHz running a small test program.
+
 (*) Including debug outputs and simpleram
     on Quartus II 13.0.1 64-bit Web Edition,
     device target Cyclone II - EP2C8T144C6

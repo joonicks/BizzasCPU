@@ -21,8 +21,8 @@
 #include <unistd.h>
 #include <errno.h>
 
-#define MAXLEN	2048
-#define MSGLEN	1024
+#define MAXLEN	4096
+#define MSGLEN	2048
 
 char	globaldata[MAXLEN];
 

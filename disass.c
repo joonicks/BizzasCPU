@@ -1,6 +1,6 @@
 /*
 
-    Copyright (c) 2018-2021 proton
+    Copyright (c) 2018-2021 joonicks
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -32,24 +32,7 @@
 
 #define uint8_t unsigned char
 
-char	gsockdata[MSGLEN];
-
-/*
- *  Format text and send to a socket or file descriptor
- */
-int to_file(int sock, const char *format, ...)
-{
-	va_list msg;
-
-	if (sock == -1)
-		return(-1);
-
-	va_start(msg,format);
-	vsprintf(gsockdata,format,msg);
-	va_end(msg);
-
-	return(write(sock,gsockdata,strlen(gsockdata)));
-}
+int fdwrite(int, const char *, ...);
 
 uint8_t	irop, ira, irb;
 
@@ -200,7 +183,7 @@ int disass(uint8_t *data)
 	if (mod == REL8)
 		sprintf((mod = immer),"%c$%02X",(data[1] & 0x80) ? '-' : '+',data[1] & 0x7F);
 
-	to_file(1,"hex %02X bin %s: \t%s   %s%s%s\n",irop,mkbin(irop),opcode,mod,(*mod && *dst) ? ", " : "",dst);
+	fdwrite(1,"hex %02X bin %s: \t%s   %s%s%s\n",irop,mkbin(irop),opcode,mod,(*mod && *dst) ? ", " : "",dst);
 	return(1 + imm8 + imm16);
 }
 

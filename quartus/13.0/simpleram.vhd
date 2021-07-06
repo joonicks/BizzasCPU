@@ -30,12 +30,14 @@ architecture arch of simpleram is
 				x"0A", x"FD",			-- JNC -3
 				x"8F", x"06",			-- ADD $06, D
 				x"CF", x"17",			-- CMP $17, D
-				x"01", x"00", x"00", -- NOP 0x0000
+				x"01", x"99", x"00", -- NOP 0x0000
 				x"6B",					-- INC D
 				x"6E",					-- DEC C
 				x"2E", x"00",			-- LD  [$00:D], C
-				x"12", x"02", x"00",	-- LD  [$0002], C
-				x"1A", x"04",			-- LD  [$04], C
+				x"12", x"0C", x"00",	-- LD  [$000C], C
+				x"6A",					-- INC C
+				x"16", x"0C", x"00",	-- ST  C, [$000C]
+				x"16", x"77", x"D0", -- ST  C, [$D077]
 				x"00", x"00", x"00",	-- JMP 0x0000
 				others => x"00");
 --			tmp(0 to 255) := (		-- Count down from 7

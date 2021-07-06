@@ -26,7 +26,7 @@ port(
 	);
 end controlunit;
 
--- Logic units (whole design/Cyclone II): 300 299 298 292 291 290 265 271 286 285 282 276 267 265 263 258 300 305 301 311 290
+-- Logic units (whole design/Cyclone II): 300 299 298 292 291 290 265 271 286 285 282 276 267 265 263 258 300 305 301 311 290 296
 -- Logic units (control unit/Cyclone II): 52 50 53 51 58 59 50 52 51 49 58 67 74 70
 
 architecture arch of controlunit is
@@ -117,7 +117,7 @@ begin
 			when 0 to 7 =>
 				-- 00000xxx JMP imm16
 				PCjump		<= jmpflag and c1;
-				 -- c0 -- DstSel "100": immaLo = data
+				 -- c0 -- DstSel "100": imma = "00000000" & data
 				 -- c1 -- DstSel "101": immaHi = data
 				DstSel(2)	<= c0 or c1;
 				DstSel(1)	<= '0';
@@ -128,7 +128,7 @@ begin
 			when 8 to 15 =>
 				-- 00001xxx JMP rel8
 				PCjrel		<= jmpflag and c0;
-				 -- c0 -- DstSel "100": immaLo = data
+				 -- c0 -- DstSel "100": imma = "00000000" & data
 				DstSel(2)	<= c0;
 				DstSel(1)	<= '0';
 				DstSel(0)	<= '0';
@@ -152,7 +152,7 @@ begin
 				PChold		<= c1;
 				DstBus2Mem	<= c1 and irop(2);
 				if (c0 = '1') then
-					DstSel	<= "100"; -- immaLo
+					DstSel	<= "100"; -- imma = "00000000" & data
 				end if;
 				Bus2Dst(1)	<= not(c2); -- data := MemBus
 				Bus2Dst(0)	<= '0';

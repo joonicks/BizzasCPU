@@ -1,6 +1,6 @@
 set_global_assignment -name FAMILY "Cyclone II"
 set_global_assignment -name DEVICE EP2C8T144C6
-set_global_assignment -name TOP_LEVEL_ENTITY rev3core
+set_global_assignment -name TOP_LEVEL_ENTITY system
 set_global_assignment -name ORIGINAL_QUARTUS_VERSION "13.0 SP1"
 set_global_assignment -name PROJECT_CREATION_TIME_DATE "00:40:27  MAY 04, 2021"
 set_global_assignment -name LAST_QUARTUS_VERSION "13.0 SP1"
@@ -10,6 +10,7 @@ set_global_assignment -name VHDL_FILE alu8bit.vhd
 set_global_assignment -name VHDL_FILE controlunit.vhd
 set_global_assignment -name VHDL_FILE regbank.vhd
 set_global_assignment -name VHDL_FILE simpleram.vhd
+set_global_assignment -name BDF_FILE system.bdf
 set_global_assignment -name VECTOR_WAVEFORM_FILE rev3core.vwf
 set_global_assignment -name SIMULATION_MODE FUNCTIONAL
 set_global_assignment -name EDA_SIMULATION_TOOL "ModelSim-Altera (Verilog)"
@@ -18,7 +19,39 @@ set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST ON -section_id eda_s
 set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
 set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
 
-set_global_assignment -name INCREMENTAL_VECTOR_INPUT_SOURCE "I:/Elektronik/Quartus/BizzasCPU3.aae.opnum/rev3core.vwf"
+
+set_global_assignment -name SDC_FILE BizzasCPU3.sdc
+set_global_assignment -name STRATIX_DEVICE_IO_STANDARD "3.3-V LVTTL"
+set_location_assignment PIN_112 -to MemBus[0]
+set_location_assignment PIN_113 -to MemBus[1]
+set_location_assignment PIN_114 -to MemBus[2]
+set_location_assignment PIN_115 -to MemBus[3]
+set_location_assignment PIN_118 -to MemBus[4]
+set_location_assignment PIN_119 -to MemBus[5]
+set_location_assignment PIN_121 -to MemBus[6]
+set_location_assignment PIN_122 -to MemBus[7]
+set_location_assignment PIN_40 -to addrLo[0]
+set_location_assignment PIN_41 -to addrLo[1]
+set_location_assignment PIN_43 -to addrLo[3]
+set_location_assignment PIN_44 -to addrLo[4]
+set_location_assignment PIN_45 -to addrLo[5]
+set_location_assignment PIN_47 -to addrLo[6]
+set_location_assignment PIN_48 -to addrLo[7]
+set_location_assignment PIN_52 -to addrHi[0]
+set_location_assignment PIN_42 -to addrLo[2]
+set_location_assignment PIN_53 -to addrHi[1]
+set_location_assignment PIN_55 -to addrHi[2]
+set_location_assignment PIN_57 -to addrHi[3]
+set_location_assignment PIN_58 -to addrHi[4]
+set_location_assignment PIN_59 -to addrHi[5]
+set_location_assignment PIN_60 -to addrHi[6]
+set_location_assignment PIN_64 -to addrHi[7]
+set_location_assignment PIN_126 -to Mem_OE
+set_location_assignment PIN_125 -to Mem_WR
+set_location_assignment PIN_129 -to SYSCLK
+set_global_assignment -name VHDL_FILE bizzaport.vhd
+set_global_assignment -name INCREMENTAL_VECTOR_INPUT_SOURCE "I:/Elektronik/Quartus/BizzasCPU3.aai.layout/rev3core.vwf"
+set_global_assignment -name VHDL_FILE bizzaclock.vhd
 set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
 set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top

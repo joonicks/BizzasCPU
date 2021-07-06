@@ -24,7 +24,7 @@ port(
 	);
 end regbank;
 
--- Logic Elements: 36 37 44 36(68) 100 97 94 84 107 203 194
+-- Logic Elements: 36 37 44 36(68) 100 97 94 84 107 203 194 167
 
 architecture arch of regbank is
 signal inpc:	std_logic_vector(15 downto 0) := x"0000";
@@ -85,7 +85,7 @@ begin
 	begin
 		if (rising_edge(SYSCLK) and Bus2Dst /= "00") then
 			case Bus2Dst is
-			when "00" => null; -- Cant happen
+			when "00" => data := ModBus; -- Cant happen
 			when "01" => data := ALUBus;
 			when "10" => data := MemBus;
 			when "11" => data := ModBus;
@@ -98,8 +98,8 @@ begin
 			when "011" => regD <= data;
 			when "100" => imma <= "00000000" & data;
 			when "101" => immaHi <= data;
-			when "110" => null;
-			when "111" => null;
+			when "110" => immaLo <= data; -- Unused;
+			when "111" => immaLo <= data; -- Unused;
 			end case;
 		end if;
 	end process;	

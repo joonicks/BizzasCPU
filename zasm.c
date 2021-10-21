@@ -1,14 +1,4 @@
 /*
-typedef struct MnemoStruct {
-
-	const char name[4];
-	uint8_t	args_format;
-	uint8_t sz;
-	uint8_t code_start;
-
-} MnemoStruct;
-*/
-/*
 
     Copyright (c) 2021 joonicks
 
@@ -29,6 +19,7 @@ typedef struct MnemoStruct {
 */
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <stdarg.h>
 #include <string.h>
 #include <stdint.h>
@@ -38,12 +29,17 @@ typedef struct MnemoStruct {
 #include <errno.h>
 
 #define	MNEMO_TABLE 1
+#define EXCL_MNEMONICS_GLOBAL 1
+extern const char * const regs[];
 #include "bizzas.h"
+
+#define VERSION	"zasm v0.2, 2021-10-20"
 
 #define MSGLEN	2048
 
 int fdwrite(int, const char *, ...);
 char *fdread(int, char *, char *);
+int disass(uint8_t *data, char *code, int sz);
 
 #define LABLEN	32
 
@@ -55,13 +51,25 @@ typedef struct LabelEnt
 
 } LabelEnt;
 
-const char regs[5][2] = { "A", "B", "C", "D", "" };
-
 #define MAXLABELS	500
 
 LabelEnt labels[MAXLABELS];
 
 uint8_t memory[65536];
+
+int matchlabel(const char *token)
+{
+	int	n;
+
+	for(n=0;n<MAXLABELS;n++)
+	{
+		if (labels[n].name[0] != *token)
+			continue;
+		if (strcmp(labels[n].name,token) == 0)
+			return(n);
+	}
+	return(-1);
+}
 
 /*
  *  returns NULL or non-zero length string
@@ -90,6 +98,17 @@ char *chop(char **src)
 		tok = NULL;
 	}
 	return(tok);
+}
+
+void copytoken(const char *src, char *dst)
+{
+	while(*src)
+	{
+		if (*src == '\t' || *src == ' ' || *src == '\r' || *src == '\n')
+			break;
+		*dst++ = *src++;
+	}
+	*dst = 0;
 }
 
 int mnemonic_match(const char *input)
@@ -142,10 +161,6 @@ int hexdigit(char c)
 		return(c - '0');
 	if (c >= 'a')
 		c -= 32;
-/*
-	if (c >= 'a' && c <= 'f')
-		return(c - 'a' + 10);
-*/
 	if (c >= 'A' && c <= 'F')
 		return(c - 'A' + 10);
 	return(-1);
@@ -184,8 +199,7 @@ int immediate(const char *imm)
 int translate_to_reg(const char *in)
 {
 	int	i;
-//fdwrite(1,"ttr in %s\n",in);
-	for(i=0;regs[i][0];i++)
+	for(i=0;i<4;i++)
 	{
 		if (strcasecmp(in,regs[i]) == 0)
 			return(i);
@@ -203,7 +217,6 @@ int translate_to_regreg(const char *in)
 	split(in,srcreg,dstreg,40);
 	sr = translate_to_reg(srcreg);
 	dr = translate_to_reg(dstreg);
-//fdwrite(1,"srcreg %01X dstreg %01X\n",sr,dr);
 	if (sr >= 0 && dr >= 0)
 	{
 		return((sr << 2) + dr);
@@ -222,7 +235,6 @@ int translate_to_imm8reg(const char *in, int *imm8)
 	split(in,srcimm,dstreg,40);
 	*imm8 = immediate(srcimm);
 	dr = translate_to_reg(dstreg);
-//fdwrite(1,"imm %i, dr %i\n",*imm8,dr);
 	if (*imm8 >= 0 && *imm8 <= 255 && dr >= 0)
 	{
 		return((dr << 2) + dr);
@@ -237,10 +249,6 @@ int translate_to_imm(const char *in, int *imm)
 	return(-1);
 }
 
-/*
-	FOO A, [$addr]
-	FOO [$addr], A
-*/
 int translate_to_addreg(const char *in, int *addr)
 {
 	char	srcimm[40],dstreg[40];
@@ -253,7 +261,6 @@ int translate_to_addreg(const char *in, int *addr)
 
 	*addr = immediate(srcimm);
 	dr = translate_to_reg(dstreg);
-fdwrite(1,"to_addreg: '%s' '%s' $%04X\n",srcimm,dstreg,*addr);
 
 	if (*addr >= 0 && *addr <= 65535)
 		return(dr);
@@ -269,21 +276,75 @@ int add_out(int data, int *addr)
 	return(0);
 }
 
+void help(const char *exec)
+{
+	fdwrite(1,"Usage: %s [options] <input-file>\n", exec);
+	fdwrite(1,"-h, --help\tdisplay this help and exit\n");
+	fdwrite(1,"-v\t\tbe verbose\n");
+	fdwrite(1,"--version\toutput version information and exit\n");
+	exit(5);
+}
+
 int main(int argc, char **argv)
 {
-	const char *opname;
-	char	c,*src,*dst,*line,restbuffer[MSGLEN],linebuffer[MSGLEN];
-	int	i,m,fd,org,imx,imy,maxmnemo,opcode,codemod,address;
+	const char *src,*inputfile;
+	char	c,*dst,*line,restbuffer[MSGLEN],linebuffer[MSGLEN],das[MSGLEN];
+	int	i,m,fd,org,imx,imy,maxmnemo,opcode,codemod,address,_addr;
 
 	for (m=0;m<MSGLEN;m++)
 		restbuffer[m] = 0;
 
-	/* open file */
+	inputfile = NULL;
 	if (argc < 2)
 		exit(2);
-	fd = open(argv[1],O_RDONLY);
+	for(i=1;i<argc;i++)
+	{
+		src = argv[i];
+		if (src && *src && *src == '-')
+		{
+			switch(src[1])
+			{
+			case 'h':
+				help(argv[0]);
+			case '-':
+				if (strcmp("version",&src[2]) == 0)
+				{
+					fdwrite(1,"%s\n", VERSION);
+					exit(6);
+				}
+				if (strcmp("help",&src[2]) == 0)
+					help(argv[0]);
+			default:
+				fdwrite(2,"error: unknown option: %s\n", src);
+				exit(1);
+			}
+		}
+		else
+		if (src && *src)
+		{
+			if (inputfile)
+			{
+				fdwrite(2,"error: multiple input files or unknown options\n");
+				exit(4);
+			}
+			else
+			{
+				inputfile = src;
+			}
+		}
+	}
+	if (inputfile == NULL)
+	{
+		fdwrite(2,"error: no input file\n");
+		exit(2);
+	}
+	/* open file */
+	fd = open(inputfile,O_RDONLY);
 	if (fd < 0)
+	{
+		fdwrite(2,"error opening input file: %s\n", strerror(errno));
 		exit(3);
+	}
 
 	org = 0;
 	address = 0;
@@ -316,23 +377,29 @@ int main(int argc, char **argv)
 		}
 
 		/* convert tabs to spaces */
-		for(src=line;*src;src++)
-			if (*src == '\t')
-				*src = ' ';
+		for(dst=line;*dst;dst++)
+			if (*dst == '\t')
+				*dst = ' ';
 
-		fdwrite(1,">> line: '%s'\n",line);
+		while(*line == ' ')
+			line++;
+		fdwrite(1,"input> %s\n",line);
 
 		// strip comments
-		for(src=line;*src;src++)
+		for(dst=line;*dst;dst++)
 		{
-			if (*src == ';')
+			if (*dst == ';')
 			{
-				*src = 0;
+				*dst = 0;
 				break;
 			}
 		}
 
 		src = chop(&line);
+		/* skip full comment lines */
+		if (src == NULL)
+			continue;
+
 		m = 0;
 		/* process directives */
 		if (src && *src == '.')
@@ -352,10 +419,11 @@ int main(int argc, char **argv)
 					fdwrite(1,"set org = $%04X (%i)\n",org,org);
 				}
 			}
+			continue;
 		}
 
 		// catch labels
-		for(dst=src;*dst;dst++)
+		for(dst=(char *)src;*dst;dst++)
 		{
 			if (dst[0] == ':' && dst[1] == 0)
 			{
@@ -367,17 +435,23 @@ int main(int argc, char **argv)
 		{
 			if (strlen(src) >= LABLEN)
 			{
-				fdwrite(1,"Error: Label too long: '%s'\n",src);
+				fdwrite(2,"Error: Label too long: '%s'\n",src);
 				exit(9);
 			}
+			m = matchlabel(src);
+			if (m != -1)
+			{
+				fdwrite(2,"Error: duplicate label: '%s'\n",src);
+				exit(10);
+			}
 			for(i=0;i<MAXLABELS;i++)
-				if (labels[m].name[0] == 0)
+				if (labels[i].name[0] == 0)
 					break;
 			if (i<MAXLABELS)
 			{
 				strcpy(labels[i].name,src);
 				labels[i].address = address;
-				fdwrite(1,"Label '%s' $%04X\n",src,address);
+				fdwrite(1,"label> %s [$%04X]\n",src,address);
 			}
 
 			if (line == NULL || *line == 0)
@@ -385,8 +459,15 @@ int main(int argc, char **argv)
 			src = chop(&line);
 		}
 
-
 		m = mnemonic_match(src);
+
+		copytoken(line,das);
+		i = matchlabel(das);
+		if (i >= 0)
+		{
+			sprintf(das,"$%04X",labels[i].address);
+			line = das;
+		}
 
 		if (m >= 0 && m <= maxmnemo)
 		{
@@ -400,7 +481,6 @@ int main(int argc, char **argv)
 					*(dst++) = c;
 			}
 			*dst = 0;
-			opname = mnemonic_match_table[m].name;
 
 			// figure out argument syntax
 			do
@@ -429,7 +509,7 @@ int main(int argc, char **argv)
 					if (imx < 0 || imx > 255)
 						imx = -1;
 					break;
-				case ADDR16_REG:
+				case IMM16_REG:
 					codemod = translate_to_addreg(line,&imx);
 					if (imx < 0 || imx > 65535)
 						imx = -1;
@@ -437,8 +517,8 @@ int main(int argc, char **argv)
 					imx = imx & 0xFF;
 					break;
 				case REL8:
-				case ADDR8_REG:
-				case ADDR8REG_REG:
+				case EIMM8_REG:
+				case ECD_REG:
 					break;
 				}
 				if (codemod >= 0)
@@ -453,6 +533,7 @@ int main(int argc, char **argv)
 			}
 			while(1);
 
+			_addr = address;
 			i = mnemonic_match_table[m].sz;
 			add_out(opcode,&address);
 			if (i == 2)
@@ -467,7 +548,11 @@ int main(int argc, char **argv)
 				/* add relocation entry for a IMM16 */
 			}
 
-			fdwrite(1,"[$%04X] %i $%02X %02X %02X %s '%s'\n",address,i,opcode,imx,imy,opname,line);
+			disass(&memory[_addr], das, MSGLEN);
+			for(src=das;*src;src++)
+				if (*src == '\t')
+					break;
+			fdwrite(1,"output> %s\n", (src && *src == '\t') ? &src[1] : das);
 		}
 	}
 	while(1);

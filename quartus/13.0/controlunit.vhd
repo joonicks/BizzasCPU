@@ -115,7 +115,7 @@ begin
 		opnum := to_integer(unsigned(irop));
 		case opnum is
 			when 0 to 7 =>
-				-- 00000xxx JMP imm16
+				-- 00000xxx JMP imm16; copy imm16 to imma, if (jmpflag) inpc = imma
 				PCjump		<= jmpflag and c1;
 				 -- c0 -- DstSel "100": imma = "00000000" & data
 				 -- c1 -- DstSel "101": immaHi = data
@@ -126,7 +126,7 @@ begin
 				Bus2Dst(1)	<= not(SYSCLK) and (c0 or (c1 and irop(0) and (irop(2) nor irop(1))));
 				Bus2Dst(0)	<= '0';
 			when 8 to 15 =>
-				-- 00001xxx JMP rel8
+				-- 00001xxx JMP rel8; copy "00000000" & rel8 to imma, if (jmpflag) inpc = inpc + imma
 				PCjrel		<= jmpflag and c0;
 				 -- c0 -- DstSel "100": imma = "00000000" & data
 				DstSel(2)	<= c0;
@@ -135,8 +135,8 @@ begin
 				Bus2Dst(1)	<= not(SYSCLK) and (c0 and irop(0) and (irop(2) nor irop(1)));
 				Bus2Dst(0)	<= '0';
 			when 16 to 23 =>
-				-- 000100YY LD  [imm16], dst
-				-- 000101YY ST  src, [imm16]
+				-- 000100YY LD  [imm16], dst; copy imm16 to imma, put imma on address bus, copy MemBus to DstSel
+				-- 000101YY ST  src, [imm16]; copy imm16 to imma, put imma on address bus, put DstSel on MemBus, Mem_WR
 				Mem_WR		<= c2 and irop(2);
 				PChold		<= c2;
 				DstBus2Mem	<= c2 and irop(2);
@@ -196,6 +196,8 @@ begin
 				Bus2Dst		<= "01";  -- "01"  ALUBus2Dst
 			when 192 to 207 =>
 				-- 1100XXYY CMP src, dst
+				-- if (samereg = 1) compare(sub) DstSel with MemBus, save only flags
+				-- if (samereg = 0) compare(sub) DstSel with ModBus, save only flags
 				ALU_OP		<= "100"; -- "100" SUB
 				ALU_Cin		<= F_Carry;
 				F_Store		<= c0;
@@ -215,6 +217,8 @@ begin
 				Bus2Dst		<= '0' & c0;
 			when 240 to 255 =>
 				-- 1111xxxx MOV
+				-- if (samereg = 1) copy MemBus to DstSel
+				-- if (samereg = 0) copy ModSel to DstSel
 				Bus2Dst(1)		<= (c0 and samereg);
 				Bus2Dst(0)		<= not(samereg);
 		end case;

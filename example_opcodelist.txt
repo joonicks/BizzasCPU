@@ -1,256 +1,256 @@
-hex 00 bin 00000000: 	JMP   $1234
-hex 01 bin 00000001: 	NOP   $1234
-hex 02 bin 00000010: 	JNC   $1234
-hex 03 bin 00000011: 	JC    $1234
-hex 04 bin 00000100: 	JNZ   $1234
-hex 05 bin 00000101: 	JZ    $1234
-hex 06 bin 00000110: 	JNS   $1234
-hex 07 bin 00000111: 	JS    $1234
-hex 08 bin 00001000: 	JMP   +$34
-hex 09 bin 00001001: 	NOP   $34
-hex 0A bin 00001010: 	JNC   +$34
-hex 0B bin 00001011: 	JC    +$34
-hex 0C bin 00001100: 	JNZ   +$34
-hex 0D bin 00001101: 	JZ    +$34
-hex 0E bin 00001110: 	JNS   +$34
-hex 0F bin 00001111: 	JS    +$34
-hex 10 bin 00010000: 	LD    [$1234], A
-hex 11 bin 00010001: 	LD    [$1234], B
-hex 12 bin 00010010: 	LD    [$1234], C
-hex 13 bin 00010011: 	LD    [$1234], D
-hex 14 bin 00010100: 	ST    A, [$1234]
-hex 15 bin 00010101: 	ST    B, [$1234]
-hex 16 bin 00010110: 	ST    C, [$1234]
-hex 17 bin 00010111: 	ST    D, [$1234]
-hex 18 bin 00011000: 	LD    [$34], A
-hex 19 bin 00011001: 	LD    [$34], B
-hex 1A bin 00011010: 	LD    [$34], C
-hex 1B bin 00011011: 	LD    [$34], D
-hex 1C bin 00011100: 	ST    A, [$34]
-hex 1D bin 00011101: 	ST    B, [$34]
-hex 1E bin 00011110: 	ST    C, [$34]
-hex 1F bin 00011111: 	ST    D, [$34]
-hex 20 bin 00100000: 	LD    [$34:A], A
-hex 21 bin 00100001: 	LD    [$34:A], B
-hex 22 bin 00100010: 	LD    [$34:A], C
-hex 23 bin 00100011: 	LD    [$34:A], D
-hex 24 bin 00100100: 	LD    [$34:B], A
-hex 25 bin 00100101: 	LD    [$34:B], B
-hex 26 bin 00100110: 	LD    [$34:B], C
-hex 27 bin 00100111: 	LD    [$34:B], D
-hex 28 bin 00101000: 	LD    [$34:C], A
-hex 29 bin 00101001: 	LD    [$34:C], B
-hex 2A bin 00101010: 	LD    [$34:C], C
-hex 2B bin 00101011: 	LD    [$34:C], D
-hex 2C bin 00101100: 	LD    [$34:D], A
-hex 2D bin 00101101: 	LD    [$34:D], B
-hex 2E bin 00101110: 	LD    [$34:D], C
-hex 2F bin 00101111: 	LD    [$34:D], D
-hex 30 bin 00110000: 	ST    A, [$34:A]
-hex 31 bin 00110001: 	ST    A, [$34:B]
-hex 32 bin 00110010: 	ST    A, [$34:C]
-hex 33 bin 00110011: 	ST    A, [$34:D]
-hex 34 bin 00110100: 	ST    B, [$34:A]
-hex 35 bin 00110101: 	ST    B, [$34:B]
-hex 36 bin 00110110: 	ST    B, [$34:C]
-hex 37 bin 00110111: 	ST    B, [$34:D]
-hex 38 bin 00111000: 	ST    C, [$34:A]
-hex 39 bin 00111001: 	ST    C, [$34:B]
-hex 3A bin 00111010: 	ST    C, [$34:C]
-hex 3B bin 00111011: 	ST    C, [$34:D]
-hex 3C bin 00111100: 	ST    D, [$34:A]
-hex 3D bin 00111101: 	ST    D, [$34:B]
-hex 3E bin 00111110: 	ST    D, [$34:C]
-hex 3F bin 00111111: 	ST    D, [$34:D]
-hex 40 bin 01000000: 	...   
-hex 41 bin 01000001: 	...   
-hex 42 bin 01000010: 	...   
-hex 43 bin 01000011: 	...   
-hex 44 bin 01000100: 	...   
-hex 45 bin 01000101: 	...   
-hex 46 bin 01000110: 	...   
-hex 47 bin 01000111: 	...   
-hex 48 bin 01001000: 	...   
-hex 49 bin 01001001: 	...   
-hex 4A bin 01001010: 	...   
-hex 4B bin 01001011: 	...   
-hex 4C bin 01001100: 	...   
-hex 4D bin 01001101: 	...   
-hex 4E bin 01001110: 	...   
-hex 4F bin 01001111: 	...   
-hex 50 bin 01010000: 	SHR   A
-hex 51 bin 01010001: 	SHR   B
-hex 52 bin 01010010: 	SHR   C
-hex 53 bin 01010011: 	SHR   D
-hex 54 bin 01010100: 	SHL   A
-hex 55 bin 01010101: 	SHL   B
-hex 56 bin 01010110: 	SHL   C
-hex 57 bin 01010111: 	SHL   D
-hex 58 bin 01011000: 	RCR   A
-hex 59 bin 01011001: 	RCR   B
-hex 5A bin 01011010: 	RCR   C
-hex 5B bin 01011011: 	RCR   D
-hex 5C bin 01011100: 	RCL   A
-hex 5D bin 01011101: 	RCL   B
-hex 5E bin 01011110: 	RCL   C
-hex 5F bin 01011111: 	RCL   D
-hex 60 bin 01100000: 	...   
-hex 61 bin 01100001: 	...   
-hex 62 bin 01100010: 	...   
-hex 63 bin 01100011: 	...   
-hex 64 bin 01100100: 	...   
-hex 65 bin 01100101: 	...   
-hex 66 bin 01100110: 	...   
-hex 67 bin 01100111: 	...   
-hex 68 bin 01101000: 	INC   A
-hex 69 bin 01101001: 	INC   B
-hex 6A bin 01101010: 	INC   C
-hex 6B bin 01101011: 	INC   D
-hex 6C bin 01101100: 	DEC   A
-hex 6D bin 01101101: 	DEC   B
-hex 6E bin 01101110: 	DEC   C
-hex 6F bin 01101111: 	DEC   D
-hex 70 bin 01110000: 	XOR   A, A
-hex 71 bin 01110001: 	XOR   A, B
-hex 72 bin 01110010: 	XOR   A, C
-hex 73 bin 01110011: 	XOR   A, D
-hex 74 bin 01110100: 	XOR   B, A
-hex 75 bin 01110101: 	XOR   B, B
-hex 76 bin 01110110: 	XOR   B, C
-hex 77 bin 01110111: 	XOR   B, D
-hex 78 bin 01111000: 	XOR   C, A
-hex 79 bin 01111001: 	XOR   C, B
-hex 7A bin 01111010: 	XOR   C, C
-hex 7B bin 01111011: 	XOR   C, D
-hex 7C bin 01111100: 	XOR   D, A
-hex 7D bin 01111101: 	XOR   D, B
-hex 7E bin 01111110: 	XOR   D, C
-hex 7F bin 01111111: 	XOR   D, D
-hex 80 bin 10000000: 	ADD   $34, A
-hex 81 bin 10000001: 	ADD   A, B
-hex 82 bin 10000010: 	ADD   A, C
-hex 83 bin 10000011: 	ADD   A, D
-hex 84 bin 10000100: 	ADD   B, A
-hex 85 bin 10000101: 	ADD   $34, B
-hex 86 bin 10000110: 	ADD   B, C
-hex 87 bin 10000111: 	ADD   B, D
-hex 88 bin 10001000: 	ADD   C, A
-hex 89 bin 10001001: 	ADD   C, B
-hex 8A bin 10001010: 	ADD   $34, C
-hex 8B bin 10001011: 	ADD   C, D
-hex 8C bin 10001100: 	ADD   D, A
-hex 8D bin 10001101: 	ADD   D, B
-hex 8E bin 10001110: 	ADD   D, C
-hex 8F bin 10001111: 	ADD   $34, D
-hex 90 bin 10010000: 	AND   $34, A
-hex 91 bin 10010001: 	AND   A, B
-hex 92 bin 10010010: 	AND   A, C
-hex 93 bin 10010011: 	AND   A, D
-hex 94 bin 10010100: 	AND   B, A
-hex 95 bin 10010101: 	AND   $34, B
-hex 96 bin 10010110: 	AND   B, C
-hex 97 bin 10010111: 	AND   B, D
-hex 98 bin 10011000: 	AND   C, A
-hex 99 bin 10011001: 	AND   C, B
-hex 9A bin 10011010: 	AND   $34, C
-hex 9B bin 10011011: 	AND   C, D
-hex 9C bin 10011100: 	AND   D, A
-hex 9D bin 10011101: 	AND   D, B
-hex 9E bin 10011110: 	AND   D, C
-hex 9F bin 10011111: 	AND   $34, D
-hex A0 bin 10100000: 	OR    $34, A
-hex A1 bin 10100001: 	OR    A, B
-hex A2 bin 10100010: 	OR    A, C
-hex A3 bin 10100011: 	OR    A, D
-hex A4 bin 10100100: 	OR    B, A
-hex A5 bin 10100101: 	OR    $34, B
-hex A6 bin 10100110: 	OR    B, C
-hex A7 bin 10100111: 	OR    B, D
-hex A8 bin 10101000: 	OR    C, A
-hex A9 bin 10101001: 	OR    C, B
-hex AA bin 10101010: 	OR    $34, C
-hex AB bin 10101011: 	OR    C, D
-hex AC bin 10101100: 	OR    D, A
-hex AD bin 10101101: 	OR    D, B
-hex AE bin 10101110: 	OR    D, C
-hex AF bin 10101111: 	OR    $34, D
-hex B0 bin 10110000: 	ADC   $34, A
-hex B1 bin 10110001: 	ADC   A, B
-hex B2 bin 10110010: 	ADC   A, C
-hex B3 bin 10110011: 	ADC   A, D
-hex B4 bin 10110100: 	ADC   B, A
-hex B5 bin 10110101: 	ADC   $34, B
-hex B6 bin 10110110: 	ADC   B, C
-hex B7 bin 10110111: 	ADC   B, D
-hex B8 bin 10111000: 	ADC   C, A
-hex B9 bin 10111001: 	ADC   C, B
-hex BA bin 10111010: 	ADC   $34, C
-hex BB bin 10111011: 	ADC   C, D
-hex BC bin 10111100: 	ADC   D, A
-hex BD bin 10111101: 	ADC   D, B
-hex BE bin 10111110: 	ADC   D, C
-hex BF bin 10111111: 	ADC   $34, D
-hex C0 bin 11000000: 	CMP   $34, A
-hex C1 bin 11000001: 	CMP   A, B
-hex C2 bin 11000010: 	CMP   A, C
-hex C3 bin 11000011: 	CMP   A, D
-hex C4 bin 11000100: 	CMP   B, A
-hex C5 bin 11000101: 	CMP   $34, B
-hex C6 bin 11000110: 	CMP   B, C
-hex C7 bin 11000111: 	CMP   B, D
-hex C8 bin 11001000: 	CMP   C, A
-hex C9 bin 11001001: 	CMP   C, B
-hex CA bin 11001010: 	CMP   $34, C
-hex CB bin 11001011: 	CMP   C, D
-hex CC bin 11001100: 	CMP   D, A
-hex CD bin 11001101: 	CMP   D, B
-hex CE bin 11001110: 	CMP   D, C
-hex CF bin 11001111: 	CMP   $34, D
-hex D0 bin 11010000: 	SUB   $34, A
-hex D1 bin 11010001: 	SUB   A, B
-hex D2 bin 11010010: 	SUB   A, C
-hex D3 bin 11010011: 	SUB   A, D
-hex D4 bin 11010100: 	SUB   B, A
-hex D5 bin 11010101: 	SUB   $34, B
-hex D6 bin 11010110: 	SUB   B, C
-hex D7 bin 11010111: 	SUB   B, D
-hex D8 bin 11011000: 	SUB   C, A
-hex D9 bin 11011001: 	SUB   C, B
-hex DA bin 11011010: 	SUB   $34, C
-hex DB bin 11011011: 	SUB   C, D
-hex DC bin 11011100: 	SUB   D, A
-hex DD bin 11011101: 	SUB   D, B
-hex DE bin 11011110: 	SUB   D, C
-hex DF bin 11011111: 	SUB   $34, D
-hex E0 bin 11100000: 	SBC   $34, A
-hex E1 bin 11100001: 	SBC   A, B
-hex E2 bin 11100010: 	SBC   A, C
-hex E3 bin 11100011: 	SBC   A, D
-hex E4 bin 11100100: 	SBC   B, A
-hex E5 bin 11100101: 	SBC   $34, B
-hex E6 bin 11100110: 	SBC   B, C
-hex E7 bin 11100111: 	SBC   B, D
-hex E8 bin 11101000: 	SBC   C, A
-hex E9 bin 11101001: 	SBC   C, B
-hex EA bin 11101010: 	SBC   $34, C
-hex EB bin 11101011: 	SBC   C, D
-hex EC bin 11101100: 	SBC   D, A
-hex ED bin 11101101: 	SBC   D, B
-hex EE bin 11101110: 	SBC   D, C
-hex EF bin 11101111: 	SBC   $34, D
-hex F0 bin 11110000: 	MOV   $34, A
-hex F1 bin 11110001: 	MOV   A, B
-hex F2 bin 11110010: 	MOV   A, C
-hex F3 bin 11110011: 	MOV   A, D
-hex F4 bin 11110100: 	MOV   B, A
-hex F5 bin 11110101: 	MOV   $34, B
-hex F6 bin 11110110: 	MOV   B, C
-hex F7 bin 11110111: 	MOV   B, D
-hex F8 bin 11111000: 	MOV   C, A
-hex F9 bin 11111001: 	MOV   C, B
-hex FA bin 11111010: 	MOV   $34, C
-hex FB bin 11111011: 	MOV   C, D
-hex FC bin 11111100: 	MOV   D, A
-hex FD bin 11111101: 	MOV   D, B
-hex FE bin 11111110: 	MOV   D, C
-hex FF bin 11111111: 	MOV   $34, D
+hex 00 bin 00000000:	JMP   $1234
+hex 01 bin 00000001:	NOP   $1234
+hex 02 bin 00000010:	JNC   $1234
+hex 03 bin 00000011:	JC    $1234
+hex 04 bin 00000100:	JNZ   $1234
+hex 05 bin 00000101:	JZ    $1234
+hex 06 bin 00000110:	JNS   $1234
+hex 07 bin 00000111:	JS    $1234
+hex 08 bin 00001000:	JMP   +$34
+hex 09 bin 00001001:	NOP   $34
+hex 0A bin 00001010:	JNC   +$34
+hex 0B bin 00001011:	JC    +$34
+hex 0C bin 00001100:	JNZ   +$34
+hex 0D bin 00001101:	JZ    +$34
+hex 0E bin 00001110:	JNS   +$34
+hex 0F bin 00001111:	JS    +$34
+hex 10 bin 00010000:	LD    [$1234], A
+hex 11 bin 00010001:	LD    [$1234], B
+hex 12 bin 00010010:	LD    [$1234], C
+hex 13 bin 00010011:	LD    [$1234], D
+hex 14 bin 00010100:	ST    A, [$1234]
+hex 15 bin 00010101:	ST    B, [$1234]
+hex 16 bin 00010110:	ST    C, [$1234]
+hex 17 bin 00010111:	ST    D, [$1234]
+hex 18 bin 00011000:	LD    [E:$34], A
+hex 19 bin 00011001:	LD    [E:$34], B
+hex 1A bin 00011010:	LD    [E:$34], C
+hex 1B bin 00011011:	LD    [E:$34], D
+hex 1C bin 00011100:	ST    A, [E:$34]
+hex 1D bin 00011101:	ST    B, [E:$34]
+hex 1E bin 00011110:	ST    C, [E:$34]
+hex 1F bin 00011111:	ST    D, [E:$34]
+hex 20 bin 00100000:	LD    [E:C], A
+hex 21 bin 00100001:	LD    [E:C], B
+hex 22 bin 00100010:	LD    [E:C], C
+hex 23 bin 00100011:	LD    [E:C], D
+hex 24 bin 00100100:	LD    [E:D], A
+hex 25 bin 00100101:	LD    [E:D], B
+hex 26 bin 00100110:	LD    [E:D], C
+hex 27 bin 00100111:	LD    [E:D], D
+hex 28 bin 00101000:	ST    A, [E:C]
+hex 29 bin 00101001:	ST    B, [E:C]
+hex 2A bin 00101010:	ST    C, [E:C]
+hex 2B bin 00101011:	ST    D, [E:C]
+hex 2C bin 00101100:	ST    A, [E:D]
+hex 2D bin 00101101:	ST    B, [E:D]
+hex 2E bin 00101110:	ST    C, [E:D]
+hex 2F bin 00101111:	ST    D, [E:D]
+hex 30 bin 00110000:	MOV   MR, C:D
+hex 31 bin 00110001:	JMP   C:D
+hex 32 bin 00110010:	JMP   MR
+hex 33 bin 00110011:	...   
+hex 34 bin 00110100:	...   
+hex 35 bin 00110101:	...   
+hex 36 bin 00110110:	...   
+hex 37 bin 00110111:	...   
+hex 38 bin 00111000:	...   
+hex 39 bin 00111001:	...   
+hex 3A bin 00111010:	...   
+hex 3B bin 00111011:	...   
+hex 3C bin 00111100:	...   
+hex 3D bin 00111101:	...   
+hex 3E bin 00111110:	...   
+hex 3F bin 00111111:	...   
+hex 40 bin 01000000:	...   
+hex 41 bin 01000001:	...   
+hex 42 bin 01000010:	...   
+hex 43 bin 01000011:	...   
+hex 44 bin 01000100:	...   
+hex 45 bin 01000101:	...   
+hex 46 bin 01000110:	...   
+hex 47 bin 01000111:	...   
+hex 48 bin 01001000:	...   
+hex 49 bin 01001001:	...   
+hex 4A bin 01001010:	...   
+hex 4B bin 01001011:	...   
+hex 4C bin 01001100:	...   
+hex 4D bin 01001101:	...   
+hex 4E bin 01001110:	...   
+hex 4F bin 01001111:	...   
+hex 50 bin 01010000:	SHR   A
+hex 51 bin 01010001:	SHR   B
+hex 52 bin 01010010:	SHR   C
+hex 53 bin 01010011:	SHR   D
+hex 54 bin 01010100:	SHL   A
+hex 55 bin 01010101:	SHL   B
+hex 56 bin 01010110:	SHL   C
+hex 57 bin 01010111:	SHL   D
+hex 58 bin 01011000:	RCR   A
+hex 59 bin 01011001:	RCR   B
+hex 5A bin 01011010:	RCR   C
+hex 5B bin 01011011:	RCR   D
+hex 5C bin 01011100:	RCL   A
+hex 5D bin 01011101:	RCL   B
+hex 5E bin 01011110:	RCL   C
+hex 5F bin 01011111:	RCL   D
+hex 60 bin 01100000:	MOV   E, C
+hex 61 bin 01100001:	MOV   E, D
+hex 62 bin 01100010:	MOV   C, E
+hex 63 bin 01100011:	MOV   D, E
+hex 64 bin 01100100:	...   
+hex 65 bin 01100101:	...   
+hex 66 bin 01100110:	...   
+hex 67 bin 01100111:	...   
+hex 68 bin 01101000:	INC   A
+hex 69 bin 01101001:	INC   B
+hex 6A bin 01101010:	INC   C
+hex 6B bin 01101011:	INC   D
+hex 6C bin 01101100:	DEC   A
+hex 6D bin 01101101:	DEC   B
+hex 6E bin 01101110:	DEC   C
+hex 6F bin 01101111:	DEC   D
+hex 70 bin 01110000:	XOR   A, A
+hex 71 bin 01110001:	XOR   A, B
+hex 72 bin 01110010:	XOR   A, C
+hex 73 bin 01110011:	XOR   A, D
+hex 74 bin 01110100:	XOR   B, A
+hex 75 bin 01110101:	XOR   B, B
+hex 76 bin 01110110:	XOR   B, C
+hex 77 bin 01110111:	XOR   B, D
+hex 78 bin 01111000:	XOR   C, A
+hex 79 bin 01111001:	XOR   C, B
+hex 7A bin 01111010:	XOR   C, C
+hex 7B bin 01111011:	XOR   C, D
+hex 7C bin 01111100:	XOR   D, A
+hex 7D bin 01111101:	XOR   D, B
+hex 7E bin 01111110:	XOR   D, C
+hex 7F bin 01111111:	XOR   D, D
+hex 80 bin 10000000:	ADD   $34, A
+hex 81 bin 10000001:	ADD   A, B
+hex 82 bin 10000010:	ADD   A, C
+hex 83 bin 10000011:	ADD   A, D
+hex 84 bin 10000100:	ADD   B, A
+hex 85 bin 10000101:	ADD   $34, B
+hex 86 bin 10000110:	ADD   B, C
+hex 87 bin 10000111:	ADD   B, D
+hex 88 bin 10001000:	ADD   C, A
+hex 89 bin 10001001:	ADD   C, B
+hex 8A bin 10001010:	ADD   $34, C
+hex 8B bin 10001011:	ADD   C, D
+hex 8C bin 10001100:	ADD   D, A
+hex 8D bin 10001101:	ADD   D, B
+hex 8E bin 10001110:	ADD   D, C
+hex 8F bin 10001111:	ADD   $34, D
+hex 90 bin 10010000:	AND   $34, A
+hex 91 bin 10010001:	AND   A, B
+hex 92 bin 10010010:	AND   A, C
+hex 93 bin 10010011:	AND   A, D
+hex 94 bin 10010100:	AND   B, A
+hex 95 bin 10010101:	AND   $34, B
+hex 96 bin 10010110:	AND   B, C
+hex 97 bin 10010111:	AND   B, D
+hex 98 bin 10011000:	AND   C, A
+hex 99 bin 10011001:	AND   C, B
+hex 9A bin 10011010:	AND   $34, C
+hex 9B bin 10011011:	AND   C, D
+hex 9C bin 10011100:	AND   D, A
+hex 9D bin 10011101:	AND   D, B
+hex 9E bin 10011110:	AND   D, C
+hex 9F bin 10011111:	AND   $34, D
+hex A0 bin 10100000:	OR    $34, A
+hex A1 bin 10100001:	OR    A, B
+hex A2 bin 10100010:	OR    A, C
+hex A3 bin 10100011:	OR    A, D
+hex A4 bin 10100100:	OR    B, A
+hex A5 bin 10100101:	OR    $34, B
+hex A6 bin 10100110:	OR    B, C
+hex A7 bin 10100111:	OR    B, D
+hex A8 bin 10101000:	OR    C, A
+hex A9 bin 10101001:	OR    C, B
+hex AA bin 10101010:	OR    $34, C
+hex AB bin 10101011:	OR    C, D
+hex AC bin 10101100:	OR    D, A
+hex AD bin 10101101:	OR    D, B
+hex AE bin 10101110:	OR    D, C
+hex AF bin 10101111:	OR    $34, D
+hex B0 bin 10110000:	ADC   $34, A
+hex B1 bin 10110001:	ADC   A, B
+hex B2 bin 10110010:	ADC   A, C
+hex B3 bin 10110011:	ADC   A, D
+hex B4 bin 10110100:	ADC   B, A
+hex B5 bin 10110101:	ADC   $34, B
+hex B6 bin 10110110:	ADC   B, C
+hex B7 bin 10110111:	ADC   B, D
+hex B8 bin 10111000:	ADC   C, A
+hex B9 bin 10111001:	ADC   C, B
+hex BA bin 10111010:	ADC   $34, C
+hex BB bin 10111011:	ADC   C, D
+hex BC bin 10111100:	ADC   D, A
+hex BD bin 10111101:	ADC   D, B
+hex BE bin 10111110:	ADC   D, C
+hex BF bin 10111111:	ADC   $34, D
+hex C0 bin 11000000:	CMP   $34, A
+hex C1 bin 11000001:	CMP   A, B
+hex C2 bin 11000010:	CMP   A, C
+hex C3 bin 11000011:	CMP   A, D
+hex C4 bin 11000100:	CMP   B, A
+hex C5 bin 11000101:	CMP   $34, B
+hex C6 bin 11000110:	CMP   B, C
+hex C7 bin 11000111:	CMP   B, D
+hex C8 bin 11001000:	CMP   C, A
+hex C9 bin 11001001:	CMP   C, B
+hex CA bin 11001010:	CMP   $34, C
+hex CB bin 11001011:	CMP   C, D
+hex CC bin 11001100:	CMP   D, A
+hex CD bin 11001101:	CMP   D, B
+hex CE bin 11001110:	CMP   D, C
+hex CF bin 11001111:	CMP   $34, D
+hex D0 bin 11010000:	SUB   $34, A
+hex D1 bin 11010001:	SUB   A, B
+hex D2 bin 11010010:	SUB   A, C
+hex D3 bin 11010011:	SUB   A, D
+hex D4 bin 11010100:	SUB   B, A
+hex D5 bin 11010101:	SUB   $34, B
+hex D6 bin 11010110:	SUB   B, C
+hex D7 bin 11010111:	SUB   B, D
+hex D8 bin 11011000:	SUB   C, A
+hex D9 bin 11011001:	SUB   C, B
+hex DA bin 11011010:	SUB   $34, C
+hex DB bin 11011011:	SUB   C, D
+hex DC bin 11011100:	SUB   D, A
+hex DD bin 11011101:	SUB   D, B
+hex DE bin 11011110:	SUB   D, C
+hex DF bin 11011111:	SUB   $34, D
+hex E0 bin 11100000:	SBC   $34, A
+hex E1 bin 11100001:	SBC   A, B
+hex E2 bin 11100010:	SBC   A, C
+hex E3 bin 11100011:	SBC   A, D
+hex E4 bin 11100100:	SBC   B, A
+hex E5 bin 11100101:	SBC   $34, B
+hex E6 bin 11100110:	SBC   B, C
+hex E7 bin 11100111:	SBC   B, D
+hex E8 bin 11101000:	SBC   C, A
+hex E9 bin 11101001:	SBC   C, B
+hex EA bin 11101010:	SBC   $34, C
+hex EB bin 11101011:	SBC   C, D
+hex EC bin 11101100:	SBC   D, A
+hex ED bin 11101101:	SBC   D, B
+hex EE bin 11101110:	SBC   D, C
+hex EF bin 11101111:	SBC   $34, D
+hex F0 bin 11110000:	MOV   $34, A
+hex F1 bin 11110001:	MOV   A, B
+hex F2 bin 11110010:	MOV   A, C
+hex F3 bin 11110011:	MOV   A, D
+hex F4 bin 11110100:	MOV   B, A
+hex F5 bin 11110101:	MOV   $34, B
+hex F6 bin 11110110:	MOV   B, C
+hex F7 bin 11110111:	MOV   B, D
+hex F8 bin 11111000:	MOV   C, A
+hex F9 bin 11111001:	MOV   C, B
+hex FA bin 11111010:	MOV   $34, C
+hex FB bin 11111011:	MOV   C, D
+hex FC bin 11111100:	MOV   D, A
+hex FD bin 11111101:	MOV   D, B
+hex FE bin 11111110:	MOV   D, C
+hex FF bin 11111111:	MOV   $34, D

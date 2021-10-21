@@ -4,17 +4,18 @@ Direct decode instructions (Not microcode)
 
 Main blocks:
 ```
-		16-bit Address bus
+		16-bit Address bus for 64Kb usable address space
 		 8-bit Data bus
 		 8-bit ALU
 
 		Four general purpose registers: A, B, C, D
-		Non-user registers: IROP (instruction register), INPC (program counter)
-			and IMMA (memory address register), ONE (constant 1 register)
+		Special registers: IR (instruction register (inaccessible)), PC (program counter),
+			E (memory page pointer) and MR (memory address register)
 		Flags: Carry, Zero, Sign
 ```
 Wishful thinking future blocks:
 ```
+		Ability to freeze execution at any time to accomodate external wait states
 		Stack (unlikely)
 		Interrupts
 		Instruction/Data cache

@@ -44,6 +44,9 @@
 2021-06-04		Verified the design on FPGA hardware (Terasic DE10-Nano)
 			1st test successful @ 12.5MHz running a small test program.
 
+2021-07-**		Changes to add an E register, changes so that PC can be set to the value
+			on the address bus. Changed register names IROP->IR, INPC->PC and IMMA->MR
+
 (*) Including debug outputs and simpleram
     on Quartus II 13.0.1 64-bit Web Edition,
     device target Cyclone II - EP2C8T144C6
@@ -51,3 +54,6 @@
     For comparison:
     MiSTer MOS6510 implementation compiles to 1,144 Logic Elements
     on Quartus II and target device Cyclone II - EP2C8T144C6.
+
+    M6800	1,050 Logic Elements	4,100 transistors
+    MOS6502	1,144 Logic Elements	4,528 transistors

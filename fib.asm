@@ -1,22 +1,21 @@
+; calculate fibonacci sequence
+; 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, ...
 
 .org	$0000
 
 main:
-	MOV $01, A
+	XOR A, A
+	INC A
 	MOV A, B
 
-.L0:	ADD A, B
-	ADD B, A
-	JNC .L0
+fibb:
+	MOV A, C	; backup fib(n-1)
+	MOV B, A	; move fib(n) to fib(n-1)
+	ADD C, B	; create new fib(n)
 
-	ADD $06, D
-	CMP $17, D
-	NOP $0000
-	INC D
-	DEC C
-	LD  [$00:D], C
-	LD  [$000C], C
-	INC C
-	ST  C, [$000C]
-	ST  C, [$D077]
+output:
+	ST  B, [$D077]	; output to bizzaport
+
+	JNC fibb	; loop if fib(n) is less than 256
+
 	JMP main

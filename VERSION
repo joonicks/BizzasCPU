@@ -47,6 +47,9 @@
 2021-07-**		Changes to add an E register, changes so that PC can be set to the value
 			on the address bus. Changed register names IROP->IR, INPC->PC and IMMA->MR
 
+2021-10-22		vhdcore compiles (optimized @ 40MHz) to 332 Logic Elements (*)
+			rev3core.bdf compiles (optimized @ 40MHz) to 346 Logic Elements (*)
+
 (*) Including debug outputs and simpleram
     on Quartus II 13.0.1 64-bit Web Edition,
     device target Cyclone II - EP2C8T144C6

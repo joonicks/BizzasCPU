@@ -7,16 +7,16 @@ port(
 	SYSCLK:		in		std_logic;
 	Mem_WR,
 	Mem_OE:		in		std_logic;
-	OutPort:		out	unsigned(7 downto 0);
+	OutPort:		out	std_logic_vector(7 downto 0);
 	MemBus,
 	addrLo,
-	addrHi:		in		unsigned(7 downto 0)
+	addrHi:		in		std_logic_vector(7 downto 0)
 	);
 end bizzaport;
 
 
 architecture arch of bizzaport is
-signal port8: unsigned(7 downto 0) := x"00";
+signal port8: std_logic_vector(7 downto 0) := x"00";
 begin
 	OutPort <= port8;
 	

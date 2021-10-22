@@ -1,6 +1,6 @@
 library ieee;
 use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;
+use ieee.std_logic_unsigned.all;
 
 entity alu8bit is
 port(
@@ -11,16 +11,16 @@ port(
 	F_Carry,
 	F_Zero,
 	F_Sign:		out	std_logic;
-	ALUBus:		out	unsigned(7 downto 0);
+	ALUBus:		out	std_logic_vector(7 downto 0);
 	ModBus,
-	DstBus:		in		unsigned(7 downto 0)
+	DstBus:		in		std_logic_vector(7 downto 0)
 	);
 end alu8bit;
 
--- Logic Elements: 46 38 46 49 47 38 42
+-- Logic Elements: 46 38 46 49 47 38 42 67
 
 architecture arch of alu8bit is
-signal accum:  unsigned(8 downto 0);
+signal accum: std_logic_vector(8 downto 0);
 begin
 	ALUBus <= accum(7 downto 0);
 
@@ -33,18 +33,21 @@ begin
 	end process;
 
 	process(ALU_OP, ALU_Cin, ModBus, DstBus)
-		variable modval: unsigned(8 downto 0);
+		variable modval: std_logic_vector(8 downto 0);
 	begin
 		case(ALU_OP) is
-			-- 001 AND
-			when "001" => accum <= '0' & (ModBus and DstBus);
-			-- 010 OR
-			when "010" => accum <= '0' & (ModBus or  DstBus);
-			-- 011 XOR
-			when "011" => accum <= '0' & (ModBus xor DstBus);
-			-- 000 ADD
-			-- 100 SUB
+			when "001" =>
+				-- 001 AND
+				accum <= '0' & (ModBus and DstBus);
+			when "010" =>
+				-- 010 OR
+				accum <= '0' & (ModBus or  DstBus);
+			when "011" =>
+				-- 011 XOR
+				accum <= '0' & (ModBus xor DstBus);
 			when "000" | "100" | "101" =>
+				-- 000 ADD
+				-- 100 SUB
 				if (ALU_OP(2) = '1') then
 					modval := '1' & not(ModBus);
 				else
@@ -54,11 +57,11 @@ begin
 					modval := modval + 1;
 				end if;
 				accum <= ('0' & DstBus) + modval;
-			-- 110 SHR Shift Right; dvide by 2
 			when "110" =>
+				-- 110 SHR Shift Right; divide by 2
 				accum <= DstBus(0) & ALU_Cin & DstBus(7 downto 1);
-			-- 111 SHL Shift Left; multiply by 2
 			when "111" =>
+				-- 111 SHL Shift Left; multiply by 2
 				accum <= DstBus & ALU_Cin;
 		end case;
 	end process;

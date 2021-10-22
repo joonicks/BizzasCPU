@@ -23,7 +23,7 @@
 
 # Clock constraints
 
-create_clock -name "SysClock" -period 100.000ns [get_ports {SYSCLK}]
+create_clock -name "SysClock" -period 25.000ns [get_ports {SYSCLK}]
 
 
 # Automatically constrain PLL and other generated clocks

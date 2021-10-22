@@ -9,7 +9,7 @@ port(
 	Mem_WR:		in		std_logic;
 	MemBus:		inout std_logic_vector(7 downto 0);
 	addrLo,
-	addrHi:		in		unsigned(7 downto 0)
+	addrHi:		in		std_logic_vector(7 downto 0)
 	);
 end entity;
 
@@ -33,11 +33,15 @@ architecture arch of simpleram is
 				x"01", x"99", x"00", -- NOP 0x0000
 				x"6B",					-- INC D
 				x"6E",					-- DEC C
-				x"2E", x"00",			-- LD  [$00:D], C
+				x"7F",					-- XOR D, D
+				x"63",					-- MOV D, E
+				x"FF", x"0C",			-- MOV $0C, D
+				x"26",					-- LD  [E:D], C
 				x"12", x"0C", x"00",	-- LD  [$000C], C
 				x"6A",					-- INC C
 				x"16", x"0C", x"00",	-- ST  C, [$000C]
 				x"16", x"77", x"D0", -- ST  C, [$D077]
+				x"30",					-- MOV MR, C:D
 				x"00", x"00", x"00",	-- JMP 0x0000
 				others => x"00");
 --			tmp(0 to 255) := (		-- Count down from 7
@@ -78,7 +82,7 @@ begin
 	process(SYSCLK, address, ram, Mem_WR)
 	begin
 		if (falling_edge(SYSCLK)) then
-			address <= to_integer(addrHi & addrLo);
+			address <= to_integer(unsigned(addrHi) & unsigned(addrLo));
 		end if;
 		if (rising_edge(SYSCLK) and Mem_WR = '1') then
 			ram(address) <= MemBus;

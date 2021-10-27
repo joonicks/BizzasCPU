@@ -9,7 +9,6 @@ port(
 	addrLo,
 	addrHi,
 	MemBus:			inout	std_logic_vector(7 downto 0);
-	OutPort,
 	A, B, C, D,
 	IREG:				out	std_logic_vector(7 downto 0);
 	MR:				out	std_logic_vector(15 downto 0)
@@ -22,7 +21,8 @@ architecture arch of vhdcore is
 	signal Dst2Mem: std_logic;
 	signal AdrSel, Bus2Dst: std_logic_vector(1 downto 0);
 	signal ALU_OP, ModSel, DstSel: std_logic_vector(2 downto 0);
-	signal ALUBus, ModBus, DstBus: std_logic_vector(7 downto 0);
+	signal ALUBus: std_logic_vector(8 downto 0);
+	signal ModBus, DstBus: std_logic_vector(7 downto 0);
 begin
 	control: work.controlunit
 	port map(
@@ -57,6 +57,10 @@ begin
 		DstSel		=> DstSel,
 		Bus2Dst		=> Bus2Dst,
 		ALUBus		=> ALUBus,
+		F_Store		=> F_Store,
+		F_Carry		=> F_Carry,
+		F_Zero		=> F_Zero,
+		F_Sign		=> F_Sign,
 		MemBus		=> MemBus,
 		ModBus		=> ModBus,
 		DstBus		=> DstBus,
@@ -71,13 +75,8 @@ begin
 	
 	alu: work.alu8bit
 	port map(
-		SYSCLK	=> SYSCLK,
 		ALU_OP	=> ALU_OP,
 		ALU_Cin	=> ALU_Cin,
-		F_Store	=> F_Store,
-		F_Carry	=> F_Carry,
-		F_Zero	=> F_Zero,
-		F_Sign	=> F_Sign,
 		ALUBus	=> ALUBus,
 		ModBus	=> ModBus,
 		DstBus	=> DstBus

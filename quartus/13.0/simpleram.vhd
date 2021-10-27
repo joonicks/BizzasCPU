@@ -30,7 +30,7 @@ architecture arch of simpleram is
 				x"0A", x"FD",			-- JNC -3
 				x"8F", x"06",			-- ADD $06, D
 				x"CF", x"17",			-- CMP $17, D
-				x"01", x"99", x"00", -- NOP 0x0000
+				x"01", x"99", x"00", -- NOP 0x0099 <-- 99 == address $000C
 				x"6B",					-- INC D
 				x"6E",					-- DEC C
 				x"7F",					-- XOR D, D

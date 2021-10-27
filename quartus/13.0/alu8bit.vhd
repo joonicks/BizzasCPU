@@ -4,14 +4,9 @@ use ieee.std_logic_unsigned.all;
 
 entity alu8bit is
 port(
-	SYSCLK:		in		std_logic;
 	ALU_OP:		in		std_logic_vector(2 downto 0);
-	ALU_Cin,
-	F_Store:		in		std_logic;
-	F_Carry,
-	F_Zero,
-	F_Sign:		out	std_logic;
-	ALUBus:		out	std_logic_vector(7 downto 0);
+	ALU_Cin:		in		std_logic;
+	ALUBus:		out	std_logic_vector(8 downto 0);
 	ModBus,
 	DstBus:		in		std_logic_vector(7 downto 0)
 	);
@@ -22,15 +17,7 @@ end alu8bit;
 architecture arch of alu8bit is
 signal accum: std_logic_vector(8 downto 0);
 begin
-	ALUBus <= accum(7 downto 0);
-
-	process(SYSCLK, F_Store) begin
-		if (rising_edge(SYSCLK) and F_Store = '1') then
-			F_Carry <= accum(8);
-			F_Zero  <= not(accum(7) or accum(6) or accum(5) or accum(4) or accum(3) or accum(2) or accum(1) or accum(0));
-			F_Sign  <= accum(7);
-		end if;
-	end process;
+	ALUBus <= accum(8 downto 0);
 
 	process(ALU_OP, ALU_Cin, ModBus, DstBus)
 		variable modval: std_logic_vector(8 downto 0);

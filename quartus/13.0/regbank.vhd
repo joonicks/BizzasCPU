@@ -12,12 +12,16 @@ port(
 	DstSel:			in			std_logic_vector(2 downto 0);
 	Bus2Dst:			in			std_logic_vector(1 downto 0);
 	Dst2Mem:			in			std_logic;
-	ALUBus:			in			std_logic_vector(7 downto 0);
-	MemBus,
-	ModBus:			inout		std_logic_vector(7 downto 0);
-	DstBus:			buffer	std_logic_vector(7 downto 0);
+	ALUBus:			in			std_logic_vector(8 downto 0);
+	F_Store:			in			std_logic;
+	F_Carry,
+	F_Sign,
+	F_Zero:			out		std_logic;
+	MemBus:			inout		std_logic_vector(7 downto 0);
 	addrHi,
 	addrLo:			buffer	std_logic_vector(7 downto 0);
+	ModBus:			inout		std_logic_vector(7 downto 0);
+	DstBus:			buffer	std_logic_vector(7 downto 0);
 	A, B,	C,	D:		out		std_logic_vector(7 downto 0);
 	MRDEBUG:			out		std_logic_vector(15 downto 0)
 	);
@@ -39,8 +43,8 @@ begin
 	MemBus <= DstBus when Dst2Mem = '1' else "ZZZZZZZZ";
 
 	-- "00": Address bus = PCHi:PCLo
-	-- "01": Address bus = MRHi:MRLo			[imm16] [PR:imm8]
-	-- "10": Address bus = regE:ModBus		[PR:reg]
+	-- "01": Address bus = MRHi:MRLo			[imm16] [E:imm8]
+	-- "10": Address bus = regE:ModBus		[E:reg]
 	-- "11": Address bus = regC:regD
 	addrLo <= PCLo		when AdrSel = "00" else
 				 MRLo		when AdrSel = "01" else
@@ -80,12 +84,16 @@ begin
 		variable data: std_logic_vector(7 downto 0);
 	begin
 		if (rising_edge(SYSCLK)) then
-			-- if PCjrel=1: PC = PC + MemBus
-			-- if PChold=1: PC = PC
-			-- if PChold=1: PC = PC + 1
-			--if (PCjrel = '1') then
-			--	PC <= PC + (M7 & M7 & M7 & M7 & M7 & M7 & M7 & M7 & MemBus);
-			--els
+			if (F_Store = '1') then
+				F_Carry <= ALUBus(8);
+				F_Sign <= ALUBus(7);
+				if (ALUBus(7 downto 0) = "00000000") then
+					F_Zero <= '1';
+				else
+					F_Zero <= '0';
+				end if;
+			end if;
+			
 			if (PChold = '0') then
 			   if (AdrSel /= "00") then
 					MR <= PC; -- if jumping, copy PC to MR first
@@ -96,7 +104,7 @@ begin
 			if (Bus2Dst /= "00") then
 				case Bus2Dst is
 				when "00" => data := ModBus; -- Cant happen
-				when "01" => data := ALUBus;
+				when "01" => data := ALUBus(7 downto 0);
 				when "10" => data := MemBus;
 				when "11" => data := ModBus;
 				end case;

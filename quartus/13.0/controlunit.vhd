@@ -72,8 +72,8 @@ begin
 				opnum := to_integer(unsigned(MemBus));
 				case opnum is
 				when 16 to 23				=> nextc := 3; -- LD/ST imm16
-				when 0 to 7 | 24 to 31	=> nextc := 2; -- JMP imm16, LD/ST [PR:imm8]
-				when 8 to 15 | 32 to 47	=> nextc := 1; -- PCD, JMP rel8, LD/ST [PR:reg]
+				when 0 to 7 | 24 to 31	=> nextc := 2; -- JMP imm16, LD/ST [E:imm8]
+				when 8 to 15 | 32 to 47	=> nextc := 1; -- JMP rel8, LD/ST [E:reg]
 				when 48 to 127				=> nextc := 0; -- SHR, SHL, RCR, RCL, INC, DEC, XOR and unallocated opcodes
 				when others					=> null;			-- ALU ops (1 if samereg, else 0)
 				end case;
@@ -122,8 +122,8 @@ begin
 				PCjrel		<= jmpflag and c0;
 				DstSel		<= c0 & "00";								-- c0: DstSel "100": MR := zero & data
 				Bus2Dst(1)	<= not(SYSCLK) and (c0 and IR0 and (IR2 nor IR1));
-				Bus2Dst(0)	<= '0';
 			when 16 to 19 =>
+				-- $10 ... $13
 				-- 000100YY LD  [imm16], dst							copy imm16 to MR, put MR on address bus, copy MemBus to DstSel
 				PChold		<= c2;
 				AdrSel(0)	<= c2;										-- c2: "01" Address bus = MRHi:MRLo
@@ -134,6 +134,10 @@ begin
 				Bus2Dst(1)	<= not(c3);									-- "10" data := MemBus
 			when 20 to 23 =>
 				-- 000101YY ST  src, [imm16]							copy imm16 to MR, put MR on address bus, put DstSel on MemBus, Mem_WR
+				-- $14 #20  ST  A, [imm16]
+				-- $15 #21  ST  B, [imm16]
+				-- $16 #22  ST  C, [imm16]
+				-- $17 #23  ST  D, [imm16]
 				Mem_OE		<= not(c2);
 				Mem_WR		<= c2;
 				PChold		<= c2;
@@ -143,11 +147,11 @@ begin
 																				-- c1: DstSel "101" MRHi := data;
 				end if;
 				Bus2Dst(1)	<= c0 or c1;								-- "10" data := MemBus
-				Dst2Mem		<= '1';
+				Dst2Mem		<= c2;
 			when 24 to 27 =>
 				-- 000110YY LD  [E:imm8], dst
 				PChold		<= c1;										-- Dont increment PC during memory access
-				AdrSel(0)	<= c1;
+				AdrSel(0)	<= c1;										-- c1: "01" Address bus = MRHi:MRLo
 				DstSel		<= c0 & (c0 or IR1) & (c0 or IR0);	-- c0: DstSel "111" MR := regE & data
 				Bus2Dst(1)	<= c0 or c1;								-- "10" data := MemBus
 			when 28 to 31 =>
@@ -237,7 +241,7 @@ begin
 			when 240 to 255 =>
 				-- 1111xxxx MOV src, dst								(samereg = 0) copy ModSel to DstSel
 				-- 1111xxxx MOV imm8, dst								(samereg = 1) copy MemBus to DstSel
-				Bus2Dst		<= c0 & c0;
+				Bus2Dst		<= c0 & c0;									-- "11" data := ModBus
 		end case;
 	end process;
 end arch;

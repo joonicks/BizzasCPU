@@ -7,7 +7,7 @@ Registers:
 	PC   		16-bit program counter			regbank
 	MR		16-bit address buffer			regbank
 Flags (1 bit):
-	Carry, Zero, Sign					alu unit
+	Carry, Zero, Sign					regbank
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -43,9 +43,9 @@ Mnemonics for conditional jumps is listed as "Jcc" to cover both variants.
 	110F	Jcc rel8		2	2	OP|REL8			if Zero=F,  JNZ, JZ
 	111F	Jcc rel8		2	2	OP|REL8			if Sign=F,  JNS, JS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-( 1)000100YY	LD  [imm16], dst	3	4	OP|IMM_LO8|IMM_HI8	Overwrites MR
+( 1)000100XX	LD  [imm16], dst	3	4	OP|IMM_LO8|IMM_HI8	Overwrites MR
 	01YY	ST  src, [imm16]	3	4	OP|IMM_LO8|IMM_HI8	Overwrites MR
-	10YY	LD  [E:imm8], dst	2	3	OP|IMM8			Overwrites MR
+	10XX	LD  [E:imm8], dst	2	3	OP|IMM8			Overwrites MR
 	11YY	ST  src, [E:imm8]	2	3	OP|IMM8			Overwrites MR
 ( 2)00100RXX	LD  [E:reg], dst	1	2	OP			Reg must be C or D
 	1RYY	ST  src, [E:reg]	1	2	OP			Reg must be C or D
@@ -56,10 +56,10 @@ Mnemonics for conditional jumps is listed as "Jcc" to cover both variants.
 	####	...
 ( 4)0100####	...
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-( 5)010100YY	SHR reg			1	1	OP			** Shift 1 bit Right, msb = 0
-	01YY	SHL reg			1	1	OP			** Shift 1 bit Left,  lsb = 0
-	10YY	RCR reg			1	1	OP			** Shift 1 bit Right, msb = Carry
-	11YY	RCL reg			1	1	OP			** Shift 1 bit Left,  lsb = Carry
+( 5)010100RR	SHR reg			1	1	OP			** Shift 1 bit Right, msb = 0
+	01RR	SHL reg			1	1	OP			** Shift 1 bit Left,  lsb = 0
+	10RR	RCR reg			1	1	OP			** Shift 1 bit Right, msb = Carry
+	11RR	RCL reg			1	1	OP			** Shift 1 bit Left,  lsb = Carry
 										** Shifted out bit is stored in Carry		
 ( 6)0110000X	MOV E, dst		1	1	OP			Dst must be C or D
 	001Y	MOV src, E		1	1	OP			Src must be C or D

@@ -6,9 +6,21 @@ port(
 	SYSCLK:			in		std_logic;
 	Mem_OE,
 	Mem_WR:			buffer std_logic;
+	PChold,
+	PCjrel,
+	F_Carry,
+	F_Sign,
+	F_Zero,
+	F_Store,
+	Dst2Mem:			buffer std_logic;
+	AdrSel,
+	Bus2Dst:			out	std_logic_vector(1 downto 0);
 	addrLo,
-	addrHi,
+	addrHi:			out	std_logic_vector(7 downto 0);
 	MemBus:			inout	std_logic_vector(7 downto 0);
+	ALUBus:			out	std_logic_vector(8 downto 0);
+	ModBus,
+	DstBus:			out	std_logic_vector(7 downto 0);
 	A, B, C, D,
 	IREG:				out	std_logic_vector(7 downto 0);
 	MR:				out	std_logic_vector(15 downto 0)
@@ -16,33 +28,38 @@ port(
 end vhdcore;
 
 architecture arch of vhdcore is
-	signal ALU_Cin, F_Store, F_Carry, F_Zero, F_Sign: std_logic;
-	signal PChold, PCjrel: std_logic;
-	signal Dst2Mem: std_logic;
-	signal AdrSel, Bus2Dst: std_logic_vector(1 downto 0);
+	signal ALU_Cin: std_logic;
 	signal ALU_OP, ModSel, DstSel: std_logic_vector(2 downto 0);
-	signal ALUBus: std_logic_vector(8 downto 0);
-	signal ModBus, DstBus: std_logic_vector(7 downto 0);
+	signal ixAdrSel, ixBus2Dst: std_logic_vector(1 downto 0);
+	signal ixALUBus: std_logic_vector(8 downto 0);
+	signal ixModBus, ixDstBus: std_logic_vector(7 downto 0);
 begin
+	ModBus <= ixModBus;
+	DstBus <= ixDstBus;
+	ALUBus <= ixALUBus;
+	AdrSel <= ixAdrSel;
+	Bus2Dst <= ixBus2Dst;
+	
 	control: work.controlunit
 	port map(
 		SYSCLK		=> SYSCLK,
-		F_Carry		=> F_Carry,
-		F_Zero		=> F_Zero,
-		F_Sign		=> F_Sign,
 		Mem_OE		=> Mem_OE,
 		Mem_WR		=> Mem_WR,
 		PChold		=> PChold,
 		PCjrel		=> PCjrel,
-		AdrSel		=> AdrSel,
+		AdrSel		=> ixAdrSel,
 		ModSel		=> ModSel,
 		DstSel		=> DstSel,
-		Bus2Dst		=> Bus2Dst,
+		Bus2Dst		=> ixBus2Dst,
 		Dst2Mem		=> Dst2Mem,
 		MemBus		=> MemBus,
 		ALU_OP		=> ALU_OP,
 		ALU_Cin		=> ALU_Cin,
 		F_Store		=> F_Store,
+		F_Carry		=> F_Carry,
+		F_Zero		=> F_Zero,
+		F_Sign		=> F_Sign,
+		-- debug outputs:
 		IREG			=> IREG
 	);
 	
@@ -52,20 +69,21 @@ begin
 		PChold		=> PChold,
 		PCjrel		=> PCjrel,
 		Dst2Mem		=> Dst2Mem,
-		AdrSel		=> AdrSel,
+		AdrSel		=> ixAdrSel,
 		ModSel		=> ModSel,
 		DstSel		=> DstSel,
-		Bus2Dst		=> Bus2Dst,
-		ALUBus		=> ALUBus,
+		Bus2Dst		=> ixBus2Dst,
+		ALUBus		=> ixALUBus,
 		F_Store		=> F_Store,
 		F_Carry		=> F_Carry,
 		F_Zero		=> F_Zero,
 		F_Sign		=> F_Sign,
 		MemBus		=> MemBus,
-		ModBus		=> ModBus,
-		DstBus		=> DstBus,
+		ModBus		=> ixModBus,
+		DstBus		=> ixDstBus,
 		addrLo		=> addrLo,
 		addrHi		=> addrHi,
+		-- debug outputs:
 		A				=> A,
 		B				=> B,
 		C				=> C,
@@ -77,8 +95,8 @@ begin
 	port map(
 		ALU_OP	=> ALU_OP,
 		ALU_Cin	=> ALU_Cin,
-		ALUBus	=> ALUBus,
-		ModBus	=> ModBus,
-		DstBus	=> DstBus
+		ALUBus	=> ixALUBus,
+		ModBus	=> ixModBus,
+		DstBus	=> ixDstBus
 	);
 end arch;

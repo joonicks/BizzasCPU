@@ -20,6 +20,9 @@ Wishful thinking future blocks:
 		Interrupts
 		Instruction/Data cache
 ```
+Another possibility would be to make the RAM dual port to run two BizzaCPU cores
+at the same time.
+
 ## Name
 
 BizzasCPU comes from an old webpage of mine where I had posted some concept Linux programs,

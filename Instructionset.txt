@@ -49,11 +49,15 @@ Mnemonics for conditional jumps is listed as "Jcc" to cover both variants.
 	11YY	ST  src, [E:imm8]	2	3	OP|IMM8			Overwrites MR
 ( 2)00100RXX	LD  [E:reg], dst	1	2	OP			Reg must be C or D
 	1RYY	ST  src, [E:reg]	1	2	OP			Reg must be C or D
+( 3)0011000X	LD  [MR], dst		1	2	OP			Dst must be A or B
+	001X	LDI [MR], dst		1	2	OP			Dst must be A or B
+	010Y	ST  src, [MR]		1	2	OP			Src must be A or B
+	011Y	STI src, [MR]		1	2	OP			Src must be A or B
+	100X	LD  [C:D], dst		1	2	OP			Dst must be A or B
+	101X	LDI [C:D], dst		1	2	OP			Dst must be A or B
+	110Y	ST  src, [C:D]		1	2	OP			Src must be A or B
+	111Y	STI src, [C:D]		1	2	OP			Src must be A or B
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-( 3)00110000	MOV MR, C:D		1	1	OP
-	0001	JMP C:D			1	1	OP
-	0010	JMP MR			1	1	OP
-	####	...
 ( 4)0100####	...
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ( 5)010100RR	SHR reg			1	1	OP			** Shift 1 bit Right, msb = 0
@@ -63,7 +67,10 @@ Mnemonics for conditional jumps is listed as "Jcc" to cover both variants.
 										** Shifted out bit is stored in Carry		
 ( 6)0110000X	MOV E, dst		1	1	OP			Dst must be C or D
 	001Y	MOV src, E		1	1	OP			Src must be C or D
-	01##	...
+	0100	MOV MR, C:D		1	1	OP
+	0101	JMP C:D			1	1	OP
+	0110	JMP MR			1	1	OP
+	0111	AFX			1	1	OP			Swap A<=>Flags
 	10RR	INC reg			1	1	OP
 	11RR	DEC reg			1	1	OP
 ( 7)0111XXYY	XOR mod, dst		1	1	OP			XOR is a special case with no IMM8 variant
